@@ -105,7 +105,7 @@ class profileAct : AppCompatActivity() {
         }
     }
 
-    fun justifyListViewHeightBasedOnChildren(listView: ListView) {
+    private fun justifyListViewHeightBasedOnChildren(listView: ListView) {
         val adapter = listView.adapter ?: return
         val vg: ViewGroup = listView
         var totalHeight = 0

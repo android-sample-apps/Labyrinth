@@ -6,18 +6,18 @@
     </item>
     <item android:bottom="-3dp" android:right="-3dp" android:left="-3dp">
         <shape>
-            <solid android:color="@android:color/transparent" />
+            <solid android:color="@color/white" />
             <stroke
                 android:width="3px"
-                android:color="#D3D3D3" />
+                android:color="@color/line" />
         </shape>
     </item>
     <item android:top="-3dp" android:right="-3dp" android:left="-3dp">
         <shape>
-            <solid android:color="@android:color/transparent" />
+            <solid android:color="@color/white" />
             <stroke
                 android:width="3px"
-                android:color="#D3D3D3" />
+                android:color="@color/line" />
         </shape>
     </item>
 </layer-list>
