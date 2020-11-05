@@ -1,26 +1,22 @@
 package org.bandev.labyrinth.adapters
 
-import org.bandev.labyrinth.R
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
+import org.bandev.labyrinth.R
 import org.bandev.labyrinth.RoundedTransform
 import org.json.JSONObject
-import java.util.*
 
-class groupOrProjectListAdapter(private val context: Activity, private val text: Array<String?>)
+class GroupOrProjectListAdapter(private val context: Activity, private val text: Array<String?>)
     : BaseAdapter() {
-    public override  fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
+    override  fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater
 
@@ -47,7 +43,7 @@ class groupOrProjectListAdapter(private val context: Activity, private val text:
     }
 
     override fun getItem(p0: Int): String? {
-        return text.get(p0)
+        return text[p0]
     }
 
     override fun getItemId(p0: Int): Long {
@@ -58,7 +54,7 @@ class groupOrProjectListAdapter(private val context: Activity, private val text:
         val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = preferences.edit()
         editor.putString(key, value)
-        editor.commit()
+        editor.apply()
     }
 
     fun getDefaults(key: String?, context: Context?): String? {

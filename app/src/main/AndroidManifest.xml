@@ -11,15 +11,17 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Labyrinth">
-        <activity android:name=".profileAct"
-            android:theme="@style/Theme.Labyrinth.NoActionBar"></activity>
+        android:theme="@style/Theme.Labyrinth"
+        android:fullBackupContent="@xml/backup_descriptor">
         <activity
-            android:name=".mainAct"
+            android:name=".ProfileAct"
+            android:theme="@style/Theme.Labyrinth.NoActionBar" />
+        <activity
+            android:name=".MainAct"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
-            android:name=".intro.first"
+            android:name=".intro.First"
             android:label="@string/app_name"
             android:theme="@style/Theme.Labyrinth.NoActionBar">
             <intent-filter>

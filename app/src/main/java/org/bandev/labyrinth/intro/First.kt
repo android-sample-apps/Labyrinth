@@ -10,11 +10,11 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.core.api
-import org.bandev.labyrinth.mainAct
+import org.bandev.labyrinth.core.Api
+import org.bandev.labyrinth.MainAct
 import org.json.JSONObject
 
-class first : AppCompatActivity() {
+class First : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,14 +25,14 @@ class first : AppCompatActivity() {
         val button2: Button = findViewById(R.id.button2)
 
         button.setOnClickListener {
-            var name = findViewById<EditText>(R.id.name)
+            val name = findViewById<EditText>(R.id.name)
 
             val pref = getSharedPreferences("Settings", 0)
             val editor = pref.edit()
             editor.putString("token", name.text.toString())
             editor.apply()
 
-            var token = name.text.toString()
+            val token = name.text.toString()
 
             AndroidNetworking.initialize(this)
             AndroidNetworking.get("https://gitlab.com/api/v4/user?access_token=$token")
@@ -43,10 +43,10 @@ class first : AppCompatActivity() {
                         val editor = pref.edit()
                         editor.putString("token", name.text.toString())
                         editor.putString("username", response!!.getString("username"))
-                        editor.putString("email", response!!.getString("email"))
-                        editor.putString("bio", response!!.getString("bio"))
-                        editor.putString("location", response!!.getString("location"))
-                        editor.putInt("id", response!!.getInt("id"))
+                        editor.putString("email", response.getString("email"))
+                        editor.putString("bio", response.getString("bio"))
+                        editor.putString("location", response.getString("location"))
+                        editor.putInt("id", response.getInt("id"))
                         editor.putString("avatarUrl", response.getString("avatar_url"))
                         editor.putString("webUrl", response.getString("web_url"))
                         editor.apply()
@@ -58,10 +58,10 @@ class first : AppCompatActivity() {
 
                 })
 
-            api().getUserGroups(this, token)
-            api().getUserProjects(this, token)
+            Api().getUserGroups(this, token)
+            Api().getUserProjects(this, token)
 
-            val intent = Intent(this, mainAct::class.java)
+            val intent = Intent(this, MainAct::class.java)
             this.startActivity(intent)
 
         }
@@ -70,12 +70,12 @@ class first : AppCompatActivity() {
         pref.getString("token", "null")
 
         if(pref.getString("token", "null") != "null"){
-            val intent = Intent(this, mainAct::class.java)
+            val intent = Intent(this, MainAct::class.java)
             this.startActivity(intent)
         }
 
         button2.setOnClickListener {
-            val intent = Intent(this, mainAct::class.java)
+            val intent = Intent(this, MainAct::class.java)
             this.startActivity(intent)
 
         }

@@ -1,18 +1,12 @@
 package org.bandev.labyrinth.core
 
 import android.content.Context
-import android.view.GestureDetector
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
-import com.androidnetworking.interfaces.JSONObjectRequestListener
 import org.json.JSONArray
-import org.json.JSONObject
-import java.util.Arrays.toString
 
-class api {
+class Api {
     fun getUser(){
 
     }
@@ -23,16 +17,16 @@ class api {
             .build()
             .getAsJSONArray(object: JSONArrayRequestListener {
                 override fun onResponse(response: JSONArray?){
-                    var index = 0;
-                    var pref = context.getSharedPreferences("User-Groups",0)
-                    var edit = pref.edit()
+                    var index = 0
+                    val pref = context.getSharedPreferences("User-Groups",0)
+                    val edit = pref.edit()
                     while(index != response?.length()){
-                        var string = response?.get(index)?.toString().toString()
+                        val string = response?.get(index)?.toString().toString()
                         edit.putString(index.toString(),string)
                         index++
                     }
                     edit.putInt("numGroups", index)
-                    edit.commit()
+                    edit.apply()
                 }
 
                 override fun onError(error: ANError?) {
@@ -48,16 +42,16 @@ class api {
             .build()
             .getAsJSONArray(object: JSONArrayRequestListener {
                 override fun onResponse(response: JSONArray?){
-                    var index = 0;
-                    var pref = context.getSharedPreferences("User-Projects",0)
-                    var edit = pref.edit()
+                    var index = 0
+                    val pref = context.getSharedPreferences("User-Projects",0)
+                    val edit = pref.edit()
                     while(index != response?.length()){
-                        var string = response?.get(index)?.toString().toString()
+                        val string = response?.get(index)?.toString().toString()
                         edit.putString(index.toString(),string)
                         index++
                     }
                     edit.putInt("numProjects", index)
-                    edit.commit()
+                    edit.apply()
                 }
 
                 override fun onError(error: ANError?) {
