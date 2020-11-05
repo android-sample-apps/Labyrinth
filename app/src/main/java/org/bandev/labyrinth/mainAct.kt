@@ -14,7 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.squareup.picasso.Picasso
 import java.util.regex.Pattern
 
-class MainAct : AppCompatActivity() {
+class mainAct : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +26,7 @@ class MainAct : AppCompatActivity() {
 
 
         val navController = findNavController(R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration(setOf(R.id.navigation_notifications, R.id.navigation_dashboard, R.id.navigation_home))
+        var appBarConfiguration = AppBarConfiguration(setOf(R.id.navigation_notifications, R.id.navigation_dashboard, R.id.navigation_home))
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         val flag = findViewById<TextView>(R.id.title)
@@ -37,21 +37,21 @@ class MainAct : AppCompatActivity() {
         val pref = getSharedPreferences("User", 0)
 
         //Defines avatar, sets the image and handles a click
-        val avatar = findViewById<ImageView>(R.id.avatar)
+        var avatar = findViewById<ImageView>(R.id.avatar)
         Picasso.get().load(pref?.getString("avatarUrl", "null")).transform(CircleTransform()).into(avatar)
         avatar.setOnClickListener {
-            val intent = Intent(this, ProfileAct::class.java)
+            val intent = Intent(this, profileAct::class.java)
             this.startActivity(intent)
         }
 
         navView.setupWithNavController(navController)
     }
 
-    private fun Toolbar.setTitle(label: CharSequence?, textView: TextView, arguments: Bundle?) {
+    fun Toolbar.setTitle(label: CharSequence?, textView: TextView, arguments: Bundle?) {
         if (label != null) {
             // Fill in the data pattern with the args to build a valid URI
             val title = StringBuffer()
-            val fillInPattern = Pattern.compile("\\{(.+?)}")
+            val fillInPattern = Pattern.compile("\\{(.+?)\\}")
             val matcher = fillInPattern.matcher(label)
             while (matcher.find()) {
                 val argName = matcher.group(1)
@@ -69,7 +69,7 @@ class MainAct : AppCompatActivity() {
 
 
 
-        fun setFlag(input: String) {
+        fun set_flag(input: String) {
 
         }
     }
