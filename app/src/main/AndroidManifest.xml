@@ -12,12 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Labyrinth">
+        <activity android:name=".profileAct"
+            android:theme="@style/Theme.Labyrinth.NoActionBar"></activity>
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Labyrinth.NoActionBar">
-        </activity>
-
+            android:name=".mainAct"
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
             android:name=".intro.first"
             android:label="@string/app_name"
