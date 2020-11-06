@@ -21,6 +21,45 @@
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contentView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/toolbar_line"
+        app:layout_constraintTop_toBottomOf="@+id/contentView3">
+
+        <TextView
+            android:id="@+id/readme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="33dp"
+            android:fontFamily="@font/main_bold"
+            android:text="Readme"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/contentView4" />
+
+        <com.mukesh.MarkdownView
+            android:id="@+id/markdown_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/toolbar_line_both"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/readme" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contentView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

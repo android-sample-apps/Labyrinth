@@ -10,36 +10,36 @@
         android:layout_height="50dp"
         android:layout_marginStart="35dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:cropToPadding="false"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginEnd="33dp"
         android:text="Loading"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="17dp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/avatar_list"
         app:layout_constraintTop_toTopOf="@+id/avatar_list" />
 
     <TextView
         android:id="@+id/visibility"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="2dp"
+        android:paddingBottom="5dp"
         android:text="Loading"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="17dp"
-        app:layout_constraintBottom_toBottomOf="@+id/avatar_list"
-        app:layout_constraintStart_toEndOf="@+id/avatar_list" />
+        app:layout_constraintEnd_toEndOf="@+id/name"
+        app:layout_constraintStart_toEndOf="@+id/avatar_list"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

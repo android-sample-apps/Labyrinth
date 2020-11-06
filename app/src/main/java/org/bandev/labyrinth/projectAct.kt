@@ -1,14 +1,15 @@
 package org.bandev.labyrinth
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ListView
@@ -23,12 +24,13 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.mukesh.MarkdownView
 import com.squareup.picasso.Picasso
-import org.bandev.labyrinth.adapters.groupOrProjectListAdapter
 import org.bandev.labyrinth.core.api
 import org.json.JSONArray
 import org.json.JSONObject
-import org.w3c.dom.Text
+import java.nio.charset.StandardCharsets.UTF_8
+import java.util.Base64.getDecoder
 
 
 class projectAct : AppCompatActivity() {
@@ -154,6 +156,25 @@ class projectAct : AppCompatActivity() {
         }else{
             descriptionTextView.isGone = true
         }
+
+
+        AndroidNetworking.initialize(applicationContext)
+        AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId/repository/files/README.md?ref=master&token=$token")
+            .build()
+            .getAsJSONObject(object: JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject?){
+                    var data_base69 = response?.getString("content")
+                    val markdownView: MarkdownView = findViewById<View>(R.id.markdown_view) as MarkdownView
+                    markdownView.setMarkDownText(String(Base64.decode(data_base69, Base64.NO_WRAP), UTF_8))
+
+                }
+
+                override fun onError(error: ANError?) {
+                    // handle error
+                    Toast.makeText(applicationContext, "Error retrieving committer avatar!", LENGTH_LONG).show()
+                }
+
+            })
 
 
 
