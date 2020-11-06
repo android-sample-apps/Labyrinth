@@ -11,8 +11,7 @@ import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.adapters.groupOrProjectListAdapter
-import org.bandev.labyrinth.profileAct
+import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.projectAct
 
 
@@ -21,39 +20,39 @@ class DashboardFragment : Fragment() {
     private lateinit var dashboardViewModel: DashboardViewModel
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         dashboardViewModel =
-                ViewModelProvider(this).get(DashboardViewModel::class.java)
+            ViewModelProvider(this).get(DashboardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
 
-        var projectLists = requireContext().getSharedPreferences("User-Projects", 0)
+        val projectLists = requireContext().getSharedPreferences("User-Projects", 0)
 
-        var listViewProjects = root.findViewById<ListView>(R.id.projects)
+        val listViewProjects = root.findViewById<ListView>(R.id.projects)
 
         var i2 = 0
-        var list2: MutableList<String?> = mutableListOf()
-        while(i2 != projectLists.getInt("numProjects", 0)){
+        val list2: MutableList<String?> = mutableListOf()
+        while (i2 != projectLists.getInt("numProjects", 0)) {
             list2.add(projectLists.getString(i2.toString(), "null"))
-            i2++;
+            i2++
         }
 
-        val adapter2 = groupOrProjectListAdapter(context as Activity, list2.toTypedArray())
+        val adapter2 = GroupOrProjectListAdapter(context as Activity, list2.toTypedArray())
         listViewProjects.adapter = adapter2
         listViewProjects.divider = null
-        justifyListViewHeightBasedOnChildren(listViewProjects);
+        justifyListViewHeightBasedOnChildren(listViewProjects)
 
-        listViewProjects.setOnItemClickListener(OnItemClickListener { parent, view, position, id ->
+        listViewProjects.onItemClickListener = OnItemClickListener { parent, view, position, id ->
             val selectedItem = parent.getItemAtPosition(position) as String
-            var intent = Intent(context, projectAct::class.java)
-            var bundle = Bundle()
+            val intent = Intent(context, projectAct::class.java)
+            val bundle = Bundle()
             bundle.putString("data", selectedItem)
-            intent.putExtras(bundle);
+            intent.putExtras(bundle)
             startActivity(intent)
-        })
+        }
 
 
         return root
@@ -66,7 +65,7 @@ class DashboardFragment : Fragment() {
         for (i in 0 until adapter.count) {
             val listItem: View = adapter.getView(i, null, vg)
             listItem.measure(0, 0)
-            totalHeight += listItem.getMeasuredHeight() + 10
+            totalHeight += listItem.measuredHeight + 10
         }
         val par = listView.layoutParams
         par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)

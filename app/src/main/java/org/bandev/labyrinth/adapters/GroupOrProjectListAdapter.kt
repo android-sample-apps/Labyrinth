@@ -1,26 +1,22 @@
 package org.bandev.labyrinth.adapters
 
-import org.bandev.labyrinth.R
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
+import org.bandev.labyrinth.R
 import org.bandev.labyrinth.RoundedTransform
 import org.json.JSONObject
-import java.util.*
 
-class groupOrProjectListAdapter(private val context: Activity, private val text: Array<String?>)
-    : BaseAdapter() {
-    public override  fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
+class GroupOrProjectListAdapter(private val context: Activity, private val text: Array<String?>) :
+    BaseAdapter() {
+    override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater
 
@@ -31,13 +27,15 @@ class groupOrProjectListAdapter(private val context: Activity, private val text:
 
         val jsonObj = JSONObject(text[p0])
         name.text = jsonObj.getString("name")
-        if(jsonObj.getString("visibility") == "public"){
+        if (jsonObj.getString("visibility") == "public") {
             visibility.text = "Public"
-            Picasso.get().load(jsonObj.getString("avatar_url")+"?size=100").transform(RoundedTransform(90, 0)).into(avatar)
-        }else{
+            Picasso.get().load(jsonObj.getString("avatar_url") + "?size=100")
+                .transform(RoundedTransform(90, 0)).into(avatar)
+        } else {
             visibility.text = "Private"
-            visibility.setCompoundDrawablesWithIntrinsicBounds(R.drawable.private_project, 0, 0, 0)
-            Picasso.get().load("file:///android_asset/lock.png").transform(RoundedTransform(90, 0)).into(avatar)
+            visibility.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_padlock, 0, 0, 0)
+            Picasso.get().load("file:///android_asset/lock.png").transform(RoundedTransform(90, 0))
+                .into(avatar)
         }
 
 
@@ -47,7 +45,7 @@ class groupOrProjectListAdapter(private val context: Activity, private val text:
     }
 
     override fun getItem(p0: Int): String? {
-        return text.get(p0)
+        return text[p0]
     }
 
     override fun getItemId(p0: Int): Long {

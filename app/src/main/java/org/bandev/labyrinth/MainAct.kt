@@ -14,7 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.squareup.picasso.Picasso
 import java.util.regex.Pattern
 
-class mainAct : AppCompatActivity() {
+class MainAct : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +26,13 @@ class mainAct : AppCompatActivity() {
 
 
         val navController = findNavController(R.id.nav_host_fragment)
-        var appBarConfiguration = AppBarConfiguration(setOf(R.id.navigation_notifications, R.id.navigation_dashboard, R.id.navigation_home))
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_notifications,
+                R.id.navigation_dashboard,
+                R.id.navigation_home
+            )
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         val flag = findViewById<TextView>(R.id.title)
@@ -37,8 +43,9 @@ class mainAct : AppCompatActivity() {
         val pref = getSharedPreferences("User", 0)
 
         //Defines avatar, sets the image and handles a click
-        var avatar = findViewById<ImageView>(R.id.avatar)
-        Picasso.get().load(pref?.getString("avatarUrl", "null")).transform(CircleTransform()).into(avatar)
+        val avatar = findViewById<ImageView>(R.id.avatar)
+        Picasso.get().load(pref?.getString("avatarUrl", "null")).transform(CircleTransform())
+            .into(avatar)
         avatar.setOnClickListener {
             val intent = Intent(this, profileAct::class.java)
             this.startActivity(intent)
@@ -47,7 +54,7 @@ class mainAct : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    fun Toolbar.setTitle(label: CharSequence?, textView: TextView, arguments: Bundle?) {
+    private fun Toolbar.setTitle(label: CharSequence?, textView: TextView, arguments: Bundle?) {
         if (label != null) {
             // Fill in the data pattern with the args to build a valid URI
             val title = StringBuffer()
@@ -69,7 +76,7 @@ class mainAct : AppCompatActivity() {
 
 
 
-        fun set_flag(input: String) {
+        fun setFlag(input: String) {
 
         }
     }

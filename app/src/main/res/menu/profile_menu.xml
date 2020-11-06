@@ -6,12 +6,12 @@
         android:id="@+id/open"
         android:orderInCategory="100"
         android:title="Open In Browser"
-        android:icon="@drawable/open_in_browser"
+        android:icon="@drawable/ic_open_in_browser"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/settings"
         android:orderInCategory="100"
         android:title="Settings"
-        android:icon="@drawable/settings"
+        android:icon="@drawable/ic_settings"
         app:showAsAction="ifRoom" />
 </menu>
