@@ -75,8 +75,6 @@ class first : AppCompatActivity() {
             this.startActivity(intent)
         }
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-
         button2.setOnClickListener {
             val intent = Intent(this, mainAct::class.java)
             this.startActivity(intent)

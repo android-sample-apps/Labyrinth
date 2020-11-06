@@ -27,7 +27,7 @@ class groupOrProjectListAdapter(private val context: Activity, private val text:
         val rowView = inflater.inflate(R.layout.group_list_view, null)
         val name = rowView.findViewById(R.id.name) as TextView
         val visibility = rowView.findViewById(R.id.visibility) as TextView
-        val avatar = rowView.findViewById(R.id.avatar) as ImageView
+        val avatar = rowView.findViewById(R.id.avatar_list) as ImageView
 
         val jsonObj = JSONObject(text[p0])
         name.text = jsonObj.getString("name")

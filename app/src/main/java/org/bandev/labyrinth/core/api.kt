@@ -66,4 +66,21 @@ class api {
 
             })
     }
+
+    fun getProjectBadges(context: Context, token: String, projectId: String){
+        AndroidNetworking.initialize(context)
+        AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId/badges?access_token=$token")
+                .build()
+                .getAsJSONArray(object: JSONArrayRequestListener {
+                    override fun onResponse(response: JSONArray?){
+                        var string = response?.toString()
+
+                    }
+
+                    override fun onError(error: ANError?) {
+                        // handle error
+                    }
+
+                })
+    }
 }
