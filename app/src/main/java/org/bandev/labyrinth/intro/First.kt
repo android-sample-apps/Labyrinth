@@ -19,11 +19,18 @@ class First : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val pref = getSharedPreferences("Settings", 0)
+        pref.getString("token", "null")
+
+        if (pref.getString("token", "null") != "null") {
+            val intent = Intent(this, MainAct::class.java)
+            this.startActivity(intent)
+        }
+
         setContentView(R.layout.activity_intro_first)
 
         val button: Button = findViewById(R.id.button)
-
-        val button2: Button = findViewById(R.id.button2)
 
         button.setOnClickListener {
             val name = findViewById<EditText>(R.id.name)
@@ -51,6 +58,8 @@ class First : AppCompatActivity() {
                         editor.putString("avatarUrl", response.getString("avatar_url"))
                         editor.putString("webUrl", response.getString("web_url"))
                         editor.apply()
+
+                        moveOn()
                     }
 
                     override fun onError(error: ANError?) {
@@ -59,29 +68,25 @@ class First : AppCompatActivity() {
 
                 })
 
-            Api().getUserGroups(this, token)
-            Api().getUserProjects(this, token)
 
-            val intent = Intent(this, MainAct::class.java)
-            this.startActivity(intent)
 
-        }
 
-        val pref = getSharedPreferences("Settings", 0)
-        pref.getString("token", "null")
-
-        if (pref.getString("token", "null") != "null") {
-            val intent = Intent(this, MainAct::class.java)
-            this.startActivity(intent)
-        }
-
-        button2.setOnClickListener {
-            val intent = Intent(this, MainAct::class.java)
-            this.startActivity(intent)
 
         }
 
 
+
+
+
+    }
+
+    fun moveOn(){
+        val pref = getSharedPreferences("User", 0)
+        val token = pref.getString("token", "null").toString()
+        Api().getUserGroups(this, token)
+        Api().getUserProjects(this, token)
+        val intent = Intent(this, Second::class.java)
+        this.startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

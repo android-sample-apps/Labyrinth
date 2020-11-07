@@ -7,8 +7,9 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener
 import org.json.JSONArray
 
 class Api {
-    fun getUser() {
-
+    fun getUserToken(context: Context): String {
+        val pref = context.getSharedPreferences("User", 0)
+        return pref.getString("token", "null").toString()
     }
 
     fun getUserGroups(context: Context, token: String) {

@@ -21,6 +21,9 @@
             android:name=".profileAct"
             android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
+            android:name=".projects.readme"
+            android:theme="@style/Theme.Labyrinth.NoActionBar" />
+        <activity
             android:name=".projectAct"
             android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
@@ -29,6 +32,7 @@
             android:theme="@style/MainActivity" />
         <activity
             android:name=".intro.First"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/app_name"
             android:theme="@style/Theme.Labyrinth.NoActionBar">
             <intent-filter>
@@ -36,6 +40,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".intro.Second"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Labyrinth.NoActionBar">
         </activity>
     </application>
 

@@ -1,0 +1,31 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Labyrinth" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#0067f4</item>
+        <item name="colorPrimaryVariant">#0067f4</item>
+        <item name="colorOnPrimary">#0067f4</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#0067f4</item>
+        <item name="colorSecondaryVariant">#0067f4</item>
+        <item name="colorOnSecondary">#0067f4</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.Labyrinth.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="MainActivity" parent="Theme.Labyrinth">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:navigationBarColor" tools:targetApi="l">@color/background</item>
+    </style>
+
+
+    <style name="Theme.Labyrinth.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

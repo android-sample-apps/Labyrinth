@@ -10,10 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -26,6 +23,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.mukesh.MarkdownView
 import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.core.Api
+import org.bandev.labyrinth.projects.readme
 import org.json.JSONArray
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets.UTF_8
@@ -33,12 +31,23 @@ import java.nio.charset.StandardCharsets.UTF_8
 
 class projectAct : AppCompatActivity() {
 
+    var latest_commit: View? = null
+    var progress_bar: ProgressBar? = null
+
+    var projectId = ""
+
+
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.project_act)
 
+        latest_commit = findViewById(R.id.contentView3)
+        progress_bar = findViewById(R.id.progressBar)
+
+
         filldata()
+
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -62,7 +71,13 @@ class projectAct : AppCompatActivity() {
     }
 
     private fun filldata() {
+        hideAll()
         val data = intent.extras?.getString("data")
+
+
+
+
+
 
         val dataJson = JSONObject(data)
 
@@ -93,7 +108,7 @@ class projectAct : AppCompatActivity() {
             forksTextView.text = dataJson.getString("forks_count") + " Fork"
         }
 
-        val projectId = dataJson.getString("id")
+        projectId = dataJson.getString("id")
         val pref = getSharedPreferences("User", 0)
         val token = pref.getString("token", "no")
 
@@ -125,6 +140,10 @@ class projectAct : AppCompatActivity() {
 
                                 Picasso.get().load((response ?: return).getString("avatar_url"))
                                     .transform(CircleTransform()).into(avatar)
+
+
+                                showAll()
+
 
 
                             }
@@ -163,34 +182,6 @@ class projectAct : AppCompatActivity() {
         }
 
 
-        AndroidNetworking.initialize(applicationContext)
-        AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId/repository/files/README.md?ref=master&token=$token")
-            .build()
-            .getAsJSONObject(object : JSONObjectRequestListener {
-                override fun onResponse(response: JSONObject?) {
-                    val dataBase69 = response?.getString("content")
-                    val markdownView: MarkdownView =
-                        findViewById<View>(R.id.markdown_view) as MarkdownView
-                    markdownView.setMarkDownText(
-                        String(
-                            Base64.decode(dataBase69, Base64.NO_WRAP),
-                            UTF_8
-                        )
-                    )
-
-                }
-
-                override fun onError(error: ANError?) {
-                    // handle error
-                    Toast.makeText(
-                        applicationContext,
-                        "Error retrieving committer avatar!",
-                        LENGTH_LONG
-                    ).show()
-                }
-
-            })
-
 
     }
 
@@ -205,6 +196,12 @@ class projectAct : AppCompatActivity() {
                 val pref = getSharedPreferences("User", 0)
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data = Uri.parse(pref.getString("webUrl", "https://gitlab.com"))
+                startActivity(i)
+                super.onOptionsItemSelected(item)
+            }
+            R.id.readme -> {
+                val i = Intent(this, readme::class.java)
+                i.putExtra("projectId", projectId.toInt())
                 startActivity(i)
                 super.onOptionsItemSelected(item)
             }
@@ -230,6 +227,16 @@ class projectAct : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
+    }
+
+    fun hideAll(){
+        latest_commit?.isGone = true
+        progress_bar?.isGone = false
+    }
+
+    fun showAll(){
+        latest_commit?.isGone = false
+        progress_bar?.isGone = true
     }
 
 }

@@ -2,6 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.bandev.labyrinth.MainActivity">
+
+    <item
+        android:id="@+id/readme"
+        android:orderInCategory="100"
+        android:title="View Readme"
+        android:icon="@drawable/ic_readme"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/open"
         android:orderInCategory="100"
