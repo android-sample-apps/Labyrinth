@@ -15,7 +15,7 @@ import org.bandev.labyrinth.RoundedTransform
 import org.json.JSONObject
 
 class GroupOrProjectListAdapter(private val context: Activity, private val text: Array<String?>) :
-    BaseAdapter() {
+        BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater
@@ -30,12 +30,12 @@ class GroupOrProjectListAdapter(private val context: Activity, private val text:
         if (jsonObj.getString("visibility") == "public") {
             visibility.text = "Public"
             Picasso.get().load(jsonObj.getString("avatar_url") + "?size=100")
-                .transform(RoundedTransform(90, 0)).into(avatar)
+                    .transform(RoundedTransform(90, 0)).into(avatar)
         } else {
             visibility.text = "Private"
             visibility.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_padlock, 0, 0, 0)
             Picasso.get().load("file:///android_asset/lock.png").transform(RoundedTransform(90, 0))
-                .into(avatar)
+                    .into(avatar)
         }
 
 
@@ -56,7 +56,7 @@ class GroupOrProjectListAdapter(private val context: Activity, private val text:
         val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = preferences.edit()
         editor.putString(key, value)
-        editor.commit()
+        editor.apply()
     }
 
     fun getDefaults(key: String?, context: Context?): String? {

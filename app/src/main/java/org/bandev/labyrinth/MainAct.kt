@@ -27,11 +27,11 @@ class MainAct : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment)
         val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_notifications,
-                R.id.navigation_dashboard,
-                R.id.navigation_home
-            )
+                setOf(
+                        R.id.navigation_notifications,
+                        R.id.navigation_dashboard,
+                        R.id.navigation_home
+                )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
@@ -45,9 +45,9 @@ class MainAct : AppCompatActivity() {
         //Defines avatar, sets the image and handles a click
         val avatar = findViewById<ImageView>(R.id.avatar)
         Picasso.get().load(pref?.getString("avatarUrl", "null")).transform(CircleTransform())
-            .into(avatar)
+                .into(avatar)
         avatar.setOnClickListener {
-            val intent = Intent(this, profileAct::class.java)
+            val intent = Intent(this, ProfileAct::class.java)
             this.startActivity(intent)
         }
 

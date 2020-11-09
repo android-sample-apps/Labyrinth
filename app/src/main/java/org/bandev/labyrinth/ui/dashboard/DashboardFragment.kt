@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
-import org.bandev.labyrinth.projectAct
+import org.bandev.labyrinth.ProjectAct
 
 
 class DashboardFragment : Fragment() {
@@ -20,12 +20,12 @@ class DashboardFragment : Fragment() {
     private lateinit var dashboardViewModel: DashboardViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+                ViewModelProvider(this).get(DashboardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
 
@@ -47,7 +47,7 @@ class DashboardFragment : Fragment() {
 
         listViewProjects.onItemClickListener = OnItemClickListener { parent, view, position, id ->
             val selectedItem = parent.getItemAtPosition(position) as String
-            val intent = Intent(context, projectAct::class.java)
+            val intent = Intent(context, ProjectAct::class.java)
             val bundle = Bundle()
             bundle.putString("data", selectedItem)
             intent.putExtras(bundle)

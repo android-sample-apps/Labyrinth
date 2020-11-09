@@ -38,7 +38,7 @@
         android:fontFamily="@font/main_bold"
         android:text="Home"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="23dp"
+        android:textSize="23sp"
         app:layout_constraintBottom_toBottomOf="@+id/avatar"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="@+id/avatar" />

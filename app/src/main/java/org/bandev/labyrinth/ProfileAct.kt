@@ -21,7 +21,7 @@ import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.core.Api
 
 
-class profileAct : AppCompatActivity() {
+class ProfileAct : AppCompatActivity() {
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +55,7 @@ class profileAct : AppCompatActivity() {
 
         val avatar = findViewById<ImageView>(R.id.avatar)
         Picasso.get().load(pref?.getString("avatarUrl", "null")).transform(RoundedTransform(30, 0))
-            .into(avatar)
+                .into(avatar)
 
         val usernameTextView: TextView = findViewById(R.id.usernmame)
         val emailTextView: TextView = findViewById(R.id.email)
@@ -112,14 +112,14 @@ class profileAct : AppCompatActivity() {
         justifyListViewHeightBasedOnChildren(listViewProjects)
 
         listViewProjects.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                val selectedItem = parent.getItemAtPosition(position) as String
-                val intent = Intent(this, projectAct::class.java)
-                val bundle = Bundle()
-                bundle.putString("data", selectedItem)
-                intent.putExtras(bundle)
-                startActivity(intent)
-            }
+                AdapterView.OnItemClickListener { parent, view, position, id ->
+                    val selectedItem = parent.getItemAtPosition(position) as String
+                    val intent = Intent(this, ProjectAct::class.java)
+                    val bundle = Bundle()
+                    bundle.putString("data", selectedItem)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+                }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

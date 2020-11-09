@@ -18,13 +18,13 @@
             android:label="@string/title_activity_settings"
             android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
-            android:name=".profileAct"
+            android:name=".ProfileAct"
             android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
-            android:name=".projects.readme"
+            android:name=".projects.ReadMe"
             android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
-            android:name=".projectAct"
+            android:name=".ProjectAct"
             android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
             android:name=".MainAct"

@@ -5,19 +5,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.squareup.picasso.Picasso
-import org.bandev.labyrinth.R
-import org.bandev.labyrinth.core.Api
 import org.bandev.labyrinth.MainAct
+import org.bandev.labyrinth.R
 import org.bandev.labyrinth.RoundedTransform
-import org.json.JSONObject
 
 class Second : AppCompatActivity() {
 
@@ -56,9 +50,6 @@ class Second : AppCompatActivity() {
             finish()
 
         }
-
-
-
 
 
     }

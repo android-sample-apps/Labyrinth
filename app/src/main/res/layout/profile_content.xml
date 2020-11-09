@@ -37,7 +37,7 @@
             android:fontFamily="@font/main_bold"
             android:text="Groups"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="20dp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/contentView3" />
@@ -77,7 +77,7 @@
             android:fontFamily="@font/main_bold"
             android:text="Projects"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="20dp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/contentView4" />
@@ -116,7 +116,7 @@
         android:fontFamily="@font/main_bold"
         android:text="Username"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="23dp"
+        android:textSize="23sp"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="@+id/avatar" />
 
@@ -127,7 +127,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginBottom="15dp"
         android:text="Email"
-        android:textSize="17dp"
+        android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="@+id/avatar"
         app:layout_constraintStart_toEndOf="@+id/avatar" />
 
@@ -139,7 +139,7 @@
         android:layout_marginEnd="33dp"
         android:text="Description"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="17dp"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/avatar"
@@ -153,15 +153,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="29dp"
         android:layout_marginTop="10dp"
-        android:drawableStart="@drawable/ic_location"
         android:drawablePadding="5dp"
         android:paddingBottom="20dp"
         android:text="Location"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="17dp"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/contentView"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        app:drawableStartCompat="@drawable/ic_location" />
 
 
 

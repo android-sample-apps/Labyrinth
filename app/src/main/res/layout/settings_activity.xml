@@ -23,7 +23,7 @@
             android:fontFamily="@font/main_bold"
             android:text="Settings"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="23dp"
+            android:textSize="23sp"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar"
             app:layout_constraintStart_toEndOf="@+id/avatar"
             app:layout_constraintTop_toTopOf="@+id/toolbar" />

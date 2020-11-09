@@ -1,40 +1,29 @@
 package org.bandev.labyrinth.projects
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.*
+import android.widget.TextView
+import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.mukesh.MarkdownView
-import com.squareup.picasso.Picasso
-import org.bandev.labyrinth.CircleTransform
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.RoundedTransform
 import org.bandev.labyrinth.core.Api
-import org.json.JSONArray
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets.UTF_8
 
 
-class readme : AppCompatActivity() {
+class ReadMe : AppCompatActivity() {
 
-    var projectId: Int = 0
-    var token: String = ""
+    private var projectId: Int = 0
+    private var token: String = ""
 
 
     @SuppressLint("ResourceAsColor")
@@ -44,7 +33,6 @@ class readme : AppCompatActivity() {
 
         projectId = intent.getIntExtra("projectId", 0)
         token = Api().getUserToken(this)
-
 
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
@@ -65,7 +53,7 @@ class readme : AppCompatActivity() {
 
     }
 
-    fun filldata(){
+    private fun filldata() {
         AndroidNetworking.initialize(applicationContext)
         AndroidNetworking
                 .get("https://gitlab.com/api/v4/projects/$projectId/repository/files/README.md?ref=master&token=$token")
