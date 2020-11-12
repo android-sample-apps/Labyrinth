@@ -137,7 +137,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="29dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:drawableStart="@drawable/ic_star_full"
         android:drawablePadding="5dp"
         android:paddingBottom="20dp"
@@ -154,15 +154,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
 
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:drawablePadding="5dp"
         android:paddingBottom="20dp"
         android:text="0 Forks"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="17sp"
+        app:drawableStartCompat="@drawable/ic_forks"
         app:layout_constraintStart_toEndOf="@+id/stars"
-        app:layout_constraintTop_toBottomOf="@+id/description"
-        app:drawableStartCompat="@drawable/ic_forks" />
+        app:layout_constraintTop_toBottomOf="@+id/description" />
 
 
 

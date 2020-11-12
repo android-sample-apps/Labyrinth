@@ -13,4 +13,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background">#f0f0f0</color>
     <color name="line">#D3D3D3</color>
+
+    <color name="open">#228B22</color>
+    <color name="closed">#2B71CA</color>
 </resources>
