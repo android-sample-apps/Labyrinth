@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/background">
 
     <androidx.appcompat.widget.Toolbar
@@ -25,8 +26,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/toolbar_line"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contentView">
 
         <TextView
@@ -58,24 +57,45 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contentView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/toolbar_line"
+        app:layout_constraintTop_toBottomOf="@+id/contentView3">
+
+        <ListView
+            android:id="@+id/infoList"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/info_view"></ListView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginStart="33dp"
         android:layout_marginTop="10dp"
+        android:contentDescription="TODO"
         android:cropToPadding="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round"
-        android:contentDescription="TODO" />
+        app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
         android:id="@+id/name_1"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="33dp"
         android:fontFamily="@font/main_bold"
         android:text="Name"
         android:textColor="?android:attr/textColorPrimary"
@@ -85,20 +105,23 @@
 
     <TextView
         android:id="@+id/slug"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="33dp"
         android:text="Email"
-        android:textSize="17sp"
-        app:layout_constraintBottom_toBottomOf="@+id/avatar"
-        app:layout_constraintStart_toEndOf="@+id/avatar" />
+
+        android:textSize="17dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/avatar"
+        app:layout_constraintTop_toBottomOf="@+id/name_1" />
 
     <TextView
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="33dp"
         android:text="Description"
         android:textColor="?android:attr/textColorPrimary"
@@ -106,7 +129,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/avatar"
-        app:layout_constraintTop_toBottomOf="@+id/avatar" />
+        app:layout_constraintTop_toBottomOf="@+id/slug" />
 
 
     <TextView
@@ -115,20 +138,22 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="29dp"
         android:layout_marginTop="10dp"
+        android:drawableStart="@drawable/ic_star_full"
         android:drawablePadding="5dp"
         android:paddingBottom="20dp"
         android:text="0 Stars"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="17sp"
+        app:drawableStartCompat="@drawable/ic_star_full"
         app:layout_constraintStart_toStartOf="@+id/contentView"
-        app:layout_constraintTop_toBottomOf="@+id/description"
-        app:drawableStartCompat="@drawable/ic_star_full" />
+        app:layout_constraintTop_toBottomOf="@+id/description" />
 
     <TextView
         android:id="@+id/forks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
+
         android:layout_marginTop="10dp"
         android:drawablePadding="5dp"
         android:paddingBottom="20dp"

@@ -2,6 +2,7 @@ package org.bandev.labyrinth
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -13,6 +14,7 @@ import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -54,8 +56,9 @@ class ProfileAct : AppCompatActivity() {
         val pref = getSharedPreferences("User", 0)
 
         val avatar = findViewById<ImageView>(R.id.avatar)
-        Picasso.get().load(pref?.getString("avatarUrl", "null")).transform(RoundedTransform(30, 0))
-                .into(avatar)
+Picasso.get().load(pref?.getString("avatarUrl", "null")).resize(400, 400).transform(RoundedTransform(90, 0))
+            .into(avatar)
+
 
         val usernameTextView: TextView = findViewById(R.id.usernmame)
         val emailTextView: TextView = findViewById(R.id.email)
@@ -82,9 +85,6 @@ class ProfileAct : AppCompatActivity() {
         var i = 0
         val list: MutableList<String?> = mutableListOf()
         while (i != userGroups.getInt("numGroups", 0)) {
-            if (i == 3) {
-                break
-            }
             list.add(userGroups.getString(i.toString(), "null"))
             i++
         }
@@ -127,13 +127,17 @@ class ProfileAct : AppCompatActivity() {
         return true
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.open -> {
                 val pref = getSharedPreferences("User", 0)
-                val i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse(pref.getString("webUrl", "https://gitlab.com"))
-                startActivity(i)
+
+                var url = pref!!.getString("webUrl", "https://gitlab.com")
+                var builder : CustomTabsIntent.Builder = CustomTabsIntent.Builder()
+                builder.setToolbarColor(Color.parseColor("#0067f4"))
+                var customTabsIntent: CustomTabsIntent = builder.build()
+                customTabsIntent.launchUrl(this, Uri.parse(url))
                 super.onOptionsItemSelected(item)
             }
             R.id.settings -> {

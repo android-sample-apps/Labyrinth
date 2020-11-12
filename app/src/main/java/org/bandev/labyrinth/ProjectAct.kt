@@ -2,6 +2,7 @@ package org.bandev.labyrinth
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.*
 import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -21,18 +23,27 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.mukesh.MarkdownView
 import com.squareup.picasso.Picasso
+import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
+import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Api
 import org.bandev.labyrinth.projects.ReadMe
+import org.bandev.labyrinth.projects.issues_list
 import org.json.JSONArray
 import org.json.JSONObject
 
 
 class ProjectAct : AppCompatActivity() {
 
-    private var latestCommit: View? = null
-    private var progressBar: ProgressBar? = null
+    var latest_commit: View? = null
+    var progress_bar: ProgressBar? = null
+    var info_bar: View? = null
 
-    private var projectId = ""
+    var projectId = ""
+    var projectPath = ""
+    var url = ""
+    var webUrl = ""
+
+    var data = ""
 
 
     @SuppressLint("ResourceAsColor")
@@ -40,8 +51,10 @@ class ProjectAct : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.project_act)
 
-        latestCommit = findViewById(R.id.contentView3)
-        progressBar = findViewById(R.id.progressBar)
+
+        latest_commit = findViewById(R.id.contentView3)
+        progress_bar = findViewById(R.id.progressBar)
+        info_bar = findViewById(R.id.contentView4)
 
 
         filldata()
@@ -70,7 +83,7 @@ class ProjectAct : AppCompatActivity() {
 
     private fun filldata() {
         hideAll()
-        val data = intent.extras?.getString("data")
+        data = intent.extras?.getString("data").toString()
 
 
         val dataJson = JSONObject(data)
@@ -83,12 +96,15 @@ class ProjectAct : AppCompatActivity() {
 
         val avatar = findViewById<ImageView>(R.id.avatar)
         if (dataJson.getString("visibility") == "public") {
-            Picasso.get().load(dataJson.getString("avatar_url")).transform(RoundedTransform(90, 0))
-                    .into(avatar)
+
+            Picasso.get().load(dataJson.getString("avatar_url")).transform(RoundedTransform(90, 0)).resize(400, 400)
+                .into(avatar)
         } else {
-            Picasso.get().load("file:///android_asset/lock.png").transform(RoundedTransform(90, 0))
-                    .into(avatar)
+            Picasso.get().load("file:///android_asset/lock.png").transform(RoundedTransform(90, 0)).resize(400, 400)
+                .into(avatar)
         }
+
+        url = dataJson.getString("web_url")
 
         if (dataJson.getString("star_count") != "1") {
             starsTextView.text = dataJson.getString("star_count") + " Stars"
@@ -103,6 +119,8 @@ class ProjectAct : AppCompatActivity() {
         }
 
         projectId = dataJson.getString("id")
+        projectPath = dataJson.getString("path_with_namespace")
+        webUrl = dataJson.getString("web_url")
         val pref = getSharedPreferences("User", 0)
         val token = pref.getString("token", "no")
 
@@ -118,7 +136,9 @@ class ProjectAct : AppCompatActivity() {
 
                         commitTitle.text = objec.getString("title")
 
-                        val commitTitle2 = findViewById<TextView>(R.id.visibility)
+
+                    val commitTitle2 = findViewById<TextView>(R.id.visibility)
+
 
                         commitTitle2.text = objec.getString("short_id")
 
@@ -176,6 +196,43 @@ class ProjectAct : AppCompatActivity() {
         }
 
 
+
+        var infoListView = findViewById<ListView>(R.id.infoList)
+
+        var infoList : MutableList<String> = mutableListOf()
+
+        var issueNum = dataJson.getInt("open_issues_count")
+        var defaultBranch = dataJson.getString("default_branch")
+
+        infoList.add("{ 'left' : 'Issues', 'right' : '$issueNum' }")
+        infoList.add("{ 'left' : 'Branch', 'right' : '$defaultBranch' }")
+        infoList.add("{ 'left' : 'View Files', 'right' : '' }")
+        infoList.add("{ 'left' : 'Commits', 'right' : '' }")
+
+
+        val infoListAdapter = InfoListAdapter(this, infoList.toTypedArray())
+        infoListView.adapter = infoListAdapter
+        infoListView.divider = null
+
+        infoListView.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
+                var obj = JSONObject(selectedItem)
+                if(obj.getString("left") == "Issues"){
+                    val intent = Intent(this, issues_list::class.java)
+                    val bundle = Bundle()
+                    bundle.putString("repo", data)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+                }
+
+
+        }
+
+        justifyListViewHeightBasedOnChildren(infoListView)
+
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -186,15 +243,17 @@ class ProjectAct : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.open -> {
-                val pref = getSharedPreferences("User", 0)
-                val i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse(pref.getString("webUrl", "https://gitlab.com"))
-                startActivity(i)
+                var builder : CustomTabsIntent.Builder = CustomTabsIntent.Builder()
+                builder.setToolbarColor(Color.parseColor("#0067f4"))
+                var customTabsIntent: CustomTabsIntent = builder.build()
+                customTabsIntent.launchUrl(this, Uri.parse(url))
                 super.onOptionsItemSelected(item)
             }
             R.id.readme -> {
                 val i = Intent(this, ReadMe::class.java)
                 i.putExtra("projectId", projectId.toInt())
+                i.putExtra("projectPath", projectPath)
+                i.putExtra("webUrl", webUrl)
                 startActivity(i)
                 super.onOptionsItemSelected(item)
             }
@@ -222,14 +281,17 @@ class ProjectAct : AppCompatActivity() {
         return true
     }
 
-    private fun hideAll() {
-        latestCommit?.isGone = true
-        progressBar?.isGone = false
+
+    fun hideAll(){
+        latest_commit?.isGone = true
+        info_bar?.isGone = true
+        progress_bar?.isGone = false
     }
 
-    fun showAll() {
-        latestCommit?.isGone = false
-        progressBar?.isGone = true
+    fun showAll(){
+        latest_commit?.isGone = false
+        info_bar?.isGone = false
+        progress_bar?.isGone = true
     }
 
 }

@@ -17,13 +17,15 @@ import com.mukesh.MarkdownView
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.core.Api
 import org.json.JSONObject
-import java.nio.charset.StandardCharsets.UTF_8
 
 
 class ReadMe : AppCompatActivity() {
 
-    private var projectId: Int = 0
-    private var token: String = ""
+
+    var projectId: Int = 0
+    var token: String = ""
+    var projectPath = ""
+    var webUrl = ""
 
 
     @SuppressLint("ResourceAsColor")
@@ -32,6 +34,8 @@ class ReadMe : AppCompatActivity() {
         setContentView(R.layout.projects_readme_act)
 
         projectId = intent.getIntExtra("projectId", 0)
+        projectPath = intent.getStringExtra("projectPath")
+        webUrl = intent.getStringExtra("webUrl")
         token = Api().getUserToken(this)
 
 
@@ -62,16 +66,40 @@ class ReadMe : AppCompatActivity() {
                     override fun onResponse(response: JSONObject?) {
                         val dataBase64 = response?.getString("content")
                         val markdownView: MarkdownView = findViewById<View>(R.id.markdown_view) as MarkdownView
-                        markdownView.setMarkDownText(String(Base64.decode(dataBase64, Base64.NO_WRAP), UTF_8))
+
+                        var text = String(Base64.decode(dataBase64, Base64.NO_WRAP))
 
                         val title: TextView = findViewById(R.id.title)
                         title.text = response?.getString("file_path")
+
+                        val jsonParam = JSONObject()
+                        jsonParam.put("text", text)
+                        jsonParam.put("gfm", false)
+                        jsonParam.put("project", projectPath)
+                        Toast.makeText(applicationContext, webUrl, LENGTH_LONG).show()
+
+                        AndroidNetworking.initialize(applicationContext)
+                        AndroidNetworking
+                                .post("https://gitlab.com/api/v4/markdown")
+                                .addHeaders("Content-Type", "application/json")
+                                .addJSONObjectBody(jsonParam)
+                                .build()
+                                .getAsJSONObject(object : JSONObjectRequestListener {
+                                    override fun onResponse(response: JSONObject?) {
+                                        val out = response?.getString("html")
+                                        markdownView.setMarkDownText(out)
+                                    }
+
+                                    override fun onError(error: ANError?) {
+                                        Toast.makeText(applicationContext, error.toString(), LENGTH_LONG).show()
+                                    }
+
+                                })
                     }
 
-                    override fun onError(error: ANError?) {
-                        Toast.makeText(applicationContext, "Error retrieving readme!", LENGTH_LONG).show()
+                    override fun onError(anError: ANError?) {
+                        TODO("Not yet implemented")
                     }
-
                 })
     }
 

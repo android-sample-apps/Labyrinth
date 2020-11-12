@@ -14,30 +14,19 @@ import org.bandev.labyrinth.R
 import org.bandev.labyrinth.RoundedTransform
 import org.json.JSONObject
 
-class GroupOrProjectListAdapter(private val context: Activity, private val text: Array<String?>) :
-        BaseAdapter() {
+class InfoListAdapter(private val context: Activity, private val text: Array<String?>) :
+    BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater
 
-        val rowView = inflater.inflate(R.layout.group_list_view, null)
-        val name = rowView.findViewById(R.id.name) as TextView
-        val visibility = rowView.findViewById(R.id.visibility) as TextView
-        val avatar = rowView.findViewById(R.id.avatar_list) as ImageView
+        val rowView = inflater.inflate(R.layout.info_view, null)
+        val left = rowView.findViewById(R.id.textLeft) as TextView
+        val right = rowView.findViewById(R.id.textRight) as TextView
 
         val jsonObj = JSONObject(text[p0])
-        name.text = jsonObj.getString("name")
-        if (jsonObj.getString("visibility") == "public") {
-            visibility.text = "Public"
-                Picasso.get().load(jsonObj.getString("avatar_url")).resize(400, 400)
-                .transform(RoundedTransform(90, 0)).into(avatar)
-
-        } else {
-            visibility.text = "Private"
-            visibility.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_padlock, 0, 0, 0)
-            Picasso.get().load("file:///android_asset/lock.png").transform(RoundedTransform(90, 0))
-                    .into(avatar)
-        }
+        left.text = jsonObj.getString("left")
+        right.text = jsonObj.getString("right")
 
 
 
@@ -57,7 +46,7 @@ class GroupOrProjectListAdapter(private val context: Activity, private val text:
         val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = preferences.edit()
         editor.putString(key, value)
-        editor.apply()
+        editor.commit()
     }
 
     fun getDefaults(key: String?, context: Context?): String? {
