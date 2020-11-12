@@ -158,6 +158,10 @@ class ProjectAct : AppCompatActivity() {
 
                             if (pipeline == "success") {
                                 pipeline_status.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.ic_success))
+                            }else if (pipeline == "failed"){
+                                pipeline_status.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.ic_failed))
+                            }else if(pipeline == "running"){
+                                pipeline_status.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.ic_running))
                             }
                         }catch( e: Error){
 
