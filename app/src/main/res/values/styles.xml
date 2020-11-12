@@ -17,6 +17,14 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Splash" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
     <style name="Theme.Labyrinth.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

@@ -68,7 +68,7 @@
         <ListView
             android:id="@+id/infoList"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="175dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -95,11 +95,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="33dp"
         android:fontFamily="@font/main_bold"
         android:text="Name"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="23sp"
+        app:layout_constraintEnd_toEndOf="@+id/slug"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="@+id/avatar" />
 

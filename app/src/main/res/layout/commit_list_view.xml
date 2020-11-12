@@ -23,12 +23,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="33dp"
+        android:layout_marginEnd="10dp"
         android:text="Loading"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="17sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/pipeline"
         app:layout_constraintStart_toEndOf="@+id/avatar_list"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,6 +47,16 @@
         app:layout_constraintEnd_toEndOf="@+id/name"
         app:layout_constraintStart_toEndOf="@+id/avatar_list"
         app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <ImageView
+        android:id="@+id/pipeline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="33dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_globe" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

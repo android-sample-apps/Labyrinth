@@ -152,13 +152,13 @@ class issues_list : AppCompatActivity() {
 
     private fun hideAll() {
         listView?.isGone = true
-        listView2?.isGone = false 
+        listView2?.isGone = true
         progress_bar?.isGone = false
     }
 
     fun showAll() {
         listView?.isGone = false
-        listView?.isGone = false
+        listView2?.isGone = false
         progress_bar?.isGone = true
     }
 

@@ -2,8 +2,12 @@ package org.bandev.labyrinth
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.Drawable.createFromResourceStream
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -12,22 +16,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import android.widget.Toast.LENGTH_LONG
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.androidnetworking.interfaces.JSONObjectRequestListener
-import com.mukesh.MarkdownView
 import com.squareup.picasso.Picasso
-import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Api
 import org.bandev.labyrinth.projects.ReadMe
 import org.bandev.labyrinth.projects.issues_list
+import org.bandev.labyrinth.projects.reduceStorageSize
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -42,7 +47,7 @@ class ProjectAct : AppCompatActivity() {
     var projectPath = ""
     var url = ""
     var webUrl = ""
-
+    var branch = ""
     var data = ""
 
 
@@ -121,16 +126,16 @@ class ProjectAct : AppCompatActivity() {
         projectId = dataJson.getString("id")
         projectPath = dataJson.getString("path_with_namespace")
         webUrl = dataJson.getString("web_url")
+        branch = dataJson.getString("default_branch")
         val pref = getSharedPreferences("User", 0)
         val token = pref.getString("token", "no")
 
         AndroidNetworking.initialize(this)
-        AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId/repository/commits?access_token=$token&order=topo")
+        AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId/repository/commits/$branch?access_token=$token")
+                .addHeaders("PRIVATE-TOKEN: $token")
                 .build()
-                .getAsJSONArray(object : JSONArrayRequestListener {
-                    override fun onResponse(response: JSONArray?) {
-                        val string = response?.get(0)?.toString()
-                        val objec = JSONObject(string)
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(objec: JSONObject) {
 
                         val commitTitle = findViewById<TextView>(R.id.name)
 
@@ -145,6 +150,18 @@ class ProjectAct : AppCompatActivity() {
                         val avatar = findViewById<ImageView>(R.id.avatar_list)
 
                         val em = objec.getString("committer_email")
+
+                        try {
+                            var pipeline = objec.getJSONObject("last_pipeline").getString("status")
+
+                            var pipeline_status = findViewById<ImageView>(R.id.pipeline)
+
+                            if (pipeline == "success") {
+                                pipeline_status.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.ic_success))
+                            }
+                        }catch( e: Error){
+
+                        }
 
                         AndroidNetworking.initialize(applicationContext)
                         AndroidNetworking.get("https://gitlab.com/api/v4/avatar?email=$em")
@@ -214,6 +231,7 @@ class ProjectAct : AppCompatActivity() {
         infoListView.adapter = infoListAdapter
         infoListView.divider = null
 
+
         infoListView.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 val selectedItem = parent.getItemAtPosition(position) as String
@@ -229,12 +247,13 @@ class ProjectAct : AppCompatActivity() {
 
         }
 
-        justifyListViewHeightBasedOnChildren(infoListView)
+
 
 
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.project_menu, menu)
         return true
