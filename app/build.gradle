@@ -54,5 +54,6 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation 'com.github.mukeshsolanki:MarkdownView-Android:1.1.1'
     implementation 'androidx.browser:browser:1.2.0'
+    implementation 'androidx.biometric:biometric:1.0.1'
 
 }

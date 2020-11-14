@@ -151,21 +151,25 @@ class ProjectAct : AppCompatActivity() {
 
                         val em = objec.getString("committer_email")
 
-                        try {
-                            var pipeline = objec.getJSONObject("last_pipeline").getString("status")
+
+                            var pipeline = objec.getString("status")
 
                             var pipeline_status = findViewById<ImageView>(R.id.pipeline)
 
+                        if(pipeline != null){
                             if (pipeline == "success") {
                                 pipeline_status.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.ic_success))
                             }else if (pipeline == "failed"){
                                 pipeline_status.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.ic_failed))
                             }else if(pipeline == "running"){
                                 pipeline_status.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.ic_running))
+                            }else if(pipeline == "canceled"){
+                                pipeline_status.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.ic_canceled))
                             }
-                        }catch( e: Error){
-
                         }
+
+
+
 
                         AndroidNetworking.initialize(applicationContext)
                         AndroidNetworking.get("https://gitlab.com/api/v4/avatar?email=$em")
