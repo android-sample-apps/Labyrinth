@@ -9,7 +9,7 @@
     <color name="colorPrimary">#0067f4</color>
     <color name="colorAccent">#0067f4</color>
 
-    <color name="white">#121212</color>
-    <color name="background">#0a0a0a</color>
-    <color name="line">#000000</color>
+    <color name="white">#171616</color>
+    <color name="background">#242323</color>
+    <color name="line">#242323</color>
 </resources>

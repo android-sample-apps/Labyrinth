@@ -38,6 +38,7 @@ class Second : AppCompatActivity() {
         title.text = "Hi " + pref.getString("username", "null")
 
 
+
         button.setOnClickListener {
 
             val intent = Intent(this, MainAct::class.java)

@@ -58,6 +58,12 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.Labyrinth.NoActionBar">
         </activity>
+
+        <activity
+            android:name=".BiometricFailAct"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.Labyrinth.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

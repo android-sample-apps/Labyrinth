@@ -20,13 +20,6 @@ class First : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val pref = getSharedPreferences("Settings", 0)
-        pref.getString("token", "null")
-
-        if (pref.getString("token", "null") != "null") {
-            val intent = Intent(this, MainAct::class.java)
-            this.startActivity(intent)
-        }
 
         setContentView(R.layout.activity_intro_first)
 
