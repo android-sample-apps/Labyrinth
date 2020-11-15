@@ -12,7 +12,6 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.core.Api
-import org.bandev.labyrinth.MainAct
 import org.json.JSONObject
 
 class First : AppCompatActivity() {
@@ -37,29 +36,29 @@ class First : AppCompatActivity() {
 
             AndroidNetworking.initialize(this)
             AndroidNetworking.get("https://gitlab.com/api/v4/user?access_token=$token")
-                    .build()
-                    .getAsJSONObject(object : JSONObjectRequestListener {
-                        override fun onResponse(response: JSONObject?) {
-                            val pref = getSharedPreferences("User", 0)
-                            val editor = pref.edit()
-                            editor.putString("token", name.text.toString())
-                            editor.putString("username", (response ?: return).getString("username"))
-                            editor.putString("email", response.getString("email"))
-                            editor.putString("bio", response.getString("bio"))
-                            editor.putString("location", response.getString("location"))
-                            editor.putInt("id", response.getInt("id"))
-                            editor.putString("avatarUrl", response.getString("avatar_url"))
-                            editor.putString("webUrl", response.getString("web_url"))
-                            editor.apply()
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject?) {
+                        val pref = getSharedPreferences("User", 0)
+                        val editor = pref.edit()
+                        editor.putString("token", name.text.toString())
+                        editor.putString("username", (response ?: return).getString("username"))
+                        editor.putString("email", response.getString("email"))
+                        editor.putString("bio", response.getString("bio"))
+                        editor.putString("location", response.getString("location"))
+                        editor.putInt("id", response.getInt("id"))
+                        editor.putString("avatarUrl", response.getString("avatar_url"))
+                        editor.putString("webUrl", response.getString("web_url"))
+                        editor.apply()
 
-                            moveOn()
-                        }
+                        moveOn()
+                    }
 
-                        override fun onError(error: ANError?) {
-                            // handle error
-                        }
+                    override fun onError(error: ANError?) {
+                        // handle error
+                    }
 
-                    })
+                })
 
 
         }

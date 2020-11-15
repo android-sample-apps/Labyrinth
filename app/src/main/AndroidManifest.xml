@@ -31,7 +31,7 @@
             android:label="@string/title_activity_main"
             android:theme="@style/MainActivity" />
         <activity
-            android:name=".projects.issues_list"
+            android:name=".projects.IssuesList"
             android:theme="@style/MainActivity" />
         <activity
             android:name=".intro.First"

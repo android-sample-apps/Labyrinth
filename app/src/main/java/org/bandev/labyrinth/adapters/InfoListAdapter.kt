@@ -7,11 +7,8 @@ import android.preference.PreferenceManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ImageView
 import android.widget.TextView
-import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.RoundedTransform
 import org.json.JSONObject
 
 class InfoListAdapter(private val context: Activity, private val text: Array<String?>) :
@@ -27,8 +24,6 @@ class InfoListAdapter(private val context: Activity, private val text: Array<Str
         val jsonObj = JSONObject(text[p0])
         left.text = jsonObj.getString("left")
         right.text = jsonObj.getString("right")
-
-
 
         return rowView
 
@@ -46,7 +41,7 @@ class InfoListAdapter(private val context: Activity, private val text: Array<Str
         val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = preferences.edit()
         editor.putString(key, value)
-        editor.commit()
+        editor.apply()
     }
 
     fun getDefaults(key: String?, context: Context?): String? {
@@ -57,5 +52,4 @@ class InfoListAdapter(private val context: Activity, private val text: Array<Str
     override fun getCount(): Int {
         return text.size
     }
-
 }

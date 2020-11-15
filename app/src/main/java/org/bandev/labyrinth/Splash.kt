@@ -1,21 +1,13 @@
 package org.bandev.labyrinth
 
-import android.app.ActivityOptions
 import android.content.Intent
-import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import org.bandev.labyrinth.intro.First
 import java.util.concurrent.Executor
-
 
 class Splash : AppCompatActivity() {
 

@@ -27,7 +27,7 @@ class Second : AppCompatActivity() {
         val pref = getSharedPreferences("User", 0)
         val avatar = findViewById<ImageView>(R.id.avatar)
         Picasso.get().load(pref?.getString("avatarUrl", "null")).transform(RoundedTransform(30, 0))
-                .into(avatar)
+            .into(avatar)
 
         val usernameTextView: TextView = findViewById(R.id.usernmame)
         val emailTextView: TextView = findViewById(R.id.email)

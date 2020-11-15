@@ -1,41 +1,26 @@
 package org.bandev.labyrinth.projects
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Base64
-import android.view.View
-import android.widget.TextView
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONObjectRequestListener
-import com.mukesh.MarkdownView
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.core.Api
-import org.json.JSONObject
 
+class ReduceStorageSize : AppCompatActivity() {
 
-class reduceStorageSize : AppCompatActivity() {
+    private var projectId: Int = 0
+    private var token: String = ""
+    private var projectPath = ""
+    private var webUrl = ""
 
-
-    var projectId: Int = 0
-    var token: String = ""
-    var projectPath = ""
-    var webUrl = ""
-
-
-    @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.projects_readme_act)
 
         projectId = intent.getIntExtra("projectId", 0)
-        projectPath = intent.getStringExtra("projectPath")
-        webUrl = intent.getStringExtra("webUrl")
+        projectPath = intent.getStringExtra("projectPath").toString()
+        webUrl = intent.getStringExtra("webUrl").toString()
         token = Api().getUserToken(this)
 
 
@@ -52,13 +37,10 @@ class reduceStorageSize : AppCompatActivity() {
         refresher.setOnRefreshListener {
             refresher.isRefreshing = false
         }
-
     }
-
 
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
     }
-
 }

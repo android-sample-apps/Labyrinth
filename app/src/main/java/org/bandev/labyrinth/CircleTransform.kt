@@ -4,7 +4,6 @@ import android.graphics.*
 import com.squareup.picasso.Transformation
 import kotlin.math.min
 
-
 /**
  * Created by julian on 13/6/21.
  */
@@ -21,7 +20,7 @@ class CircleTransform : Transformation {
         val canvas = Canvas(bitmap)
         val paint = Paint()
         val shader =
-                BitmapShader(squaredBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
+            BitmapShader(squaredBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
         paint.shader = shader
         paint.isAntiAlias = true
         val r = size / 2f

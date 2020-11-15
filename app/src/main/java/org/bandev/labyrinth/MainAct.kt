@@ -1,13 +1,14 @@
- package org.bandev.labyrinth
+package org.bandev.labyrinth
 
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
@@ -18,10 +19,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
 import java.util.regex.Pattern
 
-
 class MainAct : AppCompatActivity() {
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_act)
@@ -32,11 +31,11 @@ class MainAct : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment)
         val appBarConfiguration = AppBarConfiguration(
-                setOf(
-                        R.id.navigation_notifications,
-                        R.id.navigation_dashboard,
-                        R.id.navigation_home
-                )
+            setOf(
+                R.id.navigation_notifications,
+                R.id.navigation_dashboard,
+                R.id.navigation_home
+            )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
@@ -57,12 +56,21 @@ class MainAct : AppCompatActivity() {
         param.setMargins(0, statusBarHeight, 0, 0)
         toolbar.layoutParams = param
 
-        view.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.let {
+                it.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                it.hide(WindowInsets.Type.systemBars())
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = (
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+        }
 
         window.navigationBarColor = resources.getColor(android.R.color.transparent)
 
-        view.setOnApplyWindowInsetsListener() {v, insets ->
+        view.setOnApplyWindowInsetsListener { v, insets ->
             insets.consumeStableInsets()
         }
 
@@ -71,7 +79,7 @@ class MainAct : AppCompatActivity() {
         //Defines avatar, sets the image and handles a click
         val avatar = findViewById<ImageView>(R.id.avatar)
         Picasso.get().load(pref?.getString("avatarUrl", "null")).transform(CircleTransform())
-                .into(avatar)
+            .into(avatar)
         avatar.setOnClickListener {
             val intent = Intent(this, ProfileAct::class.java)
             this.startActivity(intent)

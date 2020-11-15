@@ -10,7 +10,6 @@ import androidx.preference.PreferenceManager
 import org.bandev.labyrinth.intro.First
 import java.util.concurrent.Executor
 
-
 class BiometricFailAct : AppCompatActivity() {
 
     private lateinit var executor: Executor
@@ -84,7 +83,6 @@ class BiometricFailAct : AppCompatActivity() {
             this.startActivity(intent)
 
         }
-
 
 
     }

@@ -73,7 +73,7 @@
             android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/info_view"></ListView>
+            tools:listitem="@layout/info_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

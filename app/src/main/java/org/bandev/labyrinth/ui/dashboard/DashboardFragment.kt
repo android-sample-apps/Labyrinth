@@ -14,20 +14,18 @@ import org.bandev.labyrinth.R
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.ProjectAct
 
-
 class DashboardFragment : Fragment() {
 
     private lateinit var dashboardViewModel: DashboardViewModel
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         dashboardViewModel =
-                ViewModelProvider(this).get(DashboardViewModel::class.java)
+            ViewModelProvider(this).get(DashboardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-
 
         val projectLists = requireContext().getSharedPreferences("User-Projects", 0)
 
@@ -53,8 +51,6 @@ class DashboardFragment : Fragment() {
             intent.putExtras(bundle)
             startActivity(intent)
         }
-
-
         return root
     }
 

@@ -1,6 +1,5 @@
 package org.bandev.labyrinth
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -25,7 +24,6 @@ import org.bandev.labyrinth.core.Api
 
 class ProfileAct : AppCompatActivity() {
 
-    @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile_act)
@@ -49,14 +47,14 @@ class ProfileAct : AppCompatActivity() {
             filldata()
             refresher.isRefreshing = false
         }
-
     }
 
     private fun filldata() {
         val pref = getSharedPreferences("User", 0)
 
         val avatar = findViewById<ImageView>(R.id.avatar)
-Picasso.get().load(pref?.getString("avatarUrl", "null")).resize(400, 400).transform(RoundedTransform(90, 0))
+        Picasso.get().load(pref?.getString("avatarUrl", "null")).resize(400, 400)
+            .transform(RoundedTransform(90, 0))
             .into(avatar)
 
 
@@ -112,14 +110,14 @@ Picasso.get().load(pref?.getString("avatarUrl", "null")).resize(400, 400).transf
         justifyListViewHeightBasedOnChildren(listViewProjects)
 
         listViewProjects.onItemClickListener =
-                AdapterView.OnItemClickListener { parent, view, position, id ->
-                    val selectedItem = parent.getItemAtPosition(position) as String
-                    val intent = Intent(this, ProjectAct::class.java)
-                    val bundle = Bundle()
-                    bundle.putString("data", selectedItem)
-                    intent.putExtras(bundle)
-                    startActivity(intent)
-                }
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
+                val intent = Intent(this, ProjectAct::class.java)
+                val bundle = Bundle()
+                bundle.putString("data", selectedItem)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -127,16 +125,15 @@ Picasso.get().load(pref?.getString("avatarUrl", "null")).resize(400, 400).transf
         return true
     }
 
-    @SuppressLint("ResourceAsColor")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.open -> {
                 val pref = getSharedPreferences("User", 0)
 
-                var url = pref!!.getString("webUrl", "https://gitlab.com")
-                var builder : CustomTabsIntent.Builder = CustomTabsIntent.Builder()
+                val url = pref!!.getString("webUrl", "https://gitlab.com")
+                val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
                 builder.setToolbarColor(Color.parseColor("#0067f4"))
-                var customTabsIntent: CustomTabsIntent = builder.build()
+                val customTabsIntent: CustomTabsIntent = builder.build()
                 customTabsIntent.launchUrl(this, Uri.parse(url))
                 super.onOptionsItemSelected(item)
             }
