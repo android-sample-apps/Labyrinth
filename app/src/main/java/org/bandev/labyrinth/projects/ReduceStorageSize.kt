@@ -33,7 +33,7 @@ class ReduceStorageSize : AppCompatActivity() {
 
 
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
-        refresher.setColorSchemeColors(R.color.colorPrimary)
+        refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         refresher.setOnRefreshListener {
             refresher.isRefreshing = false
         }

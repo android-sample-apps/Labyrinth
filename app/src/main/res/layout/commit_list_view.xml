@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/avatar_list"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="35dp"
         android:contentDescription="TODO"
         android:cropToPadding="false"
@@ -23,10 +23,10 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
+        android:fontFamily="@font/dosis_med"
         android:text="Loading"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="17sp"
-        android:textStyle="bold"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/pipeline"
         app:layout_constraintStart_toEndOf="@+id/avatar_list"
         app:layout_constraintTop_toTopOf="parent" />
@@ -39,10 +39,10 @@
         android:layout_marginBottom="10dp"
         android:drawablePadding="5dp"
         android:paddingBottom="5dp"
+        android:fontFamily="@font/dosis_reg"
         android:text="Loading"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="17sp"
-
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/name"
         app:layout_constraintStart_toEndOf="@+id/avatar_list"
         app:layout_constraintTop_toBottomOf="@+id/name" />
@@ -54,7 +54,8 @@
         android:layout_marginEnd="33dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="TODO" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

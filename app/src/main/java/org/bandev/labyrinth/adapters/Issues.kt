@@ -15,7 +15,7 @@ import org.bandev.labyrinth.R
 import org.json.JSONObject
 
 class Issues(private val context: Activity, private val text: Array<String?>) :
-    BaseAdapter() {
+        BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater
@@ -27,20 +27,20 @@ class Issues(private val context: Activity, private val text: Array<String?>) :
         val jsonObj = JSONObject(text[p0])
         name.text = jsonObj.getString("title")
         visibility.text =
-            "#" + jsonObj.getString("iid") + " | Created by " + jsonObj.getJSONObject("author")
-                .getString("name")
+                "#" + jsonObj.getString("iid") + " | Created by " + jsonObj.getJSONObject("author")
+                        .getString("name")
 
         val status: Chip = rowView.findViewById(R.id.status)
 
         if (jsonObj.getString("state") == "opened") {
             status.text = "Open"
             status.chipBackgroundColor =
-                ColorStateList.valueOf(ContextCompat.getColor(context, R.color.open))
+                    ColorStateList.valueOf(ContextCompat.getColor(context, R.color.open))
 
         } else if (jsonObj.getString("state") == "closed") {
             status.text = "Closed"
             status.chipBackgroundColor =
-                ColorStateList.valueOf(ContextCompat.getColor(context, R.color.closed))
+                    ColorStateList.valueOf(ContextCompat.getColor(context, R.color.closed))
         }
         return rowView
     }

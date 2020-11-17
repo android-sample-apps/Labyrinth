@@ -38,7 +38,7 @@ class ProfileAct : AppCompatActivity() {
         filldata()
 
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
-        refresher.setColorSchemeColors(R.color.colorPrimary)
+        refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         refresher.setOnRefreshListener {
             val pref = getSharedPreferences("Settings", 0)
             val token = pref.getString("token", "null").toString()
@@ -54,8 +54,8 @@ class ProfileAct : AppCompatActivity() {
 
         val avatar = findViewById<ImageView>(R.id.avatar)
         Picasso.get().load(pref?.getString("avatarUrl", "null")).resize(400, 400)
-            .transform(RoundedTransform(90, 0))
-            .into(avatar)
+                .transform(RoundedTransform(90, 0))
+                .into(avatar)
 
 
         val usernameTextView: TextView = findViewById(R.id.usernmame)
@@ -110,14 +110,14 @@ class ProfileAct : AppCompatActivity() {
         justifyListViewHeightBasedOnChildren(listViewProjects)
 
         listViewProjects.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                val selectedItem = parent.getItemAtPosition(position) as String
-                val intent = Intent(this, ProjectAct::class.java)
-                val bundle = Bundle()
-                bundle.putString("data", selectedItem)
-                intent.putExtras(bundle)
-                startActivity(intent)
-            }
+                AdapterView.OnItemClickListener { parent, view, position, id ->
+                    val selectedItem = parent.getItemAtPosition(position) as String
+                    val intent = Intent(this, ProjectAct::class.java)
+                    val bundle = Bundle()
+                    bundle.putString("data", selectedItem)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+                }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

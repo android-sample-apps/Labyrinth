@@ -12,7 +12,7 @@ import org.bandev.labyrinth.R
 import org.json.JSONObject
 
 class InfoListAdapter(private val context: Activity, private val text: Array<String?>) :
-    BaseAdapter() {
+        BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater

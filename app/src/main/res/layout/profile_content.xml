@@ -14,10 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-    </androidx.appcompat.widget.Toolbar>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contentView3"
@@ -34,10 +31,10 @@
             android:layout_marginStart="33dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="33dp"
-            android:fontFamily="@font/main_bold"
+            android:fontFamily="@font/dosis_bold"
             android:text="Groups"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/contentView3" />
@@ -59,7 +56,7 @@
         android:id="@+id/contentView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/toolbar_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -74,10 +71,10 @@
             android:layout_marginStart="33dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="33dp"
-            android:fontFamily="@font/main_bold"
+            android:fontFamily="@font/dosis_bold"
             android:text="Projects"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/contentView4" />
@@ -101,6 +98,7 @@
         android:layout_height="80dp"
         android:layout_marginStart="33dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:cropToPadding="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -113,10 +111,10 @@
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:fontFamily="@font/main_bold"
+        android:fontFamily="@font/dosis_bold"
         android:text="Username"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="23sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="@+id/avatar" />
 
@@ -125,11 +123,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/dosis_reg"
         android:text="Email"
-        android:textSize="17sp"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/avatar"
-        app:layout_constraintStart_toEndOf="@+id/avatar" />
+        app:layout_constraintStart_toEndOf="@+id/avatar"
+        app:layout_constraintTop_toBottomOf="@+id/usernmame" />
 
     <TextView
         android:id="@+id/description"
@@ -139,13 +140,11 @@
         android:layout_marginEnd="33dp"
         android:text="Description"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="17sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/avatar"
         app:layout_constraintTop_toBottomOf="@+id/avatar" />
-
-
 
     <TextView
         android:id="@+id/location"
@@ -162,8 +161,5 @@
         app:layout_constraintStart_toStartOf="@+id/contentView"
         app:layout_constraintTop_toBottomOf="@+id/description"
         app:drawableStartCompat="@drawable/ic_location" />
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
