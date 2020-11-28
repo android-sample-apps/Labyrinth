@@ -1,5 +1,6 @@
 package org.bandev.labyrinth
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -18,12 +19,14 @@ import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Api
 import org.bandev.labyrinth.projects.IssuesList
 import org.bandev.labyrinth.projects.ReadMe
+import org.json.JSONArray
 import org.json.JSONObject
 
 class ProjectAct : AppCompatActivity() {
@@ -38,6 +41,7 @@ class ProjectAct : AppCompatActivity() {
     private var branch = ""
     private var data = ""
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.project_act)
@@ -251,8 +255,33 @@ class ProjectAct : AppCompatActivity() {
         return true
     }
 
+    fun toggleStar(){
+        val pref = getSharedPreferences("User", 0)
+        val token = pref.getString("token", "no")
+        AndroidNetworking.initialize(this)
+        AndroidNetworking.post("https://gitlab.com/api/v4/projects/$projectId/star")
+                .addHeaders("PRIVATE-TOKEN:", token)
+                .build()
+                .getAsJSONArray(object : JSONArrayRequestListener {
+                    override fun onResponse(response: JSONArray?) {
+                       //handle response
+                        Toast.makeText(applicationContext, "Starred", LENGTH_LONG).show()
+                    }
+
+                    override fun onError(error: ANError?) {
+                        // handle error
+                        Toast.makeText(applicationContext, error.toString(), LENGTH_LONG).show()
+                    }
+
+                })
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.star -> {
+                toggleStar()
+                super.onOptionsItemSelected(item)
+            }
             R.id.open -> {
                 val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
                 builder.setToolbarColor(Color.parseColor("#0067f4"))

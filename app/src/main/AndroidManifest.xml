@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -15,10 +16,12 @@
         android:fullBackupContent="@xml/backup_descriptor">
         <activity
             android:name=".SettingsAct"
-            android:label="@string/title_activity_settings"
             android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
             android:name=".ProfileAct"
+            android:theme="@style/Theme.Labyrinth.NoActionBar" />
+        <activity
+            android:name=".GroupsAct"
             android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
             android:name=".projects.ReadMe"
@@ -28,11 +31,10 @@
             android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
             android:name=".MainAct"
-            android:label="@string/title_activity_main"
-            android:theme="@style/MainActivity" />
+            android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
             android:name=".projects.IssuesList"
-            android:theme="@style/MainActivity" />
+            android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
             android:name=".intro.First"
             android:windowSoftInputMode="adjustResize"
@@ -58,6 +60,11 @@
 
         <activity
             android:name=".BiometricFailAct"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.Labyrinth.NoActionBar">
+        </activity>
+        <activity
+            android:name=".NoInternetAct"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.Labyrinth.NoActionBar">
         </activity>

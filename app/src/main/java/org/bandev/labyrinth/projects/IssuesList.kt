@@ -16,7 +16,7 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.adapters.Issues
+import org.bandev.labyrinth.adapters.IssueAdapter
 import org.bandev.labyrinth.core.Api
 import org.json.JSONArray
 import org.json.JSONObject
@@ -82,7 +82,7 @@ class IssuesList : AppCompatActivity() {
                             list.add(response.getJSONObject(i).toString())
                         }
 
-                        val adapter = Issues(context, list.toTypedArray())
+                        val adapter = IssueAdapter(context, list.toTypedArray())
                         (listView ?: return).adapter = adapter
                         (listView ?: return).divider = null
                         justifyListViewHeightBasedOnChildren(listView ?: return)
@@ -99,7 +99,7 @@ class IssuesList : AppCompatActivity() {
                                             list.add(response.getJSONObject(i).toString())
                                         }
 
-                                        val adapter2 = Issues(context, list.toTypedArray())
+                                        val adapter2 = IssueAdapter(context, list.toTypedArray())
                                         (listView2 ?: return).adapter = adapter2
                                         (listView2 ?: return).divider = null
                                         justifyListViewHeightBasedOnChildren(listView2 ?: return)

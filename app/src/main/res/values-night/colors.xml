@@ -11,5 +11,5 @@
 
     <color name="white">#171616</color>
     <color name="background">#242323</color>
-    <color name="line">#242323</color>
+    <color name="line">#000</color>
 </resources>

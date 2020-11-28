@@ -8,27 +8,6 @@
 
 
     <Button
-        android:id="@+id/button3"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginEnd="33dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="#0E4D8D"
-        android:elevation="0dp"
-        android:fontFamily="@font/dosis_bold"
-        android:text="Log me out"
-        android:textAlignment="viewStart"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        app:cornerRadius="11dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <Button
         android:id="@+id/button"
         android:layout_width="0dp"
         android:layout_height="70dp"
@@ -57,7 +36,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="33dp"
         android:fontFamily="@font/dosis_bold"
-        android:text="Verification Failed!"
+        android:text="Oops, No internet!"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
         android:layout_marginEnd="33dp"
-        android:text="We were unable to verify it was you"
+        android:text="We are unable to continue without an internet connection"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +66,7 @@
         android:text="Do you wish to try again?"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

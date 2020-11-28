@@ -39,10 +39,10 @@
         android:layout_marginBottom="2dp"
         android:drawablePadding="5dp"
         android:text="Visibility"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp"
+        app:drawableStartCompat="@drawable/ic_globe"
         app:layout_constraintBottom_toBottomOf="@+id/avatar_list"
-        app:layout_constraintStart_toEndOf="@+id/avatar_list"
-        app:drawableStartCompat="@drawable/ic_globe" />
+        app:layout_constraintStart_toEndOf="@+id/avatar_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

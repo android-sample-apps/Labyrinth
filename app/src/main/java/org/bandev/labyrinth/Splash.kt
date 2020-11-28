@@ -1,13 +1,21 @@
 package org.bandev.labyrinth
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
+import org.bandev.labyrinth.core.Appearance
 import org.bandev.labyrinth.intro.First
 import java.util.concurrent.Executor
+
 
 class Splash : AppCompatActivity() {
 
@@ -20,7 +28,7 @@ class Splash : AppCompatActivity() {
 
         val pref = getSharedPreferences("Settings", 0)
 
-
+        Appearance().setAppTheme(Appearance().getAppTheme(this))
 
         executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor,
@@ -42,6 +50,9 @@ class Splash : AppCompatActivity() {
                             result: BiometricPrompt.AuthenticationResult
                     ) {
                         super.onAuthenticationSucceeded(result)
+
+
+                        checkWifi()
 
                         val i = Intent(applicationContext, MainAct::class.java)
                         val mBundle = Bundle()
@@ -79,6 +90,9 @@ class Splash : AppCompatActivity() {
             if (biometrics) {
                 biometricPrompt.authenticate(promptInfo)
             } else {
+
+                checkWifi()
+
                 val i = Intent(applicationContext, MainAct::class.java)
                 val mBundle = Bundle()
                 i.putExtras(mBundle)
@@ -87,6 +101,8 @@ class Splash : AppCompatActivity() {
             }
 
         } else {
+
+            checkWifi()
             val i = Intent(this, First::class.java)
             val mBundle = Bundle()
             i.putExtras(mBundle)
@@ -94,5 +110,26 @@ class Splash : AppCompatActivity() {
             finish()
         }
 
+
+
     }
+
+    fun checkWifi(){
+        if (!isOnline()) {
+            val i = Intent(this, NoInternetAct::class.java)
+            this.startActivity(i)
+        }
+    }
+
+    fun isOnline(): Boolean {
+        val conMgr = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netInfo = conMgr.activeNetworkInfo
+        if (netInfo == null || !netInfo.isConnected || !netInfo.isAvailable) {
+            Toast.makeText(this, "No Internet connection!", LENGTH_LONG).show()
+            return false
+        }
+        return true
+    }
+
+
 }

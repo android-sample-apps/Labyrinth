@@ -20,6 +20,6 @@
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="org.bandev.labyrinth.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:label="Todos"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

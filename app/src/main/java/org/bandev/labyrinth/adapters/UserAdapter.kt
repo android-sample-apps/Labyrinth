@@ -3,45 +3,34 @@ package org.bandev.labyrinth.adapters
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.ColorStateList
 import android.preference.PreferenceManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import com.google.android.material.chip.Chip
+import com.squareup.picasso.Picasso
+import org.bandev.labyrinth.CircleTransform
 import org.bandev.labyrinth.R
+import org.bandev.labyrinth.RoundedTransform
 import org.json.JSONObject
 
-class Issues(private val context: Activity, private val text: Array<String?>) :
+class UserAdapter(private val context: Activity, private val text: Array<String?>) :
         BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater
 
-        val rowView = inflater.inflate(R.layout.issues_list_view, null)
+        val rowView = inflater.inflate(R.layout.commit_list_view, null)
         val name = rowView.findViewById(R.id.name) as TextView
-        val visibility = rowView.findViewById(R.id.desc) as TextView
+        val visibility = rowView.findViewById(R.id.visibility) as TextView
+        val avatar = rowView.findViewById(R.id.avatar_list) as ImageView
 
         val jsonObj = JSONObject(text[p0])
-        name.text = jsonObj.getString("title")
-        visibility.text =
-                "#" + jsonObj.getString("iid") + " | Created by " + jsonObj.getJSONObject("author")
-                        .getString("name")
-
-        val status: Chip = rowView.findViewById(R.id.status)
-
-        if (jsonObj.getString("state") == "opened") {
-            status.text = "Open"
-            status.chipBackgroundColor =
-                    ColorStateList.valueOf(ContextCompat.getColor(context, R.color.open))
-
-        } else if (jsonObj.getString("state") == "closed") {
-            status.text = "Closed"
-            status.chipBackgroundColor =
-                    ColorStateList.valueOf(ContextCompat.getColor(context, R.color.closed))
-        }
+        name.text = jsonObj.getString("username")
+        visibility.text = jsonObj.getInt("access_level").toString()
+        Picasso.get().load(jsonObj.getString("avatar_url")).transform(CircleTransform())
+            .into(avatar)
         return rowView
     }
 

@@ -71,6 +71,7 @@ class First : AppCompatActivity() {
         val token = pref.getString("token", "null").toString()
         Api().getUserGroups(this, token)
         Api().getUserProjects(this, token)
+        Api().getUserTodos(this, token)
         val intent = Intent(this, Second::class.java)
         this.startActivity(intent)
     }

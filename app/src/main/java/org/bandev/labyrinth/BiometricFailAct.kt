@@ -20,9 +20,7 @@ class BiometricFailAct : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_biometric_fail)
-
-        val pref = getSharedPreferences("Settings", 0)
-
+        
         executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor,
                 object : BiometricPrompt.AuthenticationCallback() {
@@ -63,9 +61,6 @@ class BiometricFailAct : AppCompatActivity() {
         // Prompt appears when user clicks "Log in".
         // Consider integrating with the keystore to unlock cryptographic operations,
         // if needed by your app.
-
-        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val biometrics = sharedPrefs.getBoolean("biometric", false)
 
         val button: Button = findViewById(R.id.button)
         val button2: Button = findViewById(R.id.button3)

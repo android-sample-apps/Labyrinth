@@ -1,9 +1,16 @@
 package org.bandev.labyrinth
 
+import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.preference.ListPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
+import org.bandev.labyrinth.core.Appearance
 
 class SettingsAct : AppCompatActivity() {
 
@@ -29,6 +36,13 @@ class SettingsAct : AppCompatActivity() {
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
+            val theme = findPreference<Preference>("theme") as ListPreference?
+
+            theme?.onPreferenceChangeListener =
+                    Preference.OnPreferenceChangeListener { preference, newValue ->
+                        Appearance().setAppTheme(newValue.toString())
+                        true
+                    }
         }
     }
 

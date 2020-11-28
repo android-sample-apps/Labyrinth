@@ -12,6 +12,8 @@ class Api {
         return pref.getString("token", "null").toString()
     }
 
+
+
     fun getUserGroups(context: Context, token: String) {
         AndroidNetworking.initialize(context)
         AndroidNetworking.get("https://gitlab.com/api/v4/groups?access_token=$token")
@@ -27,6 +29,31 @@ class Api {
                             index++
                         }
                         edit.putInt("numGroups", index)
+                        edit.apply()
+                    }
+
+                    override fun onError(error: ANError?) {
+                        // handle error
+                    }
+
+                })
+    }
+
+    fun getUserTodos(context: Context, token: String){
+        AndroidNetworking.initialize(context)
+        AndroidNetworking.get("https://gitlab.com/api/v4/todos?access_token=$token")
+                .build()
+                .getAsJSONArray(object : JSONArrayRequestListener {
+                    override fun onResponse(response: JSONArray?) {
+                        var index = 0
+                        val pref = context.getSharedPreferences("User-Todos", 0)
+                        val edit = pref.edit()
+                        while (index != response?.length()) {
+                            val string = response?.get(index)?.toString().toString()
+                            edit.putString(index.toString(), string)
+                            index++
+                        }
+                        edit.putInt("numTodos", index)
                         edit.apply()
                     }
 

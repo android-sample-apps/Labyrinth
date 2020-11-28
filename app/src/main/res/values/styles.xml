@@ -13,7 +13,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-
         <!-- Customize your theme here. -->
     </style>
 
@@ -28,6 +27,7 @@
     <style name="Theme.Labyrinth.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="MainActivity" parent="Theme.Labyrinth">

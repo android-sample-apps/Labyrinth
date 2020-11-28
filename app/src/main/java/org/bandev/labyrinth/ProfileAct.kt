@@ -1,5 +1,6 @@
 package org.bandev.labyrinth
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -24,6 +25,7 @@ import org.bandev.labyrinth.core.Api
 
 class ProfileAct : AppCompatActivity() {
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile_act)
@@ -56,7 +58,6 @@ class ProfileAct : AppCompatActivity() {
         Picasso.get().load(pref?.getString("avatarUrl", "null")).resize(400, 400)
                 .transform(RoundedTransform(90, 0))
                 .into(avatar)
-
 
         val usernameTextView: TextView = findViewById(R.id.usernmame)
         val emailTextView: TextView = findViewById(R.id.email)
@@ -92,6 +93,15 @@ class ProfileAct : AppCompatActivity() {
         listView.divider = null
         justifyListViewHeightBasedOnChildren(listView)
 
+        listView.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
+                val intent = Intent(this, GroupsAct::class.java)
+                val bundle = Bundle()
+                bundle.putString("data", selectedItem)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
 
         val projectLists = getSharedPreferences("User-Projects", 0)
 

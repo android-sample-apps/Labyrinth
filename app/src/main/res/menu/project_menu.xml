@@ -4,6 +4,13 @@
     tools:context="org.bandev.labyrinth.MainActivity">
 
     <item
+        android:id="@+id/star"
+        android:orderInCategory="100"
+        android:title="Star this project"
+        android:icon="@drawable/ic_star_full"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/readme"
         android:orderInCategory="100"
         android:title="View Readme"
