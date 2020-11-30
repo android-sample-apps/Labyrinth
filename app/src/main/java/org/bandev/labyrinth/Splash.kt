@@ -93,7 +93,6 @@ class Splash : AppCompatActivity() {
         // Prompt appears when user clicks "Log in".
         // Consider integrating with the keystore to unlock cryptographic operations,
         // if needed by your app.
-        biometricPrompt.authenticate(promptInfo)
 
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         val biometrics = sharedPrefs.getBoolean("biometric", false)
