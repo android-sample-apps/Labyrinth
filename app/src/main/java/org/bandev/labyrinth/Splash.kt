@@ -5,16 +5,13 @@ import android.accounts.AccountManager
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
-import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.core.Appearance
 import org.bandev.labyrinth.intro.First
 import java.util.concurrent.Executor
@@ -27,7 +24,7 @@ class Splash : AppCompatActivity() {
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
     lateinit var account: Account
-    lateinit var accountManager: AccountManager
+    private lateinit var accountManager: AccountManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +32,9 @@ class Splash : AppCompatActivity() {
         var hasAccount = false
 
         accountManager = AccountManager.get(this)
-        val accounts: Array<out Account> = accountManager.getAccountsByType("org.bandev.labyrinth.account.authenticator")
-        if(!accounts.isEmpty()){
+        val accounts: Array<out Account> =
+            accountManager.getAccountsByType("org.bandev.labyrinth.account.authenticator")
+        if (accounts.isNotEmpty()) {
             hasAccount = true
         }
 
@@ -44,51 +42,51 @@ class Splash : AppCompatActivity() {
 
         executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor,
-                object : BiometricPrompt.AuthenticationCallback() {
-                    override fun onAuthenticationError(
-                            errorCode: Int,
-                            errString: CharSequence
-                    ) {
-                        super.onAuthenticationError(errorCode, errString)
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(
+                    errorCode: Int,
+                    errString: CharSequence
+                ) {
+                    super.onAuthenticationError(errorCode, errString)
 
-                        val i = Intent(applicationContext, BiometricFailAct::class.java)
-                        val mBundle = Bundle()
-                        i.putExtras(mBundle)
-                        startActivity(i)
-                        finish()
-                    }
+                    val i = Intent(applicationContext, BiometricFailAct::class.java)
+                    val mBundle = Bundle()
+                    i.putExtras(mBundle)
+                    startActivity(i)
+                    finish()
+                }
 
-                    override fun onAuthenticationSucceeded(
-                            result: BiometricPrompt.AuthenticationResult
-                    ) {
-                        super.onAuthenticationSucceeded(result)
+                override fun onAuthenticationSucceeded(
+                    result: BiometricPrompt.AuthenticationResult
+                ) {
+                    super.onAuthenticationSucceeded(result)
 
 
-                        checkWifi()
+                    checkWifi()
 
-                        val i = Intent(applicationContext, MainAct::class.java)
-                        val mBundle = Bundle()
-                        i.putExtras(mBundle)
-                        startActivity(i)
-                        finish()
-                    }
+                    val i = Intent(applicationContext, MainAct::class.java)
+                    val mBundle = Bundle()
+                    i.putExtras(mBundle)
+                    startActivity(i)
+                    finish()
+                }
 
-                    override fun onAuthenticationFailed() {
-                        super.onAuthenticationFailed()
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
 
-                        val i = Intent(applicationContext, BiometricFailAct::class.java)
-                        val mBundle = Bundle()
-                        i.putExtras(mBundle)
-                        startActivity(i)
-                        finish()
-                    }
-                })
+                    val i = Intent(applicationContext, BiometricFailAct::class.java)
+                    val mBundle = Bundle()
+                    i.putExtras(mBundle)
+                    startActivity(i)
+                    finish()
+                }
+            })
 
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Biometric login for Labyrinth")
-                .setSubtitle("Log in using your biometric credential")
-                .setNegativeButtonText("Cancel")
-                .build()
+            .setTitle("Biometric login for Labyrinth")
+            .setSubtitle("Log in using your biometric credential")
+            .setNegativeButtonText("Cancel")
+            .build()
 
         // Prompt appears when user clicks "Log in".
         // Consider integrating with the keystore to unlock cryptographic operations,
@@ -122,18 +120,18 @@ class Splash : AppCompatActivity() {
         }
 
 
-
     }
 
-    fun checkWifi(){
+    fun checkWifi() {
         if (!isOnline()) {
             val i = Intent(this, NoInternetAct::class.java)
             this.startActivity(i)
         }
     }
 
-    fun isOnline(): Boolean {
-        val conMgr = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    private fun isOnline(): Boolean {
+        val conMgr =
+            applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netInfo = conMgr.activeNetworkInfo
         if (netInfo == null || !netInfo.isConnected || !netInfo.isAvailable) {
             Toast.makeText(this, "No Internet connection!", LENGTH_LONG).show()

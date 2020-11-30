@@ -6,7 +6,6 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceManager
 import org.bandev.labyrinth.intro.First
 import java.util.concurrent.Executor
 
@@ -20,43 +19,43 @@ class BiometricFailAct : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_biometric_fail)
-        
+
         executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor,
-                object : BiometricPrompt.AuthenticationCallback() {
-                    override fun onAuthenticationError(
-                            errorCode: Int,
-                            errString: CharSequence
-                    ) {
-                        super.onAuthenticationError(errorCode, errString)
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(
+                    errorCode: Int,
+                    errString: CharSequence
+                ) {
+                    super.onAuthenticationError(errorCode, errString)
 
-                        biometricPrompt.authenticate(promptInfo)
-                    }
+                    biometricPrompt.authenticate(promptInfo)
+                }
 
-                    override fun onAuthenticationSucceeded(
-                            result: BiometricPrompt.AuthenticationResult
-                    ) {
-                        super.onAuthenticationSucceeded(result)
+                override fun onAuthenticationSucceeded(
+                    result: BiometricPrompt.AuthenticationResult
+                ) {
+                    super.onAuthenticationSucceeded(result)
 
-                        val i = Intent(applicationContext, MainAct::class.java)
-                        val mBundle = Bundle()
-                        i.putExtras(mBundle)
-                        startActivity(i)
-                        finish()
-                    }
+                    val i = Intent(applicationContext, MainAct::class.java)
+                    val mBundle = Bundle()
+                    i.putExtras(mBundle)
+                    startActivity(i)
+                    finish()
+                }
 
-                    override fun onAuthenticationFailed() {
-                        super.onAuthenticationFailed()
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
 
-                        biometricPrompt.authenticate(promptInfo)
-                    }
-                })
+                    biometricPrompt.authenticate(promptInfo)
+                }
+            })
 
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Biometric login for Labyrinth")
-                .setSubtitle("Log in using your biometric credential")
-                .setNegativeButtonText("Cancel")
-                .build()
+            .setTitle("Biometric login for Labyrinth")
+            .setSubtitle("Log in using your biometric credential")
+            .setNegativeButtonText("Cancel")
+            .build()
 
         // Prompt appears when user clicks "Log in".
         // Consider integrating with the keystore to unlock cryptographic operations,

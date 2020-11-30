@@ -1,35 +1,28 @@
 package org.bandev.labyrinth.ui.notifications
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
-import android.widget.TextView
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import org.bandev.labyrinth.ProjectAct
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.adapters.TodoAdapter
-import org.bandev.labyrinth.core.Api
 
 class NotificationsFragment : Fragment() {
 
     private lateinit var notificationsViewModel: NotificationsViewModel
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         notificationsViewModel =
-                ViewModelProvider(this).get(NotificationsViewModel::class.java)
+            ViewModelProvider(this).get(NotificationsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_notifications, container, false)
 
         val projectLists = requireContext().getSharedPreferences("User-Todos", 0)
@@ -45,16 +38,17 @@ class NotificationsFragment : Fragment() {
 
         val adapter2 = TodoAdapter(context as Activity, list2.toTypedArray())
         listViewProjects.adapter = adapter2
-        if(projectLists.getInt("numTodos", 0) != 0){
+        if (projectLists.getInt("numTodos", 0) != 0) {
             listViewProjects.divider = null
         }
         justifyListViewHeightBasedOnChildren(listViewProjects)
 
-        listViewProjects.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            val selectedItem = parent.getItemAtPosition(position) as String
+        listViewProjects.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
 
 
-        }
+            }
 
 
 

@@ -18,7 +18,6 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.IssueAdapter
-import org.bandev.labyrinth.core.Api
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -32,7 +31,7 @@ class IssuesList : AppCompatActivity() {
     var listView2: ListView? = null
     private var progressBar: ProgressBar? = null
 
-    var profile = Profile()
+    private var profile: Profile = Profile()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,48 +78,48 @@ class IssuesList : AppCompatActivity() {
         val context = this
         AndroidNetworking.initialize(applicationContext)
         AndroidNetworking
-                .get("https://gitlab.com/api/v4/projects/$projectId/issues?token=$token&state=opened")
-                .build()
-                .getAsJSONArray(object : JSONArrayRequestListener {
-                    override fun onResponse(response: JSONArray?) {
-                        for (i in 0 until (response ?: return).length()) {
-                            list.add(response.getJSONObject(i).toString())
-                        }
-
-                        val adapter = IssueAdapter(context, list.toTypedArray())
-                        (listView ?: return).adapter = adapter
-                        (listView ?: return).divider = null
-                        justifyListViewHeightBasedOnChildren(listView ?: return)
-                        done = true
-
-                        AndroidNetworking.initialize(applicationContext)
-                        AndroidNetworking
-                                .get("https://gitlab.com/api/v4/projects/$projectId/issues?token=$token&state=closed")
-                                .build()
-                                .getAsJSONArray(object : JSONArrayRequestListener {
-                                    override fun onResponse(response: JSONArray?) {
-
-                                        for (i in 0 until (response ?: return).length()) {
-                                            list.add(response.getJSONObject(i).toString())
-                                        }
-
-                                        val adapter2 = IssueAdapter(context, list.toTypedArray())
-                                        (listView2 ?: return).adapter = adapter2
-                                        (listView2 ?: return).divider = null
-                                        justifyListViewHeightBasedOnChildren(listView2 ?: return)
-                                        showAll()
-                                    }
-
-                                    override fun onError(anError: ANError?) {
-                                        Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
-                                    }
-                                })
+            .get("https://gitlab.com/api/v4/projects/$projectId/issues?token=$token&state=opened")
+            .build()
+            .getAsJSONArray(object : JSONArrayRequestListener {
+                override fun onResponse(response: JSONArray?) {
+                    for (i in 0 until (response ?: return).length()) {
+                        list.add(response.getJSONObject(i).toString())
                     }
 
-                    override fun onError(anError: ANError?) {
-                        Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
-                    }
-                })
+                    val adapter = IssueAdapter(context, list.toTypedArray())
+                    (listView ?: return).adapter = adapter
+                    (listView ?: return).divider = null
+                    justifyListViewHeightBasedOnChildren(listView ?: return)
+                    done = true
+
+                    AndroidNetworking.initialize(applicationContext)
+                    AndroidNetworking
+                        .get("https://gitlab.com/api/v4/projects/$projectId/issues?token=$token&state=closed")
+                        .build()
+                        .getAsJSONArray(object : JSONArrayRequestListener {
+                            override fun onResponse(response: JSONArray?) {
+
+                                for (i in 0 until (response ?: return).length()) {
+                                    list.add(response.getJSONObject(i).toString())
+                                }
+
+                                val adapter2 = IssueAdapter(context, list.toTypedArray())
+                                (listView2 ?: return).adapter = adapter2
+                                (listView2 ?: return).divider = null
+                                justifyListViewHeightBasedOnChildren(listView2 ?: return)
+                                showAll()
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
+                            }
+                        })
+                }
+
+                override fun onError(anError: ANError?) {
+                    Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
+                }
+            })
     }
 
     override fun onSupportNavigateUp(): Boolean {

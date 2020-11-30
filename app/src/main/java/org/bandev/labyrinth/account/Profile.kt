@@ -7,11 +7,12 @@ import android.content.Context
 class Profile {
 
     lateinit var account: Account
-    lateinit var accountManager: AccountManager
+    private lateinit var accountManager: AccountManager
 
     fun login(context: Context, accountNum: Int) {
         accountManager = AccountManager.get(context)
-        val accounts: Array<out Account> = accountManager.getAccountsByType("org.bandev.labyrinth.account.authenticator")
+        val accounts: Array<out Account> =
+            accountManager.getAccountsByType("org.bandev.labyrinth.account.authenticator")
         account = accounts[accountNum]
     }
 
@@ -20,7 +21,9 @@ class Profile {
     }
 
     fun delete() {
-        accountManager.removeAccountExplicitly(account)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
+            accountManager.removeAccountExplicitly(account)
+        }
     }
 
 }

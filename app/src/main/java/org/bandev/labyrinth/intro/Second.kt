@@ -17,7 +17,6 @@ import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.MainAct
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.RoundedTransform
-import org.bandev.labyrinth.core.User
 import org.json.JSONObject
 
 class Second : AppCompatActivity() {
@@ -29,54 +28,50 @@ class Second : AppCompatActivity() {
         val button: Button = findViewById(R.id.button)
         val button2: Button = findViewById(R.id.button2)
 
-        var userData = Bundle()
+        val userData = Bundle()
 
         val title = findViewById<TextView>(R.id.title)
 
-        var token = intent.extras!!.get("token").toString()
+        val token = (intent.extras ?: return).get("token").toString()
 
         AndroidNetworking.initialize(this)
         AndroidNetworking.get("https://gitlab.com/api/v4/user?access_token=$token")
-                .build()
-                .getAsJSONObject(object : JSONObjectRequestListener {
-                    override fun onResponse(response: JSONObject?) {
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject?) {
 
 
-                        var avatar = findViewById<ImageView>(R.id.avatar)
+                    val avatar = findViewById<ImageView>(R.id.avatar)
 
-                        Picasso.get().load(response!!.getString("avatar_url")).transform(RoundedTransform(30, 0))
-                                .into(avatar)
+                    Picasso.get().load((response ?: return).getString("avatar_url"))
+                        .transform(RoundedTransform(30, 0))
+                        .into(avatar)
 
-                        val usernameTextView: TextView = findViewById(R.id.usernmame)
-                        val emailTextView: TextView = findViewById(R.id.email)
+                    val usernameTextView: TextView = findViewById(R.id.usernmame)
+                    val emailTextView: TextView = findViewById(R.id.email)
 
-                        usernameTextView.text = response.getString("username")
-                        emailTextView.text = response.getString("email")
+                    usernameTextView.text = response.getString("username")
+                    emailTextView.text = response.getString("email")
 
-                        title.text = "Hi " + response.getString("username")
+                    title.text = "Hi " + response.getString("username")
 
-                        userData.putString("token", token)
-                        userData.putString("server", "https://gitlab.com")
-                        userData.putString("username", response.getString("username"))
-                        userData.putString("email", response.getString("email"))
-                        userData.putString("bio", response.getString("bio"))
-                        userData.putString("location", response.getString("location"))
-                        userData.putInt("id", response.getInt("id"))
-                        userData.putString("avatarUrl", response.getString("avatar_url"))
-                        userData.putString("webUrl", response.getString("web_url"))
-
-
-                    }
-
-                    override fun onError(error: ANError?) {
-                        // handle error
-                    }
-
-                })
+                    userData.putString("token", token)
+                    userData.putString("server", "https://gitlab.com")
+                    userData.putString("username", response.getString("username"))
+                    userData.putString("email", response.getString("email"))
+                    userData.putString("bio", response.getString("bio"))
+                    userData.putString("location", response.getString("location"))
+                    userData.putInt("id", response.getInt("id"))
+                    userData.putString("avatarUrl", response.getString("avatar_url"))
+                    userData.putString("webUrl", response.getString("web_url"))
 
 
+                }
 
-
+                override fun onError(error: ANError?) {
+                    // handle error
+                }
+            })
 
         button.setOnClickListener {
 
@@ -87,19 +82,13 @@ class Second : AppCompatActivity() {
                 accountManager.addAccountExplicitly(account, token, userData)
             }
 
-
             val intent = Intent(this, MainAct::class.java)
             this.startActivity(intent)
-
         }
 
         button2.setOnClickListener {
-
             finish()
-
         }
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

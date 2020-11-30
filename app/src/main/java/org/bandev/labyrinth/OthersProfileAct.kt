@@ -1,6 +1,5 @@
 package org.bandev.labyrinth
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -9,7 +8,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ImageView
+import android.widget.ListView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
@@ -29,7 +31,7 @@ class OthersProfileAct : AppCompatActivity() {
 
     val userData: HashMap<String, String> = HashMap()
 
-    val profile = Profile()
+    private val profile: Profile = Profile()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +54,7 @@ class OthersProfileAct : AppCompatActivity() {
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         refresher.setOnRefreshListener {
-            var token = profile.getData("token")
+            val token = profile.getData("token")
             Api().getUserGroups(this, token)
             Api().getUserProjects(this, token)
             filldata()
@@ -60,15 +62,15 @@ class OthersProfileAct : AppCompatActivity() {
         }
     }
 
-    fun fillCommonData(data: String) {
+    private fun fillCommonData(data: String) {
         val dataJson = JSONObject(data)
         val avatar = findViewById<ImageView>(R.id.avatar)
         val usernameTextView: TextView = findViewById(R.id.usernmame)
         val emailTextView: TextView = findViewById(R.id.email)
 
         Picasso.get().load(dataJson.getString("avatar_url"))
-                .transform(RoundedTransform(90, 0))
-                .into(avatar)
+            .transform(RoundedTransform(90, 0))
+            .into(avatar)
 
         usernameTextView.text = dataJson.getString("username")
 
@@ -79,49 +81,46 @@ class OthersProfileAct : AppCompatActivity() {
         }
     }
 
-    fun getData(data: String) {
+    private fun getData(data: String) {
         val id = JSONObject(data).getInt("id")
         val token = User().getToken(applicationContext)
 
 
         AndroidNetworking.initialize(applicationContext)
         AndroidNetworking.get("https://gitlab.com/api/v4/users/$id?access_token=$token")
-                .build()
-                .getAsJSONObject(object : JSONObjectRequestListener {
-                    override fun onResponse(response: JSONObject) {
-                        userData.put("username", response.getString("username"))
-                        userData.put("avatar_url", response.getString("avatar_url"))
-                        userData.put("public_email", response.getString("public_email"))
-                        userData.put("bio", response.getString("bio"))
-                        userData.put("location", response.getString("location"))
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject) {
+                    userData["username"] = response.getString("username")
+                    userData["avatar_url"] = response.getString("avatar_url")
+                    userData["public_email"] = response.getString("public_email")
+                    userData["bio"] = response.getString("bio")
+                    userData["location"] = response.getString("location")
 
 
-                        filldata()
-                    }
+                    filldata()
+                }
 
-                    override fun onError(error: ANError?) {
+                override fun onError(error: ANError?) {
 
-                    }
-                })
+                }
+            })
     }
 
-    private fun filldata() {
+    internal fun filldata() {
 
 
         val baseProfile: View = findViewById(R.id.contentView)
 
 
-        if (userData.get("bio") == "" && userData.get("location") == "") {
+        if (userData["bio"] == "" && userData["location"] == "") {
             //Hide Extended Profile
-
 
             baseProfile.background = ContextCompat.getDrawable(this, R.drawable.toolbar_line)
 
             val param = baseProfile.layoutParams as ViewGroup.MarginLayoutParams
             param.setMargins(0, 0, 0, 20)
             baseProfile.layoutParams = param
-
-        } else {
 
         }
 
@@ -142,14 +141,14 @@ class OthersProfileAct : AppCompatActivity() {
         justifyListViewHeightBasedOnChildren(listView)
 
         listView.onItemClickListener =
-                AdapterView.OnItemClickListener { parent, view, position, id ->
-                    val selectedItem = parent.getItemAtPosition(position) as String
-                    val intent = Intent(this, GroupsAct::class.java)
-                    val bundle = Bundle()
-                    bundle.putString("data", selectedItem)
-                    intent.putExtras(bundle)
-                    startActivity(intent)
-                }
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
+                val intent = Intent(this, GroupsAct::class.java)
+                val bundle = Bundle()
+                bundle.putString("data", selectedItem)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
 
         val projectLists = getSharedPreferences("User-Projects", 0)
 
@@ -168,20 +167,20 @@ class OthersProfileAct : AppCompatActivity() {
         justifyListViewHeightBasedOnChildren(listViewProjects)
 
         listViewProjects.onItemClickListener =
-                AdapterView.OnItemClickListener { parent, view, position, id ->
-                    val selectedItem = parent.getItemAtPosition(position) as String
-                    val intent = Intent(this, ProjectAct::class.java)
-                    val bundle = Bundle()
-                    bundle.putString("data", selectedItem)
-                    intent.putExtras(bundle)
-                    startActivity(intent)
-                }
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
+                val intent = Intent(this, ProjectAct::class.java)
+                val bundle = Bundle()
+                bundle.putString("data", selectedItem)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.profile_menu, menu)
         val item = menu!!.findItem(R.id.settings)
-        item.setVisible(false)
+        item.isVisible = false
 
         return true
     }

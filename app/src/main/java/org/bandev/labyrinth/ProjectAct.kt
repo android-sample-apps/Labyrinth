@@ -1,6 +1,5 @@
 package org.bandev.labyrinth
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -42,7 +41,7 @@ class ProjectAct : AppCompatActivity() {
     private var branch = ""
     private var data = ""
 
-    var profile = Profile()
+    private var profile: Profile = Profile()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +66,7 @@ class ProjectAct : AppCompatActivity() {
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         refresher.setOnRefreshListener {
-            var token = profile.getData("token")
+            val token = profile.getData("token")
             Api().getUserGroups(this, token)
             Api().getUserProjects(this, token)
             filldata()
@@ -91,12 +90,12 @@ class ProjectAct : AppCompatActivity() {
         if (dataJson.getString("visibility") == "public") {
 
             Picasso.get().load(dataJson.getString("avatar_url")).transform(RoundedTransform(90, 0))
-                    .resize(400, 400)
-                    .into(avatar)
+                .resize(400, 400)
+                .into(avatar)
         } else {
             Picasso.get().load("file:///android_asset/lock.png").transform(RoundedTransform(90, 0))
-                    .resize(400, 400)
-                    .into(avatar)
+                .resize(400, 400)
+                .into(avatar)
         }
 
         url = dataJson.getString("web_url")
@@ -117,101 +116,101 @@ class ProjectAct : AppCompatActivity() {
         projectPath = dataJson.getString("path_with_namespace")
         webUrl = dataJson.getString("web_url")
         branch = dataJson.getString("default_branch")
-        var token = profile.getData("token")
+        val token = profile.getData("token")
 
         AndroidNetworking.initialize(this)
         AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId/repository/commits/$branch?access_token=$token")
-                .addHeaders("PRIVATE-TOKEN: $token")
-                .build()
-                .getAsJSONObject(object : JSONObjectRequestListener {
-                    override fun onResponse(objec: JSONObject) {
+            .addHeaders("PRIVATE-TOKEN: $token")
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(objec: JSONObject) {
 
-                        val commitTitle = findViewById<TextView>(R.id.name)
+                    val commitTitle = findViewById<TextView>(R.id.name)
 
-                        commitTitle.text = objec.getString("title")
-
-
-                        val commitTitle2 = findViewById<TextView>(R.id.visibility)
+                    commitTitle.text = objec.getString("title")
 
 
-                        commitTitle2.text = objec.getString("short_id")
-
-                        val avatar = findViewById<ImageView>(R.id.avatar_list)
-
-                        val em = objec.getString("committer_email")
+                    val commitTitle2 = findViewById<TextView>(R.id.visibility)
 
 
-                        val pipeline = objec.getString("status")
+                    commitTitle2.text = objec.getString("short_id")
 
-                        val pipelineStatus = findViewById<ImageView>(R.id.pipeline)
+                    val avatar = findViewById<ImageView>(R.id.avatar_list)
 
-                        when (pipeline) {
-                            "success" -> {
-                                pipelineStatus.setImageDrawable(
-                                        ContextCompat.getDrawable(
-                                                applicationContext,
-                                                R.drawable.ic_success
-                                        )
+                    val em = objec.getString("committer_email")
+
+
+                    val pipeline = objec.getString("status")
+
+                    val pipelineStatus = findViewById<ImageView>(R.id.pipeline)
+
+                    when (pipeline) {
+                        "success" -> {
+                            pipelineStatus.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    applicationContext,
+                                    R.drawable.ic_success
                                 )
-                            }
-                            "failed" -> {
-                                pipelineStatus.setImageDrawable(
-                                        ContextCompat.getDrawable(
-                                                applicationContext,
-                                                R.drawable.ic_failed
-                                        )
-                                )
-                            }
-                            "running" -> {
-                                pipelineStatus.setImageDrawable(
-                                        ContextCompat.getDrawable(
-                                                applicationContext,
-                                                R.drawable.ic_running
-                                        )
-                                )
-                            }
-                            "canceled" -> {
-                                pipelineStatus.setImageDrawable(
-                                        ContextCompat.getDrawable(
-                                                applicationContext,
-                                                R.drawable.ic_canceled
-                                        )
-                                )
-                            }
+                            )
                         }
-
-                        AndroidNetworking.initialize(applicationContext)
-                        AndroidNetworking.get("https://gitlab.com/api/v4/avatar?email=$em")
-                                .build()
-                                .getAsJSONObject(object : JSONObjectRequestListener {
-                                    override fun onResponse(response: JSONObject?) {
-
-                                        Picasso.get().load(
-                                                (response
-                                                        ?: return).getString("avatar_url")
-                                        )
-                                                .transform(CircleTransform()).into(avatar)
-                                        showAll()
-                                    }
-
-                                    override fun onError(error: ANError?) {
-                                        // handle error
-                                        Toast.makeText(
-                                                applicationContext,
-                                                "Error retrieving committer avatar!",
-                                                LENGTH_LONG
-                                        ).show()
-                                    }
-                                })
-
-                        Log.d("em", objec.getString("committer_email"))
+                        "failed" -> {
+                            pipelineStatus.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    applicationContext,
+                                    R.drawable.ic_failed
+                                )
+                            )
+                        }
+                        "running" -> {
+                            pipelineStatus.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    applicationContext,
+                                    R.drawable.ic_running
+                                )
+                            )
+                        }
+                        "canceled" -> {
+                            pipelineStatus.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    applicationContext,
+                                    R.drawable.ic_canceled
+                                )
+                            )
+                        }
                     }
 
-                    override fun onError(error: ANError?) {
-                        // handle error
-                        Toast.makeText(applicationContext, "error", LENGTH_LONG).show()
-                    }
-                })
+                    AndroidNetworking.initialize(applicationContext)
+                    AndroidNetworking.get("https://gitlab.com/api/v4/avatar?email=$em")
+                        .build()
+                        .getAsJSONObject(object : JSONObjectRequestListener {
+                            override fun onResponse(response: JSONObject?) {
+
+                                Picasso.get().load(
+                                    (response
+                                        ?: return).getString("avatar_url")
+                                )
+                                    .transform(CircleTransform()).into(avatar)
+                                showAll()
+                            }
+
+                            override fun onError(error: ANError?) {
+                                // handle error
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Error retrieving committer avatar!",
+                                    LENGTH_LONG
+                                ).show()
+                            }
+                        })
+
+                    Log.d("em", objec.getString("committer_email"))
+                }
+
+                override fun onError(error: ANError?) {
+                    // handle error
+                    Toast.makeText(applicationContext, "error", LENGTH_LONG).show()
+                }
+            })
 
         nameTextView.text = dataJson.getString("name")
         slugTextView.text = dataJson.getString("name_with_namespace")
@@ -239,17 +238,17 @@ class ProjectAct : AppCompatActivity() {
         infoListView.divider = null
 
         infoListView.onItemClickListener =
-                AdapterView.OnItemClickListener { parent, view, position, id ->
-                    val selectedItem = parent.getItemAtPosition(position) as String
-                    val obj = JSONObject(selectedItem)
-                    if (obj.getString("left") == "Issues") {
-                        val intent = Intent(this, IssuesList::class.java)
-                        val bundle = Bundle()
-                        bundle.putString("repo", data)
-                        intent.putExtras(bundle)
-                        startActivity(intent)
-                    }
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
+                val obj = JSONObject(selectedItem)
+                if (obj.getString("left") == "Issues") {
+                    val intent = Intent(this, IssuesList::class.java)
+                    val bundle = Bundle()
+                    bundle.putString("repo", data)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
                 }
+            }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -257,24 +256,24 @@ class ProjectAct : AppCompatActivity() {
         return true
     }
 
-    fun toggleStar(){
-        var token = profile.getData("token")
+    private fun toggleStar() {
+        val token = profile.getData("token")
         AndroidNetworking.initialize(this)
         AndroidNetworking.post("https://gitlab.com/api/v4/projects/$projectId/star")
-                .addHeaders("PRIVATE-TOKEN:", token)
-                .build()
-                .getAsJSONArray(object : JSONArrayRequestListener {
-                    override fun onResponse(response: JSONArray?) {
-                       //handle response
-                        Toast.makeText(applicationContext, "Starred", LENGTH_LONG).show()
-                    }
+            .addHeaders("PRIVATE-TOKEN:", token)
+            .build()
+            .getAsJSONArray(object : JSONArrayRequestListener {
+                override fun onResponse(response: JSONArray?) {
+                    //handle response
+                    Toast.makeText(applicationContext, "Starred", LENGTH_LONG).show()
+                }
 
-                    override fun onError(error: ANError?) {
-                        // handle error
-                        Toast.makeText(applicationContext, error.toString(), LENGTH_LONG).show()
-                    }
+                override fun onError(error: ANError?) {
+                    // handle error
+                    Toast.makeText(applicationContext, error.toString(), LENGTH_LONG).show()
+                }
 
-                })
+            })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

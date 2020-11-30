@@ -3,20 +3,17 @@ package org.bandev.labyrinth.adapters
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.ColorStateList
 import android.preference.PreferenceManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import com.google.android.material.chip.Chip
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.core.User
 import org.json.JSONObject
 
 class TodoAdapter(private val context: Activity, private val text: Array<String?>) :
-        BaseAdapter() {
+    BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater
@@ -29,11 +26,15 @@ class TodoAdapter(private val context: Activity, private val text: Array<String?
         name.text = jsonObj.getString("body")
         visibility.text = jsonObj.getString("state")
 
-        if(jsonObj.getString("target_type") == "Issue"){
-            if(jsonObj.getJSONObject("target").getJSONObject("assignee").getString("username") == User().getUsername(context)){
+        if (jsonObj.getString("target_type") == "Issue") {
+            if (jsonObj.getJSONObject("target").getJSONObject("assignee")
+                    .getString("username") == User().getUsername(context)
+            ) {
                 visibility.text = "Assigned by you"
-            }else{
-            visibility.text = "Assigned by" + jsonObj.getJSONObject("target").getJSONObject("assignee").getString("name")
+            } else {
+                visibility.text =
+                    "Assigned by" + jsonObj.getJSONObject("target").getJSONObject("assignee")
+                        .getString("name")
             }
         }
 

@@ -14,6 +14,6 @@ class Manager : Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder {
-        return authenticator!!.getIBinder()
+        return authenticator!!.iBinder
     }
 }

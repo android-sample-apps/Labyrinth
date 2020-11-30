@@ -1,6 +1,5 @@
 package org.bandev.labyrinth
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -26,7 +25,7 @@ import org.bandev.labyrinth.core.Api
 
 class ProfileAct : AppCompatActivity() {
 
-    var profile = Profile()
+    private var profile: Profile = Profile()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +47,7 @@ class ProfileAct : AppCompatActivity() {
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         refresher.setOnRefreshListener {
-            var token = profile.getData("token")
+            val token = profile.getData("token")
             Api().getUserGroups(this, token)
             Api().getUserProjects(this, token)
             filldata()
@@ -60,8 +59,8 @@ class ProfileAct : AppCompatActivity() {
 
         val avatar = findViewById<ImageView>(R.id.avatar)
         Picasso.get().load(profile.getData("avatarUrl")).resize(400, 400)
-                .transform(RoundedTransform(90, 0))
-                .into(avatar)
+            .transform(RoundedTransform(90, 0))
+            .into(avatar)
 
         val usernameTextView: TextView = findViewById(R.id.usernmame)
         val emailTextView: TextView = findViewById(R.id.email)
@@ -98,14 +97,14 @@ class ProfileAct : AppCompatActivity() {
         justifyListViewHeightBasedOnChildren(listView)
 
         listView.onItemClickListener =
-                AdapterView.OnItemClickListener { parent, view, position, id ->
-                    val selectedItem = parent.getItemAtPosition(position) as String
-                    val intent = Intent(this, GroupsAct::class.java)
-                    val bundle = Bundle()
-                    bundle.putString("data", selectedItem)
-                    intent.putExtras(bundle)
-                    startActivity(intent)
-                }
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
+                val intent = Intent(this, GroupsAct::class.java)
+                val bundle = Bundle()
+                bundle.putString("data", selectedItem)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
 
         val projectLists = getSharedPreferences("User-Projects", 0)
 
@@ -124,14 +123,14 @@ class ProfileAct : AppCompatActivity() {
         justifyListViewHeightBasedOnChildren(listViewProjects)
 
         listViewProjects.onItemClickListener =
-                AdapterView.OnItemClickListener { parent, view, position, id ->
-                    val selectedItem = parent.getItemAtPosition(position) as String
-                    val intent = Intent(this, ProjectAct::class.java)
-                    val bundle = Bundle()
-                    bundle.putString("data", selectedItem)
-                    intent.putExtras(bundle)
-                    startActivity(intent)
-                }
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
+                val intent = Intent(this, ProjectAct::class.java)
+                val bundle = Bundle()
+                bundle.putString("data", selectedItem)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -142,7 +141,7 @@ class ProfileAct : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.open -> {
-                var url = profile.getData("webUrl")
+                val url = profile.getData("webUrl")
                 val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
                 builder.setToolbarColor(Color.parseColor("#0067f4"))
                 val customTabsIntent: CustomTabsIntent = builder.build()

@@ -1,9 +1,6 @@
 package org.bandev.labyrinth.core
 
 import android.content.Context
-import android.content.res.Configuration
-import android.view.View
-import android.view.Window
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 
@@ -25,8 +22,7 @@ class Appearance {
 
     fun getAppTheme(context: Context?): String {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val theme = sharedPrefs.getString("theme", "sys").toString()
-        return theme
+        return sharedPrefs.getString("theme", "sys").toString()
     }
 
 }

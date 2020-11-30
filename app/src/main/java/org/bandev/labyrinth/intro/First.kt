@@ -1,7 +1,5 @@
 package org.bandev.labyrinth.intro
 
-import android.accounts.Account
-import android.accounts.AccountManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -9,12 +7,8 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONObjectRequestListener
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.core.Api
-import org.json.JSONObject
 
 class First : AppCompatActivity() {
 
@@ -39,7 +33,6 @@ class First : AppCompatActivity() {
             val intent = Intent(this, Second::class.java)
             intent.putExtra("token", token)
             this.startActivity(intent)
-
 
 
         }

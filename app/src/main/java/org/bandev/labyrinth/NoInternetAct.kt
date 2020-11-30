@@ -5,9 +5,6 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
-import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceManager
-import org.bandev.labyrinth.intro.First
 import java.util.concurrent.Executor
 
 class NoInternetAct : AppCompatActivity() {

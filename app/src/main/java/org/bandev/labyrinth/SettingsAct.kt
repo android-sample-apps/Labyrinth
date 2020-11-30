@@ -14,7 +14,6 @@ import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.core.Appearance
 import org.bandev.labyrinth.intro.First
 
-
 class SettingsAct : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,45 +28,46 @@ class SettingsAct : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.settings, SettingsFragment())
-                    .commit()
+                .beginTransaction()
+                .replace(R.id.settings, SettingsFragment())
+                .commit()
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
 
-        var profile: Profile = Profile()
+        private var profile: Profile = Profile()
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             profile.login(requireContext(), 0)
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
             val theme = findPreference<Preference>("theme") as ListPreference?
             theme?.onPreferenceChangeListener =
-                    Preference.OnPreferenceChangeListener { preference, newValue ->
-                        Appearance().setAppTheme(newValue.toString())
-                        true
-                    }
+                Preference.OnPreferenceChangeListener { preference, newValue ->
+                    Appearance().setAppTheme(newValue.toString())
+                    true
+                }
 
             val delete = findPreference("delete") as Preference?
             delete?.setOnPreferenceClickListener { preference ->
                 MaterialAlertDialogBuilder(requireContext())
-                        .setTitle("Are you sure?")
-                        .setMessage("Removing your account will erase all of your user data on this device, this means you will need an access token to login again.")
-                        .setNeutralButton("No") { dialog, which ->
+                    .setTitle("Are you sure?")
+                    .setMessage("Removing your account will erase all of your user data on this device, this means you will need an access token to login again.")
+                    .setNeutralButton("No") { dialog, which ->
 
-                        }
-                        .setPositiveButton("Yes") { dialog, which ->
-                            profile.delete()
-                            val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-                            val editor = preferences.edit()
-                            editor.clear()
-                            editor.commit()
-                            val intent = Intent(requireContext(), First::class.java)
-                            this.startActivity(intent)
-                        }
-                        .show()
+                    }
+                    .setPositiveButton("Yes") { dialog, which ->
+                        profile.delete()
+                        val preferences: SharedPreferences =
+                            PreferenceManager.getDefaultSharedPreferences(requireContext())
+                        val editor = preferences.edit()
+                        editor.clear()
+                        editor.apply()
+                        val intent = Intent(requireContext(), First::class.java)
+                        this.startActivity(intent)
+                    }
+                    .show()
                 true
             }
         }

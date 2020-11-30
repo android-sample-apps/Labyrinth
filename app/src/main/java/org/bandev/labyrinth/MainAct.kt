@@ -3,6 +3,7 @@ package org.bandev.labyrinth
 
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,7 @@ import java.util.regex.Pattern
 
 class MainAct : AppCompatActivity() {
 
-    var profile = Profile()
+    private var profile: Profile = Profile()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +37,13 @@ class MainAct : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         val navController = findNavController(R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration(setOf(R.id.navigation_notifications, R.id.navigation_dashboard, R.id.navigation_home))
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_notifications,
+                R.id.navigation_dashboard,
+                R.id.navigation_home
+            )
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         //Set 'flag' to whatever fragment is open
@@ -57,8 +64,7 @@ class MainAct : AppCompatActivity() {
 
         //Dark Mode Sensing
         var dark = false
-        val currentNightMode = Configuration().uiMode and Configuration.UI_MODE_NIGHT_MASK
-        when (currentNightMode) {
+        when (Configuration().uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_NO -> {
             } // Night mode is not active, we're using the light theme
             Configuration.UI_MODE_NIGHT_YES -> {
@@ -74,7 +80,7 @@ class MainAct : AppCompatActivity() {
                     View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                             or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
         }
-        window.navigationBarColor = resources.getColor(android.R.color.transparent)
+        window.navigationBarColor = Color.TRANSPARENT
 
         //Bottom Insets
         view.setOnApplyWindowInsetsListener { v, insets ->
@@ -85,16 +91,13 @@ class MainAct : AppCompatActivity() {
         //Defines avatar, sets the image and handles a click
         val avatar = findViewById<ImageView>(R.id.avatar)
         Picasso.get().load(profile.getData("avatarUrl")).transform(CircleTransform())
-                .into(avatar)
+            .into(avatar)
         avatar.setOnClickListener {
             val intent = Intent(this, ProfileAct::class.java)
             this.startActivity(intent)
         }
 
         navView.setupWithNavController(navController)
-
-
-
     }
 
     private fun Toolbar.setTitle(label: CharSequence?, textView: TextView, arguments: Bundle?) {
@@ -116,13 +119,5 @@ class MainAct : AppCompatActivity() {
             setTitle("")
             textView.text = title
         }
-
-
-
-        fun setFlag(input: String) {
-
-        }
     }
-
-
 }

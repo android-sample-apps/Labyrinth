@@ -12,11 +12,10 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.CircleTransform
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.RoundedTransform
 import org.json.JSONObject
 
 class UserAdapter(private val context: Activity, private val text: Array<String?>) :
-        BaseAdapter() {
+    BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater
