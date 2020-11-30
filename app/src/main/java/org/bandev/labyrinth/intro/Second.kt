@@ -1,5 +1,7 @@
 package org.bandev.labyrinth.intro
 
+import android.accounts.Account
+import android.accounts.AccountManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -8,10 +10,15 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.MainAct
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.RoundedTransform
+import org.bandev.labyrinth.core.User
+import org.json.JSONObject
 
 class Second : AppCompatActivity() {
 
@@ -22,24 +29,64 @@ class Second : AppCompatActivity() {
         val button: Button = findViewById(R.id.button)
         val button2: Button = findViewById(R.id.button2)
 
+        var userData = Bundle()
+
         val title = findViewById<TextView>(R.id.title)
 
-        val pref = getSharedPreferences("User", 0)
-        val avatar = findViewById<ImageView>(R.id.avatar)
-        Picasso.get().load(pref?.getString("avatarUrl", "null")).transform(RoundedTransform(30, 0))
-                .into(avatar)
+        var token = intent.extras!!.get("token").toString()
 
-        val usernameTextView: TextView = findViewById(R.id.usernmame)
-        val emailTextView: TextView = findViewById(R.id.email)
+        AndroidNetworking.initialize(this)
+        AndroidNetworking.get("https://gitlab.com/api/v4/user?access_token=$token")
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject?) {
 
-        usernameTextView.text = pref.getString("username", "null")
-        emailTextView.text = pref.getString("email", "null")
 
-        title.text = "Hi " + pref.getString("username", "null")
+                        var avatar = findViewById<ImageView>(R.id.avatar)
+
+                        Picasso.get().load(response!!.getString("avatar_url")).transform(RoundedTransform(30, 0))
+                                .into(avatar)
+
+                        val usernameTextView: TextView = findViewById(R.id.usernmame)
+                        val emailTextView: TextView = findViewById(R.id.email)
+
+                        usernameTextView.text = response.getString("username")
+                        emailTextView.text = response.getString("email")
+
+                        title.text = "Hi " + response.getString("username")
+
+                        userData.putString("token", token)
+                        userData.putString("server", "https://gitlab.com")
+                        userData.putString("username", response.getString("username"))
+                        userData.putString("email", response.getString("email"))
+                        userData.putString("bio", response.getString("bio"))
+                        userData.putString("location", response.getString("location"))
+                        userData.putInt("id", response.getInt("id"))
+                        userData.putString("avatarUrl", response.getString("avatar_url"))
+                        userData.putString("webUrl", response.getString("web_url"))
+
+
+                    }
+
+                    override fun onError(error: ANError?) {
+                        // handle error
+                    }
+
+                })
+
+
 
 
 
         button.setOnClickListener {
+
+            val accountManager: AccountManager = AccountManager.get(this)
+            val username = userData.getString("username")
+
+            Account(username, "org.bandev.labyrinth.account.authenticator").also { account ->
+                accountManager.addAccountExplicitly(account, token, userData)
+            }
+
 
             val intent = Intent(this, MainAct::class.java)
             this.startActivity(intent)

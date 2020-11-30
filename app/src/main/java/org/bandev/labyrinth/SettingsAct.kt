@@ -1,16 +1,19 @@
 package org.bandev.labyrinth
 
-import android.content.res.Configuration
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.core.Appearance
+import org.bandev.labyrinth.intro.First
+
 
 class SettingsAct : AppCompatActivity() {
 
@@ -34,15 +37,39 @@ class SettingsAct : AppCompatActivity() {
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
+
+        var profile: Profile = Profile()
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            profile.login(requireContext(), 0)
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
             val theme = findPreference<Preference>("theme") as ListPreference?
-
             theme?.onPreferenceChangeListener =
                     Preference.OnPreferenceChangeListener { preference, newValue ->
                         Appearance().setAppTheme(newValue.toString())
                         true
                     }
+
+            val delete = findPreference("delete") as Preference?
+            delete?.setOnPreferenceClickListener { preference ->
+                MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Are you sure?")
+                        .setMessage("Removing your account will erase all of your user data on this device, this means you will need an access token to login again.")
+                        .setNeutralButton("No") { dialog, which ->
+
+                        }
+                        .setPositiveButton("Yes") { dialog, which ->
+                            profile.delete()
+                            val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+                            val editor = preferences.edit()
+                            editor.clear()
+                            editor.commit()
+                            val intent = Intent(requireContext(), First::class.java)
+                            this.startActivity(intent)
+                        }
+                        .show()
+                true
+            }
         }
     }
 

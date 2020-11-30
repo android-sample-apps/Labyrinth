@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -25,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.adapters.IssueAdapter
 import org.bandev.labyrinth.adapters.UserAdapter
@@ -41,10 +43,17 @@ class GroupsAct : AppCompatActivity() {
     var data = ""
     var listView: NonScrollListView? = null
 
-    @SuppressLint("ResourceAsColor")
+    lateinit var members: View
+    lateinit var projects: View
+    lateinit var progress: ProgressBar
+
+    var profile = Profile()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.group_act)
+
+        profile.login(this, 0)
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -53,13 +62,16 @@ class GroupsAct : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
+        members = findViewById(R.id.contentView3)
+        projects = findViewById(R.id.contentView4)
+        progress = findViewById(R.id.progressBar)
+
         filldata()
 
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         refresher.setOnRefreshListener {
-            val pref = getSharedPreferences("Settings", 0)
-            val token = pref.getString("token", "null").toString()
+            val token = profile.getData("token")
             Api().getUserGroups(this, token)
             Api().getUserProjects(this, token)
             filldata()
@@ -68,16 +80,15 @@ class GroupsAct : AppCompatActivity() {
     }
 
     private fun filldata() {
+        hideAll()
         data = intent.extras?.getString("data").toString()
 
         val dataJson = JSONObject(data)
 
-        val pref = getSharedPreferences("User", 0)
-
         val avatar = findViewById<ImageView>(R.id.avatar)
         Picasso.get().load(dataJson?.getString("avatar_url")).resize(400, 400)
-            .transform(RoundedTransform(90, 0))
-            .into(avatar)
+                .transform(RoundedTransform(90, 0))
+                .into(avatar)
 
         val usernameTextView: TextView = findViewById(R.id.usernmame)
         val emailTextView: TextView = findViewById(R.id.email)
@@ -101,64 +112,100 @@ class GroupsAct : AppCompatActivity() {
 
         //Show group members
 
-        val token = User().getToken(this)
+        var token = profile.getData("token")
         val id = dataJson?.getInt("id")
 
 
         listView = findViewById<NonScrollListView>(R.id.groupsList)
+        listView!!.isClickable = true
+        listView!!.isFocusable = true
         val list: MutableList<String?> = mutableListOf()
 
 
         AndroidNetworking.initialize(applicationContext)
         AndroidNetworking.get("https://gitlab.com/api/v4/groups/$id/members?access_token=$token")
-            .setTag("getUsers")
-            .build()
-            .getAsJSONArray(object : JSONArrayRequestListener {
-                override fun onResponse(response: JSONArray?) {
-                    var index = 0
-                    while (index != response?.length()) {
-                        val string = response?.get(index)?.toString().toString()
-                        list.add(string)
-                        index++
+                .setTag("getUsers")
+                .build()
+                .getAsJSONArray(object : JSONArrayRequestListener {
+                    override fun onResponse(response: JSONArray?) {
+                        var index = 0
+                        while (index != response?.length()) {
+                            val string = response?.get(index)?.toString().toString()
+                            list.add(string)
+                            index++
 
+                        }
+                        val adapter = UserAdapter(this@GroupsAct, list.toTypedArray())
+                        (listView ?: return).adapter = adapter
+                        (listView ?: return).divider = null
+                        listView!!.isClickable = true
+
+                        listView!!.onItemClickListener =
+                                AdapterView.OnItemClickListener { parent, view, position, id ->
+                                    val selectedItem = parent.getItemAtPosition(position) as String
+                                    val json = JSONObject(selectedItem)
+                                    if (json.getString("username") == profile.getData("username")) {
+                                        val intent = Intent(applicationContext, ProfileAct::class.java)
+                                        val bundle = Bundle()
+                                        bundle.putString("data", selectedItem)
+                                        intent.putExtras(bundle)
+                                        startActivity(intent)
+                                    } else {
+                                        val intent = Intent(applicationContext, OthersProfileAct::class.java)
+                                        val bundle = Bundle()
+                                        bundle.putString("data", selectedItem)
+                                        intent.putExtras(bundle)
+                                        startActivity(intent)
+                                    }
+
+
+                                }
                     }
-                    val adapter = UserAdapter(this@GroupsAct, list.toTypedArray())
-                    (listView ?: return).adapter = adapter
-                    (listView ?: return).divider = null
-                }
 
-                override fun onError(error: ANError?) {
-                    // handle error
-                }
+                    override fun onError(error: ANError?) {
+                        // handle error
+                    }
 
-            })
+                })
 
-        val listView2 = findViewById<NonScrollListView>(R.id.groupsList)
+        val listView2 = findViewById<NonScrollListView>(R.id.projectsList2)
         val list2: MutableList<String?> = mutableListOf()
 
         AndroidNetworking.initialize(applicationContext)
         AndroidNetworking.get("https://gitlab.com/api/v4/groups/$id/projects?access_token=$token")
-            .setTag("getUsers")
-            .build()
-            .getAsJSONArray(object : JSONArrayRequestListener {
-                override fun onResponse(response: JSONArray?) {
-                    var index = 0
-                    while (index != response?.length()) {
-                        val string = response?.get(index)?.toString().toString()
-                        list2.add(string)
-                        index++
+                .setTag("getUsers")
+                .build()
+                .getAsJSONArray(object : JSONArrayRequestListener {
+                    override fun onResponse(response: JSONArray?) {
+                        var index = 0
+                        while (index != response?.length()) {
+                            val string = response?.get(index)?.toString().toString()
+                            list2.add(string)
+                            index++
 
+                        }
+                        val adapter2 = GroupOrProjectListAdapter(this@GroupsAct, list2.toTypedArray())
+                        (listView2 ?: return).adapter = adapter2
+                        (listView2 ?: return).divider = null
+
+                        listView2.onItemClickListener =
+                                AdapterView.OnItemClickListener { parent, view, position, id ->
+                                    val selectedItem = parent.getItemAtPosition(position) as String
+                                    val intent = Intent(applicationContext, ProjectAct::class.java)
+                                    val bundle = Bundle()
+                                    bundle.putString("data", selectedItem)
+                                    intent.putExtras(bundle)
+                                    startActivity(intent)
+                                }
+
+                        showAll()
                     }
-                    val adapter2 = GroupOrProjectListAdapter(this@GroupsAct, list2.toTypedArray())
-                    (listView2 ?: return).adapter = adapter2
-                    (listView2  ?: return).divider = null
-                }
 
-                override fun onError(error: ANError?) {
-                    // handle error
-                }
+                    override fun onError(error: ANError?) {
+                        // handle error
+                    }
 
-            })
+                })
 
 
     }
@@ -171,9 +218,7 @@ class GroupsAct : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.open -> {
-                val pref = getSharedPreferences("User", 0)
-
-                val url = pref!!.getString("webUrl", "https://gitlab.com")
+                var url = profile.getData("webUrl")
                 val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
                 builder.setToolbarColor(Color.parseColor("#0067f4"))
                 val customTabsIntent: CustomTabsIntent = builder.build()
@@ -208,5 +253,17 @@ class GroupsAct : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
+    }
+
+    fun hideAll() {
+        progress.isGone = false
+        members.isGone = true
+        projects.isGone = true
+    }
+
+    fun showAll() {
+        progress.isGone = true
+        members.isGone = false
+        projects.isGone = false
     }
 }

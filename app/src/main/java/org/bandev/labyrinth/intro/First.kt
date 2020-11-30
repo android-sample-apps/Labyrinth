@@ -1,5 +1,7 @@
 package org.bandev.labyrinth.intro
 
+import android.accounts.Account
+import android.accounts.AccountManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -34,31 +36,10 @@ class First : AppCompatActivity() {
 
             val token = name.text.toString()
 
-            AndroidNetworking.initialize(this)
-            AndroidNetworking.get("https://gitlab.com/api/v4/user?access_token=$token")
-                    .build()
-                    .getAsJSONObject(object : JSONObjectRequestListener {
-                        override fun onResponse(response: JSONObject?) {
-                            val pref = getSharedPreferences("User", 0)
-                            val editor = pref.edit()
-                            editor.putString("token", name.text.toString())
-                            editor.putString("username", (response ?: return).getString("username"))
-                            editor.putString("email", response.getString("email"))
-                            editor.putString("bio", response.getString("bio"))
-                            editor.putString("location", response.getString("location"))
-                            editor.putInt("id", response.getInt("id"))
-                            editor.putString("avatarUrl", response.getString("avatar_url"))
-                            editor.putString("webUrl", response.getString("web_url"))
-                            editor.apply()
+            val intent = Intent(this, Second::class.java)
+            intent.putExtra("token", token)
+            this.startActivity(intent)
 
-                            moveOn()
-                        }
-
-                        override fun onError(error: ANError?) {
-                            // handle error
-                        }
-
-                    })
 
 
         }

@@ -22,4 +22,13 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="Account &amp; Sync">
+
+        <Preference
+            app:key="delete"
+            app:summary="Remove your GitLab account from this device"
+            app:title="Remove Account" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

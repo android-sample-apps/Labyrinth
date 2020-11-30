@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
     <application
         android:allowBackup="true"
@@ -14,11 +16,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Labyrinth"
         android:fullBackupContent="@xml/backup_descriptor">
+        <service
+            android:name=".account.Manager"
+            android:exported="false"
+            android:process=":authentication">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator"/>
+        </service>
         <activity
             android:name=".SettingsAct"
             android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
             android:name=".ProfileAct"
+            android:theme="@style/Theme.Labyrinth.NoActionBar" />
+        <activity
+            android:name=".OthersProfileAct"
             android:theme="@style/Theme.Labyrinth.NoActionBar" />
         <activity
             android:name=".GroupsAct"

@@ -15,6 +15,7 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.mukesh.MarkdownView
 import org.bandev.labyrinth.R
+import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.core.Api
 import org.json.JSONObject
 
@@ -25,6 +26,7 @@ class ReadMe : AppCompatActivity() {
     var projectPath: String = ""
     var webUrl: String = ""
 
+    var profile = Profile()
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +36,7 @@ class ReadMe : AppCompatActivity() {
         projectId = intent.getIntExtra("projectId", 0)
         projectPath = intent.getStringExtra("projectPath").toString()
         webUrl = intent.getStringExtra("webUrl").toString()
-        token = Api().getUserToken(this)
+        token = profile.getData("token")
 
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)

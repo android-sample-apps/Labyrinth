@@ -9,32 +9,33 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.core.Api
+import org.bandev.labyrinth.core.User
+import org.json.JSONObject
 
 
-class ProfileAct : AppCompatActivity() {
+class OthersProfileAct : AppCompatActivity() {
 
-    var profile = Profile()
+    val userData: HashMap<String, String> = HashMap()
+
+    val profile = Profile()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.othersprofile_act)
 
-        //Login user
         profile.login(this, 0)
-
-        setContentView(R.layout.profile_act)
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -43,7 +44,10 @@ class ProfileAct : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
-        filldata()
+        fillCommonData(intent.extras?.getString("data").toString())
+
+        getData(intent.extras?.getString("data").toString())
+
 
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
@@ -56,29 +60,69 @@ class ProfileAct : AppCompatActivity() {
         }
     }
 
-    private fun filldata() {
-
+    fun fillCommonData(data: String) {
+        val dataJson = JSONObject(data)
         val avatar = findViewById<ImageView>(R.id.avatar)
-        Picasso.get().load(profile.getData("avatarUrl")).resize(400, 400)
+        val usernameTextView: TextView = findViewById(R.id.usernmame)
+        val emailTextView: TextView = findViewById(R.id.email)
+
+        Picasso.get().load(dataJson.getString("avatar_url"))
                 .transform(RoundedTransform(90, 0))
                 .into(avatar)
 
-        val usernameTextView: TextView = findViewById(R.id.usernmame)
-        val emailTextView: TextView = findViewById(R.id.email)
-        val descriptionTextView: TextView = findViewById(R.id.description)
-        val locationTextView: TextView = findViewById(R.id.location)
+        usernameTextView.text = dataJson.getString("username")
 
-        usernameTextView.text = profile.getData("username")
-        emailTextView.text = profile.getData("email")
-        if (profile.getData("bio") == "") {
-            descriptionTextView.isGone = true
+        if (dataJson.has("email")) {
+            emailTextView.text = dataJson.getString("email")
         } else {
-            descriptionTextView.text = profile.getData("bio")
+            emailTextView.text = "No public email"
         }
-        if (profile.getData("location") == "") {
-            locationTextView.isGone = true
+    }
+
+    fun getData(data: String) {
+        val id = JSONObject(data).getInt("id")
+        val token = User().getToken(applicationContext)
+
+
+        AndroidNetworking.initialize(applicationContext)
+        AndroidNetworking.get("https://gitlab.com/api/v4/users/$id?access_token=$token")
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject) {
+                        userData.put("username", response.getString("username"))
+                        userData.put("avatar_url", response.getString("avatar_url"))
+                        userData.put("public_email", response.getString("public_email"))
+                        userData.put("bio", response.getString("bio"))
+                        userData.put("location", response.getString("location"))
+
+
+                        filldata()
+                    }
+
+                    override fun onError(error: ANError?) {
+
+                    }
+                })
+    }
+
+    private fun filldata() {
+
+
+        val baseProfile: View = findViewById(R.id.contentView)
+
+
+        if (userData.get("bio") == "" && userData.get("location") == "") {
+            //Hide Extended Profile
+
+
+            baseProfile.background = ContextCompat.getDrawable(this, R.drawable.toolbar_line)
+
+            val param = baseProfile.layoutParams as ViewGroup.MarginLayoutParams
+            param.setMargins(0, 0, 0, 20)
+            baseProfile.layoutParams = param
+
         } else {
-            locationTextView.text = profile.getData("location")
+
         }
 
         val userGroups = getSharedPreferences("User-Groups", 0)
@@ -136,13 +180,19 @@ class ProfileAct : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.profile_menu, menu)
+        val item = menu!!.findItem(R.id.settings)
+        item.setVisible(false)
+
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.open -> {
-                var url = profile.getData("webUrl")
+
+                //FIX THIS PLS
+
+                val url = "https://gitlab.com"
                 val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
                 builder.setToolbarColor(Color.parseColor("#0067f4"))
                 val customTabsIntent: CustomTabsIntent = builder.build()

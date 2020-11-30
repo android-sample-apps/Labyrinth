@@ -16,6 +16,7 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import org.bandev.labyrinth.R
+import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.IssueAdapter
 import org.bandev.labyrinth.core.Api
 import org.json.JSONArray
@@ -31,11 +32,15 @@ class IssuesList : AppCompatActivity() {
     var listView2: ListView? = null
     private var progressBar: ProgressBar? = null
 
+    var profile = Profile()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.issues_list_act)
 
-        token = Api().getUserToken(this)
+        profile.login(this, 0)
+
+        token = profile.getData("token")
 
         listView = findViewById(R.id.listView)
         listView2 = findViewById(R.id.listView2)

@@ -1,5 +1,7 @@
 package org.bandev.labyrinth
 
+import android.accounts.Account
+import android.accounts.AccountManager
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
@@ -12,6 +14,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
+import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.core.Appearance
 import org.bandev.labyrinth.intro.First
 import java.util.concurrent.Executor
@@ -23,10 +26,19 @@ class Splash : AppCompatActivity() {
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
+    lateinit var account: Account
+    lateinit var accountManager: AccountManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val pref = getSharedPreferences("Settings", 0)
+        var hasAccount = false
+
+        accountManager = AccountManager.get(this)
+        val accounts: Array<out Account> = accountManager.getAccountsByType("org.bandev.labyrinth.account.authenticator")
+        if(!accounts.isEmpty()){
+            hasAccount = true
+        }
 
         Appearance().setAppTheme(Appearance().getAppTheme(this))
 
@@ -86,7 +98,7 @@ class Splash : AppCompatActivity() {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         val biometrics = sharedPrefs.getBoolean("biometric", false)
 
-        if (pref.getString("token", "null") != "null") {
+        if (hasAccount) {
             if (biometrics) {
                 biometricPrompt.authenticate(promptInfo)
             } else {

@@ -28,7 +28,15 @@ class UserAdapter(private val context: Activity, private val text: Array<String?
 
         val jsonObj = JSONObject(text[p0])
         name.text = jsonObj.getString("username")
-        visibility.text = jsonObj.getInt("access_level").toString()
+        val accessLevel = when (jsonObj.getInt("access_level")) {
+            10 -> "Guest"
+            20 -> "Reporter"
+            30 -> "Developer"
+            40 -> "Maintainer"
+            50 -> "Owner"
+            else -> "No Access"
+        }
+        visibility.text = accessLevel
         Picasso.get().load(jsonObj.getString("avatar_url")).transform(CircleTransform())
             .into(avatar)
         return rowView

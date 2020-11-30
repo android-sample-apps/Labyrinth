@@ -22,6 +22,7 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.squareup.picasso.Picasso
+import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Api
 import org.bandev.labyrinth.projects.IssuesList
@@ -41,7 +42,8 @@ class ProjectAct : AppCompatActivity() {
     private var branch = ""
     private var data = ""
 
-    @SuppressLint("ResourceAsColor")
+    var profile = Profile()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.project_act)
@@ -49,6 +51,8 @@ class ProjectAct : AppCompatActivity() {
         latestCommit = findViewById(R.id.contentView3)
         progressBar = findViewById(R.id.progressBar)
         infoBar = findViewById(R.id.contentView4)
+
+        profile.login(this, 0)
 
         filldata()
 
@@ -63,8 +67,7 @@ class ProjectAct : AppCompatActivity() {
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         refresher.setOnRefreshListener {
-            val pref = getSharedPreferences("Settings", 0)
-            val token = pref.getString("token", "null").toString()
+            var token = profile.getData("token")
             Api().getUserGroups(this, token)
             Api().getUserProjects(this, token)
             filldata()
@@ -114,8 +117,7 @@ class ProjectAct : AppCompatActivity() {
         projectPath = dataJson.getString("path_with_namespace")
         webUrl = dataJson.getString("web_url")
         branch = dataJson.getString("default_branch")
-        val pref = getSharedPreferences("User", 0)
-        val token = pref.getString("token", "no")
+        var token = profile.getData("token")
 
         AndroidNetworking.initialize(this)
         AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId/repository/commits/$branch?access_token=$token")
@@ -256,8 +258,7 @@ class ProjectAct : AppCompatActivity() {
     }
 
     fun toggleStar(){
-        val pref = getSharedPreferences("User", 0)
-        val token = pref.getString("token", "no")
+        var token = profile.getData("token")
         AndroidNetworking.initialize(this)
         AndroidNetworking.post("https://gitlab.com/api/v4/projects/$projectId/star")
                 .addHeaders("PRIVATE-TOKEN:", token)

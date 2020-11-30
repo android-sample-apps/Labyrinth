@@ -43,6 +43,10 @@
             android:id="@+id/groupsList"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:drawSelectorOnTop="true"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="@+id/contentView3"
@@ -80,10 +84,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/contentView4" />
 
-        <ListView
-            android:id="@+id/projectsList"
+        <org.bandev.labyrinth.widgets.NonScrollListView
+            android:id="@+id/projectsList2"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="@+id/contentView4"
