@@ -4,7 +4,6 @@
     <PreferenceCategory app:title="Appearance">
         <ListPreference
             android:animateLayoutChanges="true"
-            android:defaultValue="false"
             android:entries="@array/theme_entries"
             android:entryValues="@array/theme_values"
             android:key="theme"
@@ -15,7 +14,6 @@
     <PreferenceCategory app:title="Security">
 
         <SwitchPreferenceCompat
-            android:contentDescription="Require biometric authentication to open app"
             app:key="biometric"
             app:summary="Require biometric authentication to open app"
             app:title="Biometric Login" />
@@ -23,6 +21,16 @@
     </PreferenceCategory>
 
     <PreferenceCategory app:title="Account &amp; Sync">
+
+        <SwitchPreferenceCompat
+            app:key="async"
+            app:summary="Automatically sync your account with GitLab"
+            app:title="Auto Sync" />
+
+        <Preference
+            app:key="sync"
+            app:summary="Sync your account with GitLab manually"
+            app:title="Sync Manually" />
 
         <Preference
             app:key="delete"

@@ -13,27 +13,18 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <!-- Customize your theme here. -->
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Disable AppBar cus ToolBar is cool -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Splash" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="Theme.Labyrinth.Splash" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
-
-    <style name="Theme.Labyrinth.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="MainActivity" parent="Theme.Labyrinth">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:navigationBarColor">@color/background</item>
-    </style>
-
-    <style name="Theme.Labyrinth.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

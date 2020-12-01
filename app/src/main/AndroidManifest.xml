@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
 
     <application
         android:allowBackup="true"
@@ -16,6 +18,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Labyrinth"
         android:fullBackupContent="@xml/backup_descriptor">
+
+        <provider
+            android:name="org.bandev.labyrinth.account.Provider"
+            android:authorities="org.bandev.labyrinth.account.provider"
+            android:label="@string/sync_title"
+            android:exported="false"
+            android:syncable="true"/>
+        <service
+            android:name="org.bandev.labyrinth.account.SyncService"
+            android:exported="true"
+            android:syncable="true"
+            android:process=":sync">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
         <service
             android:name=".account.Manager"
             android:exported="false"
@@ -28,39 +48,32 @@
                 android:resource="@xml/authenticator"/>
         </service>
         <activity
-            android:name=".SettingsAct"
-            android:theme="@style/Theme.Labyrinth.NoActionBar" />
+            android:name=".SettingsAct" >
+        </activity>
         <activity
-            android:name=".ProfileAct"
-            android:theme="@style/Theme.Labyrinth.NoActionBar" />
+            android:name=".ProfileAct" />
         <activity
-            android:name=".OthersProfileAct"
-            android:theme="@style/Theme.Labyrinth.NoActionBar" />
+            android:name=".OthersProfileAct" />
         <activity
-            android:name=".GroupsAct"
-            android:theme="@style/Theme.Labyrinth.NoActionBar" />
+            android:name=".GroupsAct" />
         <activity
-            android:name=".projects.ReadMe"
-            android:theme="@style/Theme.Labyrinth.NoActionBar" />
+            android:name=".projects.ReadMe" />
         <activity
-            android:name=".ProjectAct"
-            android:theme="@style/Theme.Labyrinth.NoActionBar" />
+            android:name=".ProjectAct" />
         <activity
             android:name=".MainAct"
-            android:theme="@style/Theme.Labyrinth.NoActionBar" />
+            android:theme="@style/Theme.Labyrinth"/>
         <activity
-            android:name=".projects.IssuesList"
-            android:theme="@style/Theme.Labyrinth.NoActionBar" />
+            android:name=".projects.IssuesList" />
         <activity
             android:name=".intro.First"
             android:windowSoftInputMode="adjustResize"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Labyrinth.NoActionBar" />
+            android:label="@string/app_name" />
         <activity
             android:name=".Splash"
             android:windowSoftInputMode="adjustResize"
             android:label="@string/app_name"
-            android:theme="@style/Splash">
+            android:theme="@style/Theme.Labyrinth.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -70,20 +83,18 @@
         <activity
             android:name=".intro.Second"
             android:windowSoftInputMode="adjustResize"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Labyrinth.NoActionBar">
+            android:label="@string/app_name">
         </activity>
 
         <activity
             android:name=".BiometricFailAct"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.Labyrinth.NoActionBar">
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
             android:name=".NoInternetAct"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.Labyrinth.NoActionBar">
+            android:windowSoftInputMode="adjustResize">
         </activity>
+
     </application>
 
 </manifest>

@@ -2,7 +2,9 @@ package org.bandev.labyrinth.intro
 
 import android.accounts.Account
 import android.accounts.AccountManager
+import android.content.Context
 import android.content.Intent
+import android.media.tv.TvContract.AUTHORITY
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,6 +12,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
@@ -17,9 +20,12 @@ import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.MainAct
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.RoundedTransform
+import org.bandev.labyrinth.core.Api
 import org.json.JSONObject
 
 class Second : AppCompatActivity() {
+
+    var username = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +35,8 @@ class Second : AppCompatActivity() {
         val button2: Button = findViewById(R.id.button2)
 
         val userData = Bundle()
+
+
 
         val title = findViewById<TextView>(R.id.title)
 
@@ -76,11 +84,15 @@ class Second : AppCompatActivity() {
         button.setOnClickListener {
 
             val accountManager: AccountManager = AccountManager.get(this)
-            val username = userData.getString("username")
+            username = userData.getString("username").toString()
 
             Account(username, "org.bandev.labyrinth.account.authenticator").also { account ->
                 accountManager.addAccountExplicitly(account, token, userData)
             }
+
+            Api().getUserGroups(this, token)
+            Api().getUserProjects(this, token)
+            Api().getUserTodos(this, token)
 
             val intent = Intent(this, MainAct::class.java)
             this.startActivity(intent)
