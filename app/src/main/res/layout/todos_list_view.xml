@@ -12,7 +12,6 @@
         android:layout_marginStart="35dp"
         android:layout_marginTop="10dp"
         android:drawablePadding="5dp"
-        android:paddingBottom="5dp"
         android:text="Loading"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="17sp"

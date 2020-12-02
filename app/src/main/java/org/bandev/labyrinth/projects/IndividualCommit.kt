@@ -1,5 +1,7 @@
 package org.bandev.labyrinth.projects
 
+import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -9,18 +11,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import coil.load
-import coil.transform.RoundedCornersTransformation
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
+import com.squareup.picasso.Picasso
+import org.bandev.labyrinth.GroupsAct
 import org.bandev.labyrinth.R
+import org.bandev.labyrinth.RoundedTransform
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.adapters.IssueAdapter
+import org.bandev.labyrinth.adapters.CommitAdapterVague
 import org.json.JSONArray
 import org.json.JSONObject
 
-class IssuesList : AppCompatActivity() {
+class IndividualCommit : AppCompatActivity() {
 
     var issueArryIn: JSONArray? = null
     private var repoObjIn: JSONObject? = null
@@ -34,14 +37,12 @@ class IssuesList : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.issues_list_act)
+        setContentView(R.layout.activity_commits_list)
 
         profile.login(this, 0)
-
         token = profile.getData("token")
 
         listView = findViewById(R.id.listView)
-        listView2 = findViewById(R.id.listView2)
         progressBar = findViewById(R.id.progressBar2)
 
         repoObjIn = JSONObject(intent.getStringExtra("repo").toString())
@@ -54,21 +55,11 @@ class IssuesList : AppCompatActivity() {
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         val title: TextView = findViewById(R.id.title)
-        title.text = "Issues"
+        title.text = "Commits"
 
         val avatar: ImageView = findViewById(R.id.avatar)
-        //Set logo depending on repo
-        avatar.load(repoObjIn!!.getString("avatar_url")) {
-            crossfade(true)
-            transformations(
-                RoundedCornersTransformation(
-                    20f,
-                    20f,
-                    20f,
-                    20f
-                )
-            )
-        }
+        Picasso.get().load(repoObjIn!!.getString("avatar_url")).transform(RoundedTransform(90, 0))
+                .into(avatar)
 
         projectId = (repoObjIn ?: return).getString("id")
 
@@ -91,48 +82,37 @@ class IssuesList : AppCompatActivity() {
         val context = this
         AndroidNetworking.initialize(applicationContext)
         AndroidNetworking
-            .get("https://gitlab.com/api/v4/projects/$projectId/issues?token=$token&state=opened")
-            .build()
-            .getAsJSONArray(object : JSONArrayRequestListener {
-                override fun onResponse(response: JSONArray?) {
-                    for (i in 0 until (response ?: return).length()) {
-                        list.add(response.getJSONObject(i).toString())
+                .get("https://gitlab.com/api/v4/projects/$projectId/repository/commits?access_token=$token&with_stats=true")
+                .build()
+                .getAsJSONArray(object : JSONArrayRequestListener {
+                    override fun onResponse(response: JSONArray?) {
+                        for (i in 0 until (response ?: return).length()) {
+                            list.add(response.getJSONObject(i).toString())
+                        }
+
+                        val adapter = CommitAdapterVague(context, list.toTypedArray())
+                        (listView ?: return).adapter = adapter
+                        (listView ?: return).divider = null
+
+
+                        listView!!.onItemClickListener =
+                                AdapterView.OnItemClickListener { parent, view, position, id ->
+                                    val selectedItem = parent.getItemAtPosition(position) as String
+                                    val intent = Intent(applicationContext, IndividualCommit::class.java)
+                                    val bundle = Bundle()
+                                    bundle.putString("data", selectedItem)
+                                    intent.putExtras(bundle)
+                                    startActivity(intent)
+                                }
+                        done = true
+
+                        showAll()
                     }
 
-                    val adapter = IssueAdapter(context, list.toTypedArray())
-                    (listView ?: return).adapter = adapter
-                    (listView ?: return).divider = null
-                    justifyListViewHeightBasedOnChildren(listView ?: return)
-                    done = true
-
-                    AndroidNetworking.initialize(applicationContext)
-                    AndroidNetworking
-                        .get("https://gitlab.com/api/v4/projects/$projectId/issues?token=$token&state=closed")
-                        .build()
-                        .getAsJSONArray(object : JSONArrayRequestListener {
-                            override fun onResponse(response: JSONArray?) {
-
-                                for (i in 0 until (response ?: return).length()) {
-                                    list.add(response.getJSONObject(i).toString())
-                                }
-
-                                val adapter2 = IssueAdapter(context, list.toTypedArray())
-                                (listView2 ?: return).adapter = adapter2
-                                (listView2 ?: return).divider = null
-                                justifyListViewHeightBasedOnChildren(listView2 ?: return)
-                                showAll()
-                            }
-
-                            override fun onError(anError: ANError?) {
-                                Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
-                            }
-                        })
-                }
-
-                override fun onError(anError: ANError?) {
-                    Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
-                }
-            })
+                    override fun onError(anError: ANError?) {
+                        Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
+                    }
+                })
     }
 
     override fun onSupportNavigateUp(): Boolean {

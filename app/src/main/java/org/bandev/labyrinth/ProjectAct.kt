@@ -24,6 +24,9 @@ import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Api
+import org.bandev.labyrinth.core.Helpful
+import org.bandev.labyrinth.projects.Commits
+import org.bandev.labyrinth.projects.FileViewer
 import org.bandev.labyrinth.projects.IssuesList
 import org.bandev.labyrinth.projects.ReadMe
 import org.json.JSONArray
@@ -227,28 +230,71 @@ class ProjectAct : AppCompatActivity() {
         val issueNum = dataJson.getInt("open_issues_count")
         val defaultBranch = dataJson.getString("default_branch")
 
-        infoList.add("{ 'left' : 'Issues', 'right' : '$issueNum' }")
-        infoList.add("{ 'left' : 'Branch', 'right' : '$defaultBranch' }")
-        infoList.add("{ 'left' : 'View Files', 'right' : '' }")
-        infoList.add("{ 'left' : 'Commits', 'right' : '' }")
+        var commitsCount = 0
+        var filesSize = 0f
 
+        AndroidNetworking.initialize(applicationContext)
+        AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId?statistics=true&access_token=$token")
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject?) {
+                    commitsCount = response!!.getJSONObject("statistics").getInt("commit_count")
+                    filesSize = response!!.getJSONObject("statistics").getInt("repository_size").toFloat()
 
-        val infoListAdapter = InfoListAdapter(this, infoList.toTypedArray())
-        infoListView.adapter = infoListAdapter
-        infoListView.divider = null
+                    var fileSizeStr = Helpful().humanReadableByteCountSI(filesSize.toLong())
+                    infoList.add("{ 'left' : 'Issues', 'right' : '$issueNum' }")
+                    infoList.add("{ 'left' : 'Branch', 'right' : '$defaultBranch' }")
+                    infoList.add("{ 'left' : 'View Files', 'right' : '$fileSizeStr' }")
+                    infoList.add("{ 'left' : 'Commits', 'right' : '$commitsCount' }")
 
-        infoListView.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                val selectedItem = parent.getItemAtPosition(position) as String
-                val obj = JSONObject(selectedItem)
-                if (obj.getString("left") == "Issues") {
-                    val intent = Intent(this, IssuesList::class.java)
-                    val bundle = Bundle()
-                    bundle.putString("repo", data)
-                    intent.putExtras(bundle)
-                    startActivity(intent)
+                    val infoListAdapter = InfoListAdapter(this@ProjectAct, infoList.toTypedArray())
+                    infoListView.adapter = infoListAdapter
+                    infoListView.divider = null
+
+                    infoListView.onItemClickListener =
+                        AdapterView.OnItemClickListener { parent, view, position, id ->
+                            val selectedItem = parent.getItemAtPosition(position) as String
+                            val obj = JSONObject(selectedItem)
+                            if (obj.getString("left") == "Issues") {
+                                val intent = Intent(applicationContext, IssuesList::class.java)
+                                val bundle = Bundle()
+                                bundle.putString("repo", data)
+                                intent.putExtras(bundle)
+                                startActivity(intent)
+                            }else if (obj.getString("left") == "Commits") {
+                                val intent = Intent(applicationContext, Commits::class.java)
+                                val bundle = Bundle()
+                                bundle.putString("repo", data)
+                                intent.putExtras(bundle)
+                                startActivity(intent)
+                            }else if (obj.getString("left") == "View Files") {
+                                val dataJs = JSONObject(data)
+                                val intent = Intent(applicationContext, FileViewer::class.java)
+                                val bundle = Bundle()
+                                bundle.putString("repoName", dataJs.getString("name"))
+                                bundle.putString("repoLogoUrl", dataJs.getString("avatar_url"))
+                                bundle.putString("repoId", dataJs.getString("id"))
+                                bundle.putString("path", "")
+                                intent.putExtras(bundle)
+                                startActivity(intent)
+                            }
+                        }
+
                 }
-            }
+
+                override fun onError(error: ANError?) {
+                    // handle error
+                    Toast.makeText(
+                        applicationContext,
+                        "Error retrieving committer avatar!",
+                        LENGTH_LONG
+                    ).show()
+                }
+            })
+
+
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

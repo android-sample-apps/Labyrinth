@@ -29,4 +29,9 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+
+    <!-- project.FileViewer & project.FolderViewer -->
+    <string name="project_fv_error">Something went wrong</string>
+    <string name="project_fv_error_retry">Retry</string>
 </resources>

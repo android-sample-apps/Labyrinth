@@ -61,6 +61,10 @@
         <activity
             android:name=".ProjectAct" />
         <activity
+            android:name=".projects.Commits" />
+        <activity
+            android:name=".projects.FileViewer" />
+        <activity
             android:name=".MainAct"
             android:theme="@style/Theme.Labyrinth"/>
         <activity
