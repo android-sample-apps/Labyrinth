@@ -1,5 +1,14 @@
 package org.bandev.labyrinth.core
 
+import android.content.Context
+import android.graphics.Color
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ListView
 import java.text.CharacterIterator
 import java.text.StringCharacterIterator
 
@@ -16,4 +25,23 @@ class Helpful {
         }
         return java.lang.String.format("%.1f %cB", bytes / 1000.0, ci.current())
     }
+
+    fun justifyListViewHeightBasedOnChildren(listView: ListView) {
+        val adapter = listView.adapter ?: return
+        val vg: ViewGroup = listView
+        var totalHeight = 0
+        for (i in 0 until adapter.count) {
+            val listItem: View = adapter.getView(i, null, vg)
+            listItem.measure(0, 0)
+            totalHeight += listItem.measuredHeight
+        }
+        val par = listView.layoutParams
+        par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
+        listView.layoutParams = par
+        listView.requestLayout()
+    }
+
+
+
+
 }

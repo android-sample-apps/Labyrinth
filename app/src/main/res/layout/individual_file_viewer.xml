@@ -70,27 +70,23 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <ScrollView
-        android:id="@+id/scroll"
-        android:layout_width="0dp"
+
+    <br.tiagohm.codeview.CodeView
+        android:id="@+id/codeView"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_gravity="bottom|fill_horizontal"
-        android:clipToPadding="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/toolbar_line"
+        android:paddingBottom="30dp"
+        app:cv_font_size="14"
+        app:cv_highlight_line_number="36"
+        app:cv_show_line_number="true"
+        app:cv_start_line_number="0"
+        app:cv_wrap_line="true"
+        app:cv_zoom_enable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/pullToRefresh"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-        <org.bandev.labyrinth.widgets.NonScrollListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/toolbar_line"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-    </ScrollView>
-
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"></br.tiagohm.codeview.CodeView>
 
 
 

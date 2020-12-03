@@ -71,4 +71,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3-alpha02'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0-alpha02'
 
+    //Code Viewer
+    implementation 'com.github.tiagohm:CodeView:0.4.0'
+
+
 }

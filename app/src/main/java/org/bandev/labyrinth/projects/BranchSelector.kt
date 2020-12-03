@@ -1,5 +1,7 @@
 package org.bandev.labyrinth.projects
 
+import android.R.id.message
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -14,33 +16,35 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.selects.select
+import org.bandev.labyrinth.ProjectAct
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.adapters.FileViewAdapter
+import org.bandev.labyrinth.adapters.BranchSelectorAdapter
 import org.bandev.labyrinth.core.Compatability
 import org.bandev.labyrinth.databinding.FileViewerBinding
 import org.json.JSONArray
 import org.json.JSONObject
 
+
 /*
 
-    FileViewer displays files in a listview layout,
+    BranchSelector allows the user to choose the branch they want to see,
     it makes a call to GitLab using
-    https://gitlab.com/api/v4/projects/{id}/repository/tree?path={path}
+    https://gitlab.com/api/v4/projects/{id}/repository/branches
     of which documentation can be found here
-    https://docs.gitlab.com/ce/api/repositories.html#list-repository-tree.
+    https://docs.gitlab.com/ee/api/branches.html#list-repository-branches.
 
-    Writtern by Jack, 02/12/2020, added in initial release
+    Writtern by Jack, 03/12/2020, added in initial release
 
 */
 
-class FileViewer : AppCompatActivity() {
+class BranchSelector : AppCompatActivity() {
 
     lateinit var binding: FileViewerBinding
-    lateinit var fileList: MutableList<String>
+    lateinit var branchList: MutableList<String>
 
     var profile: Profile = Profile()
-    private var path: String = ""
     private var token: String = ""
     private var repoLogoUrl: String = ""
     private var repoId: String = ""
@@ -64,7 +68,6 @@ class FileViewer : AppCompatActivity() {
         //Get data from bundle passed with intent
         repoLogoUrl = (intent.extras?.getString("repoLogoUrl") ?: return)
         repoId = (intent.extras?.getString("repoId") ?: return)
-        path = (intent.extras?.getString("path") ?: return)
         branch = (intent.extras?.getString("branch") ?: return)
 
         //Configure Toolbar
@@ -78,11 +81,7 @@ class FileViewer : AppCompatActivity() {
         Compatability().edgeToEdge(window, View(this), toolbar, resources)
 
         //Set title depending on folder
-        binding.title.text = if (path == "") {
-            "Root"
-        } else {
-            path
-        }
+        binding.title.text = "Select branch"
 
         //Set logo depending on repo
         binding.logo.load(repoLogoUrl) {
@@ -125,20 +124,24 @@ class FileViewer : AppCompatActivity() {
 
         //Get JSONArray of files from GitLab
         AndroidNetworking
-            .get("https://gitlab.com/api/v4/projects/$repoId/repository/tree")
+            .get("https://gitlab.com/api/v4/projects/{id}/repository/branches")
             .addQueryParameter("access_token", token)
-            .addQueryParameter("path", path)
+            .addPathParameter("id", repoId)
             .build()
             .getAsJSONArray(object : JSONArrayRequestListener {
                 override fun onResponse(result: JSONArray) {
                     //Convert response to list
-                    fileList = ArrayList()
+                    branchList = ArrayList()
                     for (i in 0 until result.length()) {
-                        fileList.add(result.getJSONObject(i).toString())
+                        branchList.add(result.getJSONObject(i).toString())
                     }
 
                     //Create adapter, and configure listview
-                    val adapter = FileViewAdapter(this@FileViewer, fileList.toTypedArray())
+                    val adapter = BranchSelectorAdapter(
+                        this@BranchSelector,
+                        branchList.toTypedArray(),
+                        branch
+                    )
                     binding.listView.adapter = adapter
                     binding.listView.divider = null
                     //Helpful().justifyListViewHeightBasedOnChildren(binding.listView)
@@ -170,18 +173,10 @@ class FileViewer : AppCompatActivity() {
     fun itemClick(parent: AdapterView<*>, position: Int) {
         //Work out what was pressed and send the user on their way
         val selectedItem = parent.getItemAtPosition(position) as String
-        val intent = when (JSONObject(selectedItem).getString("type")) {
-            "tree" -> Intent(applicationContext, FileViewer::class.java)
-            else -> Intent(applicationContext, IndividualFileViewer::class.java)
-        }
-        val path = JSONObject(selectedItem).getString("path")
-        val bundle = Bundle()
-        bundle.putString("repoLogoUrl", repoLogoUrl)
-        bundle.putString("repoId", repoId)
-        bundle.putString("path", path)
-        bundle.putString("branch", branch)
-        intent.putExtras(bundle)
-        startActivity(intent)
+        val data = Intent()
+        data.putExtra("newBranch", JSONObject(selectedItem).getString("name"))
+        setResult(Activity.RESULT_OK, data);
+        finish()
     }
 
     private fun hideAll() {

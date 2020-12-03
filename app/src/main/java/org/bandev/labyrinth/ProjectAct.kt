@@ -1,5 +1,7 @@
 package org.bandev.labyrinth
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -25,12 +27,10 @@ import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Api
 import org.bandev.labyrinth.core.Helpful
-import org.bandev.labyrinth.projects.Commits
-import org.bandev.labyrinth.projects.FileViewer
-import org.bandev.labyrinth.projects.IssuesList
-import org.bandev.labyrinth.projects.ReadMe
+import org.bandev.labyrinth.projects.*
 import org.json.JSONArray
 import org.json.JSONObject
+
 
 class ProjectAct : AppCompatActivity() {
 
@@ -228,7 +228,7 @@ class ProjectAct : AppCompatActivity() {
         val infoList: MutableList<String> = mutableListOf()
 
         val issueNum = dataJson.getInt("open_issues_count")
-        val defaultBranch = dataJson.getString("default_branch")
+        val defaultBranch = getBranch(dataJson)
 
         var commitsCount = 0
         var filesSize = 0f
@@ -239,7 +239,8 @@ class ProjectAct : AppCompatActivity() {
             .getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject?) {
                     commitsCount = response!!.getJSONObject("statistics").getInt("commit_count")
-                    filesSize = response!!.getJSONObject("statistics").getInt("repository_size").toFloat()
+                    filesSize =
+                        response!!.getJSONObject("statistics").getInt("repository_size").toFloat()
 
                     var fileSizeStr = Helpful().humanReadableByteCountSI(filesSize.toLong())
                     infoList.add("{ 'left' : 'Issues', 'right' : '$issueNum' }")
@@ -261,13 +262,13 @@ class ProjectAct : AppCompatActivity() {
                                 bundle.putString("repo", data)
                                 intent.putExtras(bundle)
                                 startActivity(intent)
-                            }else if (obj.getString("left") == "Commits") {
+                            } else if (obj.getString("left") == "Commits") {
                                 val intent = Intent(applicationContext, Commits::class.java)
                                 val bundle = Bundle()
                                 bundle.putString("repo", data)
                                 intent.putExtras(bundle)
                                 startActivity(intent)
-                            }else if (obj.getString("left") == "View Files") {
+                            } else if (obj.getString("left") == "View Files") {
                                 val dataJs = JSONObject(data)
                                 val intent = Intent(applicationContext, FileViewer::class.java)
                                 val bundle = Bundle()
@@ -275,12 +276,25 @@ class ProjectAct : AppCompatActivity() {
                                 bundle.putString("repoLogoUrl", dataJs.getString("avatar_url"))
                                 bundle.putString("repoId", dataJs.getString("id"))
                                 bundle.putString("path", "")
+                                bundle.putString("branch", defaultBranch)
                                 intent.putExtras(bundle)
                                 startActivity(intent)
+                            } else if (obj.getString("left") == "Branch") {
+                                val dataJs = JSONObject(data)
+                                val intent = Intent(applicationContext, BranchSelector::class.java)
+                                val bundle = Bundle()
+                                bundle.putString("repoName", dataJs.getString("name"))
+                                bundle.putString("repoLogoUrl", dataJs.getString("avatar_url"))
+                                bundle.putString("repoId", dataJs.getString("id"))
+                                bundle.putString("branch", defaultBranch)
+                                intent.putExtras(bundle)
+                                startActivityForResult(intent, 0)
                             }
                         }
 
                 }
+
+
 
                 override fun onError(error: ANError?) {
                     // handle error
@@ -292,8 +306,35 @@ class ProjectAct : AppCompatActivity() {
                 }
             })
 
+    }
 
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode != Activity.RESULT_OK) return
+        when(requestCode) {
+            0 -> { updateBranch(data!!.getStringExtra("newBranch").toString()) }
+            // Other result codes
+            else -> {}
+        }
+    }
+
+    fun updateBranch(branch: String){
+        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            putString(projectId+"_branch", branch)
+            apply()
+        }
+        filldata()
+    }
+
+    fun getBranch(dataJson:JSONObject): String{
+        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        val branch = sharedPref.getString(projectId+"_branch", "default")
+        return when(branch){
+            "default" -> dataJson.getString("default_branch")
+            else -> branch.toString()
+        }
 
     }
 

@@ -1,43 +1,46 @@
 package org.bandev.labyrinth.projects
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
-import android.widget.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
+import br.tiagohm.codeview.CodeView
+import br.tiagohm.codeview.Language
+import br.tiagohm.codeview.Theme
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONArrayRequestListener
+import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.google.android.material.snackbar.Snackbar
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.adapters.FileViewAdapter
 import org.bandev.labyrinth.core.Compatability
-import org.bandev.labyrinth.databinding.FileViewerBinding
-import org.json.JSONArray
+import org.bandev.labyrinth.core.Helpful
+import org.bandev.labyrinth.databinding.IndividualFileViewerBinding
 import org.json.JSONObject
+import java.net.URLEncoder
 
 /*
 
-    FileViewer displays files in a listview layout,
+    IndividualFileViewer displays files in a  layout,
     it makes a call to GitLab using
-    https://gitlab.com/api/v4/projects/{id}/repository/tree?path={path}
+    https://gitlab.com/api/v4/projects/{id}/repository/files/{path}?ref={branch}
     of which documentation can be found here
-    https://docs.gitlab.com/ce/api/repositories.html#list-repository-tree.
+    https://docs.gitlab.com/ee/api/repository_files.html#get-file-from-repository.
 
-    Writtern by Jack, 02/12/2020, added in initial release
+    Writtern by Jack, 03/12/2020, added in initial release
 
 */
 
-class FileViewer : AppCompatActivity() {
+class IndividualFileViewer : AppCompatActivity() {
 
-    lateinit var binding: FileViewerBinding
-    lateinit var fileList: MutableList<String>
+    lateinit var binding: IndividualFileViewerBinding
+    lateinit var fileInfo: JSONObject
 
     var profile: Profile = Profile()
     private var path: String = ""
@@ -53,7 +56,7 @@ class FileViewer : AppCompatActivity() {
         AndroidNetworking.initialize(applicationContext)
 
         //Set the layout file with view binding
-        binding = FileViewerBinding.inflate(layoutInflater)
+        binding = IndividualFileViewerBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
@@ -77,12 +80,8 @@ class FileViewer : AppCompatActivity() {
         //Turn on edge to edge
         Compatability().edgeToEdge(window, View(this), toolbar, resources)
 
-        //Set title depending on folder
-        binding.title.text = if (path == "") {
-            "Root"
-        } else {
-            path
-        }
+        //Set title depending on file path
+        binding.title.text = path
 
         //Set logo depending on repo
         binding.logo.load(repoLogoUrl) {
@@ -125,31 +124,32 @@ class FileViewer : AppCompatActivity() {
 
         //Get JSONArray of files from GitLab
         AndroidNetworking
-            .get("https://gitlab.com/api/v4/projects/$repoId/repository/tree")
+            .get("https://gitlab.com/api/v4/projects/$repoId/repository/files/{path}")
             .addQueryParameter("access_token", token)
-            .addQueryParameter("path", path)
+            .addQueryParameter("ref", branch)
+            .addPathParameter("path", URLEncoder.encode(path, "utf-8"))
             .build()
-            .getAsJSONArray(object : JSONArrayRequestListener {
-                override fun onResponse(result: JSONArray) {
-                    //Convert response to list
-                    fileList = ArrayList()
-                    for (i in 0 until result.length()) {
-                        fileList.add(result.getJSONObject(i).toString())
-                    }
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(result: JSONObject) {
+                    //Save response to fileInfo
+                    fileInfo = result
 
-                    //Create adapter, and configure listview
-                    val adapter = FileViewAdapter(this@FileViewer, fileList.toTypedArray())
-                    binding.listView.adapter = adapter
-                    binding.listView.divider = null
-                    //Helpful().justifyListViewHeightBasedOnChildren(binding.listView)
+                    //Convert base64 response to readble format
+                    val dataBase64 = fileInfo.getString("content")
+                    val code = String(Base64.decode(dataBase64, Base64.NO_WRAP))
 
-                    //Set on click listener for listview, route to function itemClick(parent, position)
-                    binding.listView.onItemClickListener =
-                        AdapterView.OnItemClickListener { parent, _, position, _ ->
-                            itemClick(parent, position)
-                        }
+                    println(code)
 
-                    //Show all the elements to user and remove spinner
+                    //Show code in codeView element & show element
+                    binding.codeView
+                        .setTheme(Theme.ANDROIDSTUDIO)
+                        .setCode(code)
+                        .setWrapLine(true)
+                        .setFontSize(14F)
+                        .setLanguage(Language.AUTO)
+                        .setZoomEnabled(true)
+                        .apply()
+
                     showAll()
                 }
 
@@ -167,32 +167,15 @@ class FileViewer : AppCompatActivity() {
             })
     }
 
-    fun itemClick(parent: AdapterView<*>, position: Int) {
-        //Work out what was pressed and send the user on their way
-        val selectedItem = parent.getItemAtPosition(position) as String
-        val intent = when (JSONObject(selectedItem).getString("type")) {
-            "tree" -> Intent(applicationContext, FileViewer::class.java)
-            else -> Intent(applicationContext, IndividualFileViewer::class.java)
-        }
-        val path = JSONObject(selectedItem).getString("path")
-        val bundle = Bundle()
-        bundle.putString("repoLogoUrl", repoLogoUrl)
-        bundle.putString("repoId", repoId)
-        bundle.putString("path", path)
-        bundle.putString("branch", branch)
-        intent.putExtras(bundle)
-        startActivity(intent)
-    }
-
     private fun hideAll() {
         //Hide all 'ugly' loading elements and just show spinner
-        binding.listView.isGone = true
+        binding.codeView.isGone = true
         binding.spinner.isGone = false
     }
 
     fun showAll() {
         //Show all elements now they have loaded, remove spinner
-        binding.listView.isGone = false
+        binding.codeView.isGone = false
         binding.spinner.isGone = true
     }
 
