@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.RoundedTransform
@@ -29,14 +31,32 @@ class GroupOrProjectListAdapter(private val context: Activity, private val text:
         name.text = jsonObj.getString("name")
         if (jsonObj.getString("visibility") == "public") {
             visibility.text = "Public"
-            Picasso.get().load(jsonObj.getString("avatar_url")).resize(400, 400)
-                .transform(RoundedTransform(90, 0)).into(avatar)
+            avatar.load(jsonObj.getString("avatar_url")) {
+                crossfade(true)
+                transformations(
+                    RoundedCornersTransformation(
+                        20f,
+                        20f,
+                        20f,
+                        20f
+                    )
+                )
+            }
 
         } else {
             visibility.text = "Private"
             visibility.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_padlock, 0, 0, 0)
-            Picasso.get().load("file:///android_asset/lock.png").transform(RoundedTransform(90, 0))
-                .into(avatar)
+            avatar.load("file:///android_asset/lock.png") {
+                crossfade(true)
+                transformations(
+                    RoundedCornersTransformation(
+                        20f,
+                        20f,
+                        20f,
+                        20f
+                    )
+                )
+            }
         }
         return rowView
     }

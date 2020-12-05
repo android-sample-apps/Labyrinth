@@ -21,6 +21,7 @@ import org.bandev.labyrinth.ProjectAct
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.BranchSelectorAdapter
+import org.bandev.labyrinth.core.Animations
 import org.bandev.labyrinth.core.Compatability
 import org.bandev.labyrinth.databinding.BranchSelectorBinding
 import org.bandev.labyrinth.databinding.FileViewerBinding
@@ -77,6 +78,9 @@ class BranchSelector : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+
+        //Toolbar shadow animation
+        Animations().ToolbarShadowScroll(binding.scroll, toolbar)
 
         //Turn on edge to edge
         Compatability().edgeToEdge(window, View(this), toolbar, resources)

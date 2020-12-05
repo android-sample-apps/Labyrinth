@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.FileViewAdapter
+import org.bandev.labyrinth.core.Animations
 import org.bandev.labyrinth.core.Compatability
 import org.bandev.labyrinth.databinding.FileViewerBinding
 import org.json.JSONArray
@@ -73,6 +74,9 @@ class FileViewer : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+
+        //Toolbar shadow animation
+        Animations().ToolbarShadowScroll(binding.scroll, toolbar)
 
         //Turn on edge to edge
         Compatability().edgeToEdge(window, View(this), toolbar, resources)

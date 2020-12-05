@@ -20,6 +20,7 @@ import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.IssueAdapter
 import org.bandev.labyrinth.adapters.IssueNotesAdapter
+import org.bandev.labyrinth.core.Animations
 import org.bandev.labyrinth.databinding.IndividualIssueBinding
 import org.json.JSONArray
 import org.json.JSONObject
@@ -81,7 +82,8 @@ class IndividualIssue : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
-        //Set logo depending on repo
+        //Toolbar shadow animation
+        Animations().ToolbarShadowScroll(binding.scroll, toolbar)
 
 
         fillData()
@@ -107,7 +109,7 @@ class IndividualIssue : AppCompatActivity() {
         val projectId2 = issueData.getInt("project_id").toString()
         val iid = issueData.getInt("iid").toString()
 
-        AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId2/issues/$iid/notes")
+        AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId2/issues/$iid/notes?sort=asc")
             .addQueryParameter("access_token", token)
             .build()
             .getAsJSONArray(object : JSONArrayRequestListener {
@@ -154,14 +156,12 @@ class IndividualIssue : AppCompatActivity() {
     }
 
     private fun hideAll() {
-        listView?.isGone = true
-        listView2?.isGone = true
+        binding.content.listView?.isGone = true
         progressBar?.isGone = false
     }
 
     fun showAll() {
-        listView?.isGone = false
-        listView2?.isGone = false
+        binding.content.listView?.isGone = false
         progressBar?.isGone = true
     }
 
