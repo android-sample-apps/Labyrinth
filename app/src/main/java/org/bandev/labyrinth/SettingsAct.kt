@@ -11,10 +11,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.preference.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import mehdi.sakout.aboutpage.AboutPage
+import mehdi.sakout.aboutpage.Element
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.core.Appearance
 import org.bandev.labyrinth.core.Compatability
 import org.bandev.labyrinth.intro.First
+import org.bandev.labyrinth.widgets.About
 
 class SettingsAct : AppCompatActivity() {
 
@@ -55,6 +58,13 @@ class SettingsAct : AppCompatActivity() {
                 Preference.OnPreferenceChangeListener { preference, newValue ->
                     Appearance().setAppTheme(newValue.toString())
                     true
+                }
+
+            val about = findPreference("about") as Preference?
+            about?.setOnPreferenceClickListener { preference ->
+                var intent = Intent(context, About::class.java)
+                startActivity(intent)
+                true
                 }
 
             val delete = findPreference("delete") as Preference?

@@ -24,31 +24,17 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/white"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:contentDescription="TODO"
-            android:cropToPadding="false"
-            app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/toolbar"
-            app:srcCompat="@mipmap/ic_launcher_round" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:fontFamily="@font/dosis_bold"
+            android:fontFamily="@font/jb_title"
             android:maxLines="1"
-            android:paddingStart="10dp"
             android:text="BranchSelector"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="20sp"
@@ -86,6 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/toolbar_line"
+            android:drawSelectorOnTop="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />

@@ -84,25 +84,12 @@ class FileViewer : AppCompatActivity() {
             path
         }
 
-        //Set logo depending on repo
-        binding.logo.load(repoLogoUrl) {
-            crossfade(true)
-            transformations(
-                RoundedCornersTransformation(
-                    20f,
-                    20f,
-                    20f,
-                    20f
-                )
-            )
-        }
-
         //Configure pull to refresh & make it run fillData()
         binding.pullToRefresh.setColorSchemeColors(
-            ContextCompat.getColor(
-                this,
-                R.color.colorPrimary
-            )
+                ContextCompat.getColor(
+                        this,
+                        R.color.colorPrimary
+                )
         )
         binding.pullToRefresh.setOnRefreshListener {
             fillData()
@@ -125,46 +112,46 @@ class FileViewer : AppCompatActivity() {
 
         //Get JSONArray of files from GitLab
         AndroidNetworking
-            .get("https://gitlab.com/api/v4/projects/$repoId/repository/tree")
-            .addQueryParameter("access_token", token)
-            .addQueryParameter("path", path)
-            .build()
-            .getAsJSONArray(object : JSONArrayRequestListener {
-                override fun onResponse(result: JSONArray) {
-                    //Convert response to list
-                    fileList = ArrayList()
-                    for (i in 0 until result.length()) {
-                        fileList.add(result.getJSONObject(i).toString())
+                .get("https://gitlab.com/api/v4/projects/$repoId/repository/tree")
+                .addQueryParameter("access_token", token)
+                .addQueryParameter("path", path)
+                .build()
+                .getAsJSONArray(object : JSONArrayRequestListener {
+                    override fun onResponse(result: JSONArray) {
+                        //Convert response to list
+                        fileList = ArrayList()
+                        for (i in 0 until result.length()) {
+                            fileList.add(result.getJSONObject(i).toString())
+                        }
+
+                        //Create adapter, and configure listview
+                        val adapter = FileViewAdapter(this@FileViewer, fileList.toTypedArray())
+                        binding.listView.adapter = adapter
+                        binding.listView.divider = null
+                        //Helpful().justifyListViewHeightBasedOnChildren(binding.listView)
+
+                        //Set on click listener for listview, route to function itemClick(parent, position)
+                        binding.listView.onItemClickListener =
+                                AdapterView.OnItemClickListener { parent, _, position, _ ->
+                                    itemClick(parent, position)
+                                }
+
+                        //Show all the elements to user and remove spinner
+                        showAll()
                     }
 
-                    //Create adapter, and configure listview
-                    val adapter = FileViewAdapter(this@FileViewer, fileList.toTypedArray())
-                    binding.listView.adapter = adapter
-                    binding.listView.divider = null
-                    //Helpful().justifyListViewHeightBasedOnChildren(binding.listView)
+                    override fun onError(error: ANError) {
+                        //Alert user that something went wrong, let them try again (fillData())
+                        Snackbar.make(binding.root, R.string.project_fv_error, Snackbar.LENGTH_LONG)
+                                .setAction(R.string.project_fv_error_retry) {
+                                    fillData()
+                                }
+                                .show()
 
-                    //Set on click listener for listview, route to function itemClick(parent, position)
-                    binding.listView.onItemClickListener =
-                        AdapterView.OnItemClickListener { parent, _, position, _ ->
-                            itemClick(parent, position)
-                        }
-
-                    //Show all the elements to user and remove spinner
-                    showAll()
-                }
-
-                override fun onError(error: ANError) {
-                    //Alert user that something went wrong, let them try again (fillData())
-                    Snackbar.make(binding.root, R.string.project_fv_error, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.project_fv_error_retry) {
-                            fillData()
-                        }
-                        .show()
-
-                    //Show empty elements but remove spinner
-                    showAll()
-                }
-            })
+                        //Show empty elements but remove spinner
+                        showAll()
+                    }
+                })
     }
 
     fun itemClick(parent: AdapterView<*>, position: Int) {

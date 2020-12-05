@@ -8,35 +8,30 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginBottom="15dp"
         android:drawablePadding="5dp"
+        android:fontFamily="@font/jb"
         android:text="Loading"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="?android:attr/textColorSecondary"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/icon"
-        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="15dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="16dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_check" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

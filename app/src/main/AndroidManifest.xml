@@ -66,6 +66,10 @@
         <activity
             android:name=".projects.FileViewer" />
         <activity
+            android:name=".projects.IndividualIssue" />
+        <activity
+            android:name=".widgets.About" />
+        <activity
             android:name=".projects.BranchSelector" />
         <activity
             android:name=".projects.IndividualFileViewer" />

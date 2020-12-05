@@ -9,7 +9,7 @@
         android:id="@+id/avatar_list"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="16dp"
         android:contentDescription="TODO"
         android:cropToPadding="false"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,13 +20,12 @@
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:text="Loading"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/pipeline"
         app:layout_constraintStart_toEndOf="@+id/avatar_list"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,11 +34,12 @@
         android:id="@+id/visibility"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:drawablePadding="5dp"
+        android:fontFamily="@font/jb"
         android:paddingBottom="5dp"
         android:text="Loading"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="?android:attr/textColorSecondary"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/name"
         app:layout_constraintStart_toEndOf="@+id/avatar_list"
@@ -49,11 +49,10 @@
         android:id="@+id/pipeline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="33dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="TODO"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="TODO" />
+        app:layout_constraintTop_toTopOf="@+id/name" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,6 +22,7 @@ import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.BranchSelectorAdapter
 import org.bandev.labyrinth.core.Compatability
+import org.bandev.labyrinth.databinding.BranchSelectorBinding
 import org.bandev.labyrinth.databinding.FileViewerBinding
 import org.json.JSONArray
 import org.json.JSONObject
@@ -41,7 +42,7 @@ import org.json.JSONObject
 
 class BranchSelector : AppCompatActivity() {
 
-    lateinit var binding: FileViewerBinding
+    lateinit var binding: BranchSelectorBinding
     lateinit var branchList: MutableList<String>
 
     var profile: Profile = Profile()
@@ -57,7 +58,7 @@ class BranchSelector : AppCompatActivity() {
         AndroidNetworking.initialize(applicationContext)
 
         //Set the layout file with view binding
-        binding = FileViewerBinding.inflate(layoutInflater)
+        binding = BranchSelectorBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
@@ -82,19 +83,6 @@ class BranchSelector : AppCompatActivity() {
 
         //Set title depending on folder
         binding.title.text = "Select branch"
-
-        //Set logo depending on repo
-        binding.logo.load(repoLogoUrl) {
-            crossfade(true)
-            transformations(
-                RoundedCornersTransformation(
-                    20f,
-                    20f,
-                    20f,
-                    20f
-                )
-            )
-        }
 
         //Configure pull to refresh & make it run fillData()
         binding.pullToRefresh.setColorSchemeColors(

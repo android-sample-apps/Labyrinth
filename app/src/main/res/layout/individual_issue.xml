@@ -27,6 +27,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/jb_title"
+            android:maxLines="1"
+            android:text="Issue"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+            app:layout_constraintStart_toEndOf="@+id/logo"
+            app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -50,7 +63,7 @@
 
             <include
                 android:id="@+id/content"
-                layout="@layout/project_content"
+                layout="@layout/issue_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </ScrollView>

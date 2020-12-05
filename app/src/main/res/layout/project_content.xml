@@ -32,13 +32,13 @@
             android:id="@+id/groups"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="33dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="33dp"
-            android:fontFamily="@font/dosis_bold"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/jb_title"
             android:text="Latest Commit"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/contentView3" />
@@ -65,13 +65,14 @@
         android:background="@drawable/toolbar_line"
         app:layout_constraintTop_toBottomOf="@+id/contentView3">
 
-        <ListView
+        <org.bandev.labyrinth.widgets.NonScrollListView
             android:id="@+id/infoList"
             android:layout_width="match_parent"
             android:layout_height="175dp"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/info_view" />
 
@@ -79,9 +80,9 @@
 
     <ImageView
         android:id="@+id/avatar"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="33dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:contentDescription="TODO"
         android:cropToPadding="false"
@@ -94,11 +95,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/dosis_bold"
+        android:fontFamily="@font/jb_title"
         android:text="Name"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="22sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/slug"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="@+id/avatar" />
@@ -108,10 +108,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="33dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/jb"
         android:text="Email"
-        android:textSize="18sp"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toBottomOf="@+id/name_1" />
@@ -120,50 +122,46 @@
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="33dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
         android:text="Description"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="17sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/avatar"
-        app:layout_constraintTop_toBottomOf="@+id/slug" />
+        app:layout_constraintTop_toBottomOf="@+id/avatar" />
 
 
     <TextView
         android:id="@+id/stars"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:drawableStart="@drawable/ic_star_full"
         android:drawablePadding="5dp"
         android:paddingBottom="20dp"
         android:text="0 Stars"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="17sp"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="16sp"
         app:drawableStartCompat="@drawable/ic_star_full"
-        app:layout_constraintStart_toStartOf="@+id/contentView"
+        app:layout_constraintStart_toStartOf="@+id/description"
         app:layout_constraintTop_toBottomOf="@+id/description" />
 
     <TextView
         android:id="@+id/forks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="10dp"
 
-        android:layout_marginTop="30dp"
         android:drawablePadding="5dp"
         android:paddingBottom="20dp"
         android:text="0 Forks"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="17sp"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="16sp"
         app:drawableStartCompat="@drawable/ic_forks"
         app:layout_constraintStart_toEndOf="@+id/stars"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
-
-
+        app:layout_constraintTop_toTopOf="@+id/stars" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

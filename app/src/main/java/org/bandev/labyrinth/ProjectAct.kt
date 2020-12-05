@@ -18,6 +18,8 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
@@ -28,6 +30,7 @@ import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Api
 import org.bandev.labyrinth.core.Helpful
 import org.bandev.labyrinth.projects.*
+import org.bandev.labyrinth.widgets.NonScrollListView
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -92,11 +95,19 @@ class ProjectAct : AppCompatActivity() {
         val avatar = findViewById<ImageView>(R.id.avatar)
         if (dataJson.getString("visibility") == "public") {
 
-            Picasso.get().load(dataJson.getString("avatar_url")).transform(RoundedTransform(90, 0))
-                .resize(400, 400)
-                .into(avatar)
+            avatar.load(dataJson.getString("avatar_url")) {
+                crossfade(true)
+                transformations(
+                        RoundedCornersTransformation(
+                                20f,
+                                20f,
+                                20f,
+                                20f
+                        )
+                )
+            }
         } else {
-            Picasso.get().load("file:///android_asset/lock.png").transform(RoundedTransform(90, 0))
+            Picasso.get().load("file:///android_asset/lock.png").transform(RoundedTransform(60, 0))
                 .resize(400, 400)
                 .into(avatar)
         }
@@ -216,14 +227,14 @@ class ProjectAct : AppCompatActivity() {
             })
 
         nameTextView.text = dataJson.getString("name")
-        slugTextView.text = dataJson.getString("name_with_namespace")
+        slugTextView.text = "Id: " + dataJson.getString("id")
         if (dataJson.getString("description") != "") {
             descriptionTextView.text = dataJson.getString("description")
         } else {
             descriptionTextView.isGone = true
         }
 
-        val infoListView = findViewById<ListView>(R.id.infoList)
+        val infoListView = findViewById<NonScrollListView>(R.id.infoList)
 
         val infoList: MutableList<String> = mutableListOf()
 
@@ -388,20 +399,6 @@ class ProjectAct : AppCompatActivity() {
         }
     }
 
-    private fun justifyListViewHeightBasedOnChildren(listView: ListView) {
-        val adapter = listView.adapter ?: return
-        val vg: ViewGroup = listView
-        var totalHeight = 0
-        for (i in 0 until adapter.count) {
-            val listItem: View = adapter.getView(i, null, vg)
-            listItem.measure(0, 0)
-            totalHeight += listItem.measuredHeight
-        }
-        val par = listView.layoutParams
-        par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
-        listView.layoutParams = par
-        listView.requestLayout()
-    }
 
     override fun onSupportNavigateUp(): Boolean {
         finish()

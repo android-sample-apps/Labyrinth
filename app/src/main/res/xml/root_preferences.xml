@@ -39,4 +39,13 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="Information" >
+
+        <Preference
+            app:key="about"
+            app:summary="View app details"
+            app:title="About" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

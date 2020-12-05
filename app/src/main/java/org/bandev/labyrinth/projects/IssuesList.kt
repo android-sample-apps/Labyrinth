@@ -1,5 +1,6 @@
 package org.bandev.labyrinth.projects
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,6 @@ class IssuesList : AppCompatActivity() {
 
         token = profile.getData("token")
 
-        listView = findViewById(R.id.listView)
         listView2 = findViewById(R.id.listView2)
         progressBar = findViewById(R.id.progressBar2)
 
@@ -56,19 +56,7 @@ class IssuesList : AppCompatActivity() {
         val title: TextView = findViewById(R.id.title)
         title.text = "Issues"
 
-        val avatar: ImageView = findViewById(R.id.avatar)
-        //Set logo depending on repo
-        avatar.load(repoObjIn!!.getString("avatar_url")) {
-            crossfade(true)
-            transformations(
-                RoundedCornersTransformation(
-                    20f,
-                    20f,
-                    20f,
-                    20f
-                )
-            )
-        }
+
 
         projectId = (repoObjIn ?: return).getString("id")
 
@@ -89,50 +77,50 @@ class IssuesList : AppCompatActivity() {
         //Get a list of issues from GitLab#
         var done = false
         val context = this
-        AndroidNetworking.initialize(applicationContext)
-        AndroidNetworking
-            .get("https://gitlab.com/api/v4/projects/$projectId/issues?token=$token&state=opened")
-            .build()
-            .getAsJSONArray(object : JSONArrayRequestListener {
-                override fun onResponse(response: JSONArray?) {
-                    for (i in 0 until (response ?: return).length()) {
-                        list.add(response.getJSONObject(i).toString())
-                    }
 
-                    val adapter = IssueAdapter(context, list.toTypedArray())
-                    (listView ?: return).adapter = adapter
-                    (listView ?: return).divider = null
-                    justifyListViewHeightBasedOnChildren(listView ?: return)
-                    done = true
 
-                    AndroidNetworking.initialize(applicationContext)
-                    AndroidNetworking
-                        .get("https://gitlab.com/api/v4/projects/$projectId/issues?token=$token&state=closed")
-                        .build()
-                        .getAsJSONArray(object : JSONArrayRequestListener {
-                            override fun onResponse(response: JSONArray?) {
+                        AndroidNetworking.initialize(applicationContext)
+                        AndroidNetworking
+                                .get("https://gitlab.com/api/v4/projects/$projectId/issues?token=$token  ")
+                                .build()
+                                .getAsJSONArray(object : JSONArrayRequestListener {
+                                    override fun onResponse(response: JSONArray?) {
 
-                                for (i in 0 until (response ?: return).length()) {
-                                    list.add(response.getJSONObject(i).toString())
-                                }
+                                        for (i in 0 until (response ?: return).length()) {
+                                            list.add(response.getJSONObject(i).toString())
+                                        }
 
-                                val adapter2 = IssueAdapter(context, list.toTypedArray())
-                                (listView2 ?: return).adapter = adapter2
-                                (listView2 ?: return).divider = null
-                                justifyListViewHeightBasedOnChildren(listView2 ?: return)
-                                showAll()
-                            }
+                                        val adapter2 = IssueAdapter(context, list.toTypedArray())
+                                        (listView2 ?: return).adapter = adapter2
+                                        (listView2 ?: return).divider = null
 
-                            override fun onError(anError: ANError?) {
-                                Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
-                            }
-                        })
-                }
+                                        (listView2 ?: return).onItemClickListener =
+                                                AdapterView.OnItemClickListener { parent, _, position, _ ->
+                                                    val selectedItem = parent.getItemAtPosition(position) as String
+                                                    val intent = Intent(applicationContext, IndividualIssue::class.java)
+                                                    val bundle = Bundle()
+                                                    bundle.putString("issueData", selectedItem)
+                                                    intent.putExtras(bundle)
+                                                    startActivity(intent)
+                                                }
+                                        showAll()
+                                    }
 
-                override fun onError(anError: ANError?) {
-                    Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
-                }
-            })
+                                    override fun onError(anError: ANError?) {
+                                        Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
+                                    }
+                                })
+
+    }
+
+    fun itemClick(parent: AdapterView<*>, position: Int) {
+        //Work out what was pressed and send the user on their way
+        val selectedItem = parent.getItemAtPosition(position) as String
+        val intent = Intent(applicationContext, IndividualIssue::class.java)
+        val bundle = Bundle()
+        bundle.putString("issueData", selectedItem)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
     override fun onSupportNavigateUp(): Boolean {
