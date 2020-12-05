@@ -74,6 +74,8 @@
         <activity
             android:name=".projects.IndividualFileViewer" />
         <activity
+            android:name=".projects.IndividualCommit" />
+        <activity
             android:name=".MainAct"
             android:theme="@style/Theme.Labyrinth"/>
         <activity

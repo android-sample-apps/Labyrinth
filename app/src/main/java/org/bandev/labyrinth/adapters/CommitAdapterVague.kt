@@ -40,11 +40,8 @@ class CommitAdapterVague(private val context: Activity, private val text: Array<
         name.text = jsonObj.getString("title")
         visibility.text = jsonObj.getString("author_name")
 
-        var additions = rowView.findViewById<TextView>(R.id.add)
-        var removals = rowView.findViewById<TextView>(R.id.out)
 
-        additions.text = jsonObj.getJSONObject("stats").getInt("additions").toString()
-        removals.text = jsonObj.getJSONObject("stats").getInt("deletions").toString()
+
 
 
 

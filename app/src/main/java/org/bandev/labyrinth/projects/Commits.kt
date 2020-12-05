@@ -22,6 +22,8 @@ import org.bandev.labyrinth.R
 import org.bandev.labyrinth.RoundedTransform
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.CommitAdapterVague
+import org.bandev.labyrinth.core.Animations
+import org.bandev.labyrinth.widgets.NonScrollListView
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -31,7 +33,7 @@ class Commits : AppCompatActivity() {
     private var repoObjIn: JSONObject? = null
     var token: String = ""
     var projectId: String = ""
-    var listView: ListView? = null
+    var listView: NonScrollListView? = null
     var listView2: ListView? = null
     private var progressBar: ProgressBar? = null
 
@@ -49,6 +51,8 @@ class Commits : AppCompatActivity() {
 
         repoObjIn = JSONObject(intent.getStringExtra("repo").toString())
 
+
+
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -56,22 +60,14 @@ class Commits : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
+        //Toolbar shadow animation
+        var scroll = findViewById<ScrollView>(R.id.scroll)
+        Animations().ToolbarShadowScroll(scroll, toolbar)
+
         val title: TextView = findViewById(R.id.title)
         title.text = "Commits"
 
-        val avatar: ImageView = findViewById(R.id.avatar)
-        //Set logo depending on repo
-        avatar.load(repoObjIn!!.getString("avatar_url")) {
-            crossfade(true)
-            transformations(
-                RoundedCornersTransformation(
-                    20f,
-                    20f,
-                    20f,
-                    20f
-                )
-            )
-        }
+
 
         projectId = (repoObjIn ?: return).getString("id")
 
@@ -112,7 +108,8 @@ class Commits : AppCompatActivity() {
                                     val selectedItem = parent.getItemAtPosition(position) as String
                                     val intent = Intent(applicationContext, IndividualCommit::class.java)
                                     val bundle = Bundle()
-                                    bundle.putString("data", selectedItem)
+                                    bundle.putString("commitDataIn", selectedItem)
+                                    bundle.putInt("projectId", projectId.toInt())
                                     intent.putExtras(bundle)
                                     startActivity(intent)
                                 }

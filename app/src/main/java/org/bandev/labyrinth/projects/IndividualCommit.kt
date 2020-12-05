@@ -1,88 +1,82 @@
 package org.bandev.labyrinth.projects
 
-import android.content.Intent
-import android.media.Image
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
-import com.squareup.picasso.Picasso
-import org.bandev.labyrinth.GroupsAct
+import com.androidnetworking.interfaces.JSONObjectRequestListener
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.RoundedTransform
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.adapters.CommitAdapterVague
+import org.bandev.labyrinth.adapters.CommitDiffAdapter
+import org.bandev.labyrinth.adapters.IssueNotesAdapter
+import org.bandev.labyrinth.core.Animations
+import org.bandev.labyrinth.databinding.IndividualCommitBinding
 import org.json.JSONArray
 import org.json.JSONObject
 
 class IndividualCommit : AppCompatActivity() {
 
-    var issueArryIn: JSONArray? = null
-    private var repoObjIn: JSONObject? = null
-    var token: String = ""
-    var projectId: String = ""
-    var listView: ListView? = null
-    var listView2: ListView? = null
-    private var progressBar: ProgressBar? = null
-
     private var profile: Profile = Profile()
+    private lateinit var binding: IndividualCommitBinding
+    private var commitFullId: String = ""
+    private var commitShortId: String = ""
+    private var token: String = ""
+    private var projectId: Int = 0
+    lateinit var commitDataIn: JSONObject
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_commits_list)
+        //Setup view binding
+        binding = IndividualCommitBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        //Login the user and set token variable
         profile.login(this, 0)
         token = profile.getData("token")
 
-        listView = findViewById(R.id.listView)
-        progressBar = findViewById(R.id.progressBar2)
+        //Set important variables from the brief data we got from gitlab
+        commitDataIn = JSONObject(intent.extras?.getString("commitDataIn").toString())
+        commitFullId = commitDataIn.getString("id")
+        commitShortId = commitDataIn.getString("short_id")
+        projectId = (intent.extras?.getInt("projectId") ?: return).toInt()
 
-        repoObjIn = JSONObject(intent.getStringExtra("repo").toString())
-
-        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
+        //Setup toolbar
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        binding.title.text = commitShortId
+        Animations().ToolbarShadowScroll(binding.scroll, binding.toolbar  )
 
-        val title: TextView = findViewById(R.id.title)
-        title.text = "Commits"
-
-        val avatar: ImageView = findViewById(R.id.avatar)
-        Picasso.get().load(repoObjIn!!.getString("avatar_url")).transform(RoundedTransform(90, 0))
-                .into(avatar)
-
-        projectId = (repoObjIn ?: return).getString("id")
-
-        fillData()
-
-        val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
-        refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
-        refresher.setOnRefreshListener {
+        //Setup pull to refresh on the activity
+        binding.pullToRefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
+        binding.pullToRefresh.setOnRefreshListener {
             fillData()
-            refresher.isRefreshing = false
+            binding.pullToRefresh.isRefreshing = false
         }
+
+        //fillData() fills the page with data
+        fillData()
     }
 
     private fun fillData() {
+        //Hide all elements to make loading look smooth
         hideAll()
+        //Make a list and begin filling data on response from GitLab
         val list: MutableList<String> = ArrayList()
-        var responseArray: JSONArray? = null
-        //Get a list of issues from GitLab#
-        var done = false
-        val context = this
         AndroidNetworking.initialize(applicationContext)
         AndroidNetworking
-                .get("https://gitlab.com/api/v4/projects/$projectId/repository/commits?access_token=$token&with_stats=true")
+                .get("https://gitlab.com/api/v4/projects/{id}/repository/commits/{sha}/diff")
+                .addPathParameter("id", projectId.toString())
+                .addPathParameter("sha", commitFullId)
+                .addQueryParameter("access_token", token)
                 .build()
                 .getAsJSONArray(object : JSONArrayRequestListener {
                     override fun onResponse(response: JSONArray?) {
@@ -90,29 +84,98 @@ class IndividualCommit : AppCompatActivity() {
                             list.add(response.getJSONObject(i).toString())
                         }
 
-                        val adapter = CommitAdapterVague(context, list.toTypedArray())
-                        (listView ?: return).adapter = adapter
-                        (listView ?: return).divider = null
+                        val adapter2 = CommitDiffAdapter(this@IndividualCommit, list.toTypedArray())
+                        binding.content.listView.adapter = adapter2
+                        binding.content.listView.divider = null
 
+                        setProfilePicture(commitDataIn.getString("author_email"))
+                    }
 
-                        listView!!.onItemClickListener =
-                                AdapterView.OnItemClickListener { parent, view, position, id ->
-                                    val selectedItem = parent.getItemAtPosition(position) as String
-                                    val intent = Intent(applicationContext, IndividualCommit::class.java)
-                                    val bundle = Bundle()
-                                    bundle.putString("data", selectedItem)
-                                    intent.putExtras(bundle)
-                                    startActivity(intent)
+                    override fun onError(anError: ANError?) {
+                        Toast.makeText(applicationContext, "Error 1", LENGTH_SHORT).show()
+                    }
+                })
+    }
+
+    fun setProfilePicture(email: String){
+        AndroidNetworking.initialize(applicationContext)
+        AndroidNetworking
+                .get("https://gitlab.com/api/v4/avatar")
+                .addQueryParameter("access_token", token)
+                .addQueryParameter("email", email)
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject?) {
+                        //Response is successful, set the data we know
+                        binding.content.avatar.load(response?.getString("avatar_url")) {
+                            crossfade(true)
+                            transformations(CircleCropTransformation())
+                            //Know set known commit data
+                            setKnownData()
+                        }
+                    }
+
+                    override fun onError(anError: ANError?) {
+                        Toast.makeText(applicationContext, "Error getting profile picture", LENGTH_SHORT).show()
+                        setKnownData()
+                    }
+                })
+    }
+
+    fun setKnownData() {
+        binding.content.creator.text = commitDataIn.getString("author_name")
+        binding.content.description.text = commitDataIn.getString("title")
+        binding.content.time.text = getDateTime(commitDataIn.getString("created_at"))
+        setMoreData()
+    }
+
+    private fun setMoreData() {
+        AndroidNetworking.initialize(applicationContext)
+        AndroidNetworking
+                .get("https://gitlab.com/api/v4/projects/{id}/repository/commits/{sha}")
+                .addPathParameter("id", projectId.toString())
+                .addPathParameter("sha", commitFullId)
+                .addQueryParameter("access_token", token)
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject) {
+                        val pipeline = response.getString("status")
+                        if(pipeline != "null"){
+                            var icon = when (pipeline) {
+                                "success" -> {
+                                    R.drawable.ic_success
                                 }
-                        done = true
+                                "failed" -> {
+                                    R.drawable.ic_failed
+                                }
+                                "running" -> {
+                                    R.drawable.ic_running
+                                }
+                                else -> {
+                                    R.drawable.ic_canceled
+                                }
+                            }
+                            with(binding.content.pipeline){
+                                text = response.getString("status").capitalize()
+                                setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0)
+                            }
+                        }else{
+                            binding.content.pipeline.isGone = true
+                        }
 
                         showAll()
                     }
 
                     override fun onError(anError: ANError?) {
-                        Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "Error getting more commit detail", LENGTH_SHORT).show()
                     }
                 })
+    }
+
+    private fun getDateTime(s: String): String? {
+        var arr = s.split("-")
+        var arr2 = arr[2].split("T")
+        return arr2[0] + "/" + arr[1] + "/" + arr[0]
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -120,31 +183,14 @@ class IndividualCommit : AppCompatActivity() {
         return true
     }
 
-    internal fun justifyListViewHeightBasedOnChildren(listView: ListView) {
-        val adapter = listView.adapter ?: return
-        val vg: ViewGroup = listView
-        var totalHeight = 0
-        for (i in 0 until adapter.count) {
-            val listItem: View = adapter.getView(i, null, vg)
-            listItem.measure(0, 0)
-            totalHeight += listItem.measuredHeight
-        }
-        val par = listView.layoutParams
-        par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
-        listView.layoutParams = par
-        listView.requestLayout()
-    }
-
     private fun hideAll() {
-        listView?.isGone = true
-        listView2?.isGone = true
-        progressBar?.isGone = false
+        binding.content.toggle.isGone = true
+        binding.progressBar.isGone = false
     }
 
     fun showAll() {
-        listView?.isGone = false
-        listView2?.isGone = false
-        progressBar?.isGone = true
+        binding.content.toggle.isGone = false
+        binding.progressBar.isGone = true
     }
 
 }
