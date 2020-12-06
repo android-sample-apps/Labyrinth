@@ -15,11 +15,12 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.CommitDiffAdapter
-import org.bandev.labyrinth.adapters.IssueNotesAdapter
 import org.bandev.labyrinth.core.Animations
 import org.bandev.labyrinth.databinding.IndividualCommitBinding
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.ArrayList
 
 class IndividualCommit : AppCompatActivity() {
 
@@ -53,7 +54,7 @@ class IndividualCommit : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
         binding.title.text = commitShortId
-        Animations().ToolbarShadowScroll(binding.scroll, binding.toolbar  )
+        Animations().toolbarShadowScroll(binding.scroll, binding.toolbar  )
 
         //Setup pull to refresh on the activity
         binding.pullToRefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
@@ -141,7 +142,7 @@ class IndividualCommit : AppCompatActivity() {
                     override fun onResponse(response: JSONObject) {
                         val pipeline = response.getString("status")
                         if(pipeline != "null"){
-                            var icon = when (pipeline) {
+                            val icon = when (pipeline) {
                                 "success" -> {
                                     R.drawable.ic_success
                                 }
@@ -156,7 +157,7 @@ class IndividualCommit : AppCompatActivity() {
                                 }
                             }
                             with(binding.content.pipeline){
-                                text = response.getString("status").capitalize()
+                                text = response.getString("status").capitalize(Locale.ROOT)
                                 setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0)
                             }
                         }else{
@@ -172,9 +173,9 @@ class IndividualCommit : AppCompatActivity() {
                 })
     }
 
-    private fun getDateTime(s: String): String? {
-        var arr = s.split("-")
-        var arr2 = arr[2].split("T")
+    private fun getDateTime(s: String): String {
+        val arr = s.split("-")
+        val arr2 = arr[2].split("T")
         return arr2[0] + "/" + arr[1] + "/" + arr[0]
     }
 

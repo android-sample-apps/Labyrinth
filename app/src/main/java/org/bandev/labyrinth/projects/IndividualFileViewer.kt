@@ -3,24 +3,19 @@ package org.bandev.labyrinth.projects
 import android.os.Bundle
 import android.util.Base64
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
-import br.tiagohm.codeview.CodeView
 import br.tiagohm.codeview.Language
 import br.tiagohm.codeview.Theme
-import coil.load
-import coil.transform.RoundedCornersTransformation
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.google.android.material.snackbar.Snackbar
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.core.Compatability
-import org.bandev.labyrinth.core.Helpful
+import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.databinding.IndividualFileViewerBinding
 import org.json.JSONObject
 import java.net.URLEncoder
@@ -78,17 +73,17 @@ class IndividualFileViewer : AppCompatActivity() {
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         //Turn on edge to edge
-        Compatability().edgeToEdge(window, View(this), toolbar, resources)
+        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
 
         //Set title depending on file path
         binding.title.text = path
 
         //Configure pull to refresh & make it run fillData()
         binding.pullToRefresh.setColorSchemeColors(
-                ContextCompat.getColor(
-                        this,
-                        R.color.colorPrimary
-                )
+            ContextCompat.getColor(
+                this,
+                R.color.colorPrimary
+            )
         )
         binding.pullToRefresh.setOnRefreshListener {
             fillData()
@@ -111,47 +106,47 @@ class IndividualFileViewer : AppCompatActivity() {
 
         //Get JSONArray of files from GitLab
         AndroidNetworking
-                .get("https://gitlab.com/api/v4/projects/$repoId/repository/files/{path}")
-                .addQueryParameter("access_token", token)
-                .addQueryParameter("ref", branch)
-                .addPathParameter("path", URLEncoder.encode(path, "utf-8"))
-                .build()
-                .getAsJSONObject(object : JSONObjectRequestListener {
-                    override fun onResponse(result: JSONObject) {
-                        //Save response to fileInfo
-                        fileInfo = result
+            .get("https://gitlab.com/api/v4/projects/$repoId/repository/files/{path}")
+            .addQueryParameter("access_token", token)
+            .addQueryParameter("ref", branch)
+            .addPathParameter("path", URLEncoder.encode(path, "utf-8"))
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(result: JSONObject) {
+                    //Save response to fileInfo
+                    fileInfo = result
 
-                        //Convert base64 response to readble format
-                        val dataBase64 = fileInfo.getString("content")
-                        val code = String(Base64.decode(dataBase64, Base64.NO_WRAP))
+                    //Convert base64 response to readble format
+                    val dataBase64 = fileInfo.getString("content")
+                    val code = String(Base64.decode(dataBase64, Base64.NO_WRAP))
 
-                        println(code)
+                    println(code)
 
-                        //Show code in codeView element & show element
-                        binding.codeView
-                                .setTheme(Theme.ANDROIDSTUDIO)
-                                .setCode(code)
-                                .setWrapLine(true)
-                                .setFontSize(14F)
-                                .setLanguage(Language.AUTO)
-                                .setZoomEnabled(true)
-                                .apply()
+                    //Show code in codeView element & show element
+                    binding.codeView
+                        .setTheme(Theme.ANDROIDSTUDIO)
+                        .setCode(code)
+                        .setWrapLine(true)
+                        .setFontSize(14F)
+                        .setLanguage(Language.AUTO)
+                        .setZoomEnabled(true)
+                        .apply()
 
-                        showAll()
-                    }
+                    showAll()
+                }
 
-                    override fun onError(error: ANError) {
-                        //Alert user that something went wrong, let them try again (fillData())
-                        Snackbar.make(binding.root, R.string.project_fv_error, Snackbar.LENGTH_LONG)
-                                .setAction(R.string.project_fv_error_retry) {
-                                    fillData()
-                                }
-                                .show()
+                override fun onError(error: ANError) {
+                    //Alert user that something went wrong, let them try again (fillData())
+                    Snackbar.make(binding.root, R.string.project_fv_error, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.project_fv_error_retry) {
+                            fillData()
+                        }
+                        .show()
 
-                        //Show empty elements but remove spinner
-                        showAll()
-                    }
-                })
+                    //Show empty elements but remove spinner
+                    showAll()
+                }
+            })
     }
 
     private fun hideAll() {

@@ -2,24 +2,22 @@ package org.bandev.labyrinth
 
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.core.Compatability
+import org.bandev.labyrinth.core.Compatibility
 import java.util.regex.Pattern
 
 class MainAct : AppCompatActivity() {
@@ -37,8 +35,9 @@ class MainAct : AppCompatActivity() {
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        Compatability().edgeToEdge(window, View(this), toolbar, resources)
-        val navController = findNavController(R.id.nav_host_fragment)
+        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
                 setOf(
                         R.id.navigation_notifications,
@@ -65,8 +64,6 @@ class MainAct : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
     }
-
-
 
     private fun Toolbar.setTitle(label: CharSequence?, textView: TextView, arguments: Bundle?) {
         if (label != null) {

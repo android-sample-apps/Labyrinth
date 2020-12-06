@@ -1,32 +1,17 @@
 package org.bandev.labyrinth.adapters
 
 import android.app.Activity
-import android.content.Context
-import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import androidx.core.view.isGone
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.common.ANRequest
-import com.androidnetworking.common.ANResponse
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONObjectRequestListener
-import com.squareup.picasso.Picasso
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import org.bandev.labyrinth.CircleTransform
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.databinding.FileViewAdapterBinding
 import org.json.JSONObject
 
 
-class BranchSelectorAdapter(private val context: Activity, private val text: Array<String?>, val currentBranch: String) :
+class BranchSelectorAdapter(private val context: Activity, private val text: Array<String?>, private val currentBranch: String) :
     BaseAdapter() {
 
 

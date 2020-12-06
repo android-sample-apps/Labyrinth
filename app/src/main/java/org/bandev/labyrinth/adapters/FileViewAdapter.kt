@@ -9,19 +9,12 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.common.ANRequest
-import com.androidnetworking.common.ANResponse
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
-import com.squareup.picasso.Picasso
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import org.bandev.labyrinth.CircleTransform
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.databinding.FileViewAdapterBinding
 import org.json.JSONObject
 
 
@@ -46,12 +39,6 @@ class FileViewAdapter(private val context: Activity, private val text: Array<Str
             "blob" -> icon.setImageResource(R.drawable.ic_paper)
         }
 
-
-
-
-
-
-
         return rowView
     }
 
@@ -63,7 +50,6 @@ class FileViewAdapter(private val context: Activity, private val text: Array<Str
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject) {
                         response.getString("avatar_url")
-
                     }
 
                     override fun onError(error: ANError?) {
@@ -73,7 +59,6 @@ class FileViewAdapter(private val context: Activity, private val text: Array<Str
                 })
             ""
         }
-
     }
 
     override fun getItem(p0: Int): String? {

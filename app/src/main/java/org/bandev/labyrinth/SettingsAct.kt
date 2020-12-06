@@ -5,17 +5,13 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.preference.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import mehdi.sakout.aboutpage.AboutPage
-import mehdi.sakout.aboutpage.Element
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.core.Appearance
-import org.bandev.labyrinth.core.Compatability
+import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.intro.First
 import org.bandev.labyrinth.widgets.About
 
@@ -29,7 +25,7 @@ class SettingsAct : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        Compatability().edgeToEdge(window, View(this), toolbar, resources)
+        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         if (savedInstanceState == null) {
@@ -62,7 +58,7 @@ class SettingsAct : AppCompatActivity() {
 
             val about = findPreference("about") as Preference?
             about?.setOnPreferenceClickListener { preference ->
-                var intent = Intent(context, About::class.java)
+                val intent = Intent(context, About::class.java)
                 startActivity(intent)
                 true
                 }
@@ -119,12 +115,12 @@ class SettingsAct : AppCompatActivity() {
 
         }
 
-        fun setAutoSyncVals() {
+        private fun setAutoSyncVals() {
             val async = findPreference("async") as SwitchPreferenceCompat?
             if(ContentResolver.getSyncAutomatically(profile.account, "org.bandev.labyrinth.account.provider")){
-                async!!.isChecked = true
+                (async ?: return).isChecked = true
             }else{
-                async!!.isChecked = false
+                (async ?: return).isChecked = false
             }
         }
 

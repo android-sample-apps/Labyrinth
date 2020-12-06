@@ -9,17 +9,11 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.common.ANRequest
-import com.androidnetworking.common.ANResponse
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
-import com.squareup.picasso.Picasso
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import org.bandev.labyrinth.CircleTransform
 import org.bandev.labyrinth.R
 import org.json.JSONObject
 

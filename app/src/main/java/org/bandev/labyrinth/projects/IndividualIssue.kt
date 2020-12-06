@@ -1,11 +1,9 @@
 package org.bandev.labyrinth.projects
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
@@ -18,7 +16,6 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener
 import io.noties.markwon.Markwon
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.adapters.IssueAdapter
 import org.bandev.labyrinth.adapters.IssueNotesAdapter
 import org.bandev.labyrinth.core.Animations
 import org.bandev.labyrinth.databinding.IndividualIssueBinding
@@ -50,7 +47,7 @@ class IndividualIssue : AppCompatActivity() {
         token = profile.getData("token")
 
         //Set issueData JSON depending on the data passed in to the activity
-        issueData = JSONObject(intent.extras!!.getString("issueData").toString())
+        issueData = JSONObject((intent.extras ?: return).getString("issueData").toString())
 
         //Set title, avatar, username etc
         binding.content.avatar.load(issueData.getJSONObject("author").getString("avatar_url")) {
@@ -65,9 +62,9 @@ class IndividualIssue : AppCompatActivity() {
         markwon.setMarkdown(binding.content.description, issueData.getString("description"))
 
         //Work out and set likes
-        var diff = issueData.getInt("upvotes") - issueData.getInt("downvotes")
+        val diff = issueData.getInt("upvotes") - issueData.getInt("downvotes")
         binding.content.likes.text = (if (diff >= 0) {
-            "+" + diff
+            "+$diff"
         } else {
             diff
         }).toString()
@@ -83,7 +80,7 @@ class IndividualIssue : AppCompatActivity() {
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         //Toolbar shadow animation
-        Animations().ToolbarShadowScroll(binding.scroll, toolbar)
+        Animations().toolbarShadowScroll(binding.scroll, toolbar)
 
 
         fillData()
@@ -96,9 +93,9 @@ class IndividualIssue : AppCompatActivity() {
         }
     }
 
-    private fun getDateTime(s: String): String? {
-        var arr = s.split("-")
-        var arr2 = arr[2].split("T")
+    private fun getDateTime(s: String): String {
+        val arr = s.split("-")
+        val arr2 = arr[2].split("T")
         return arr2[0] + "/" + arr[1] + "/" + arr[0]
     }
 
@@ -116,7 +113,7 @@ class IndividualIssue : AppCompatActivity() {
                 override fun onResponse(response: JSONArray) {
                     // do anything with response
 
-                    for (i in 0 until (response ?: return).length()) {
+                    for (i in 0 until response.length()) {
                         list.add(response.getJSONObject(i).toString())
                     }
 
@@ -156,12 +153,12 @@ class IndividualIssue : AppCompatActivity() {
     }
 
     private fun hideAll() {
-        binding.content.listView?.isGone = true
+        binding.content.listView.isGone = true
         progressBar?.isGone = false
     }
 
     fun showAll() {
-        binding.content.listView?.isGone = false
+        binding.content.listView.isGone = false
         progressBar?.isGone = true
     }
 

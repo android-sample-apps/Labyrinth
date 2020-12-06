@@ -1,7 +1,6 @@
 package org.bandev.labyrinth.projects
 
 import android.content.Intent
-import android.media.Image
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import coil.load
-import coil.transform.RoundedCornersTransformation
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
-import com.squareup.picasso.Picasso
-import org.bandev.labyrinth.GroupsAct
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.RoundedTransform
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.CommitAdapterVague
 import org.bandev.labyrinth.core.Animations
@@ -34,7 +28,7 @@ class Commits : AppCompatActivity() {
     var token: String = ""
     var projectId: String = ""
     var listView: NonScrollListView? = null
-    var listView2: ListView? = null
+    private var listView2: ListView? = null
     private var progressBar: ProgressBar? = null
 
     private var profile: Profile = Profile()
@@ -45,13 +39,9 @@ class Commits : AppCompatActivity() {
 
         profile.login(this, 0)
         token = profile.getData("token")
-
         listView = findViewById(R.id.listView)
         progressBar = findViewById(R.id.progressBar2)
-
         repoObjIn = JSONObject(intent.getStringExtra("repo").toString())
-
-
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -61,13 +51,11 @@ class Commits : AppCompatActivity() {
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         //Toolbar shadow animation
-        var scroll = findViewById<ScrollView>(R.id.scroll)
-        Animations().ToolbarShadowScroll(scroll, toolbar)
+        val scroll = findViewById<ScrollView>(R.id.scroll)
+        Animations().toolbarShadowScroll(scroll, toolbar)
 
         val title: TextView = findViewById(R.id.title)
         title.text = "Commits"
-
-
 
         projectId = (repoObjIn ?: return).getString("id")
 
@@ -103,7 +91,7 @@ class Commits : AppCompatActivity() {
                         (listView ?: return).divider = null
 
 
-                        listView!!.onItemClickListener =
+                        (listView ?: return).onItemClickListener =
                                 AdapterView.OnItemClickListener { parent, view, position, id ->
                                     val selectedItem = parent.getItemAtPosition(position) as String
                                     val intent = Intent(applicationContext, IndividualCommit::class.java)

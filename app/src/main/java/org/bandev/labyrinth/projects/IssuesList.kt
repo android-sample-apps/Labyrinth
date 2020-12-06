@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import coil.load
-import coil.transform.RoundedCornersTransformation
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
@@ -26,7 +24,7 @@ class IssuesList : AppCompatActivity() {
     var issueArryIn: JSONArray? = null
     private var repoObjIn: JSONObject? = null
     var token: String = ""
-    var projectId: String = ""
+    private var projectId: String = ""
     var listView: ListView? = null
     var listView2: ListView? = null
     private var progressBar: ProgressBar? = null
@@ -78,38 +76,37 @@ class IssuesList : AppCompatActivity() {
         var done = false
         val context = this
 
+        AndroidNetworking.initialize(applicationContext)
+        AndroidNetworking
+            .get("https://gitlab.com/api/v4/projects/$projectId/issues?token=$token  ")
+            .build()
+            .getAsJSONArray(object : JSONArrayRequestListener {
+                override fun onResponse(response: JSONArray?) {
 
-                        AndroidNetworking.initialize(applicationContext)
-                        AndroidNetworking
-                                .get("https://gitlab.com/api/v4/projects/$projectId/issues?token=$token  ")
-                                .build()
-                                .getAsJSONArray(object : JSONArrayRequestListener {
-                                    override fun onResponse(response: JSONArray?) {
+                    for (i in 0 until (response ?: return).length()) {
+                        list.add(response.getJSONObject(i).toString())
+                    }
 
-                                        for (i in 0 until (response ?: return).length()) {
-                                            list.add(response.getJSONObject(i).toString())
-                                        }
+                    val adapter2 = IssueAdapter(context, list.toTypedArray())
+                    (listView2 ?: return).adapter = adapter2
+                    (listView2 ?: return).divider = null
 
-                                        val adapter2 = IssueAdapter(context, list.toTypedArray())
-                                        (listView2 ?: return).adapter = adapter2
-                                        (listView2 ?: return).divider = null
+                    (listView2 ?: return).onItemClickListener =
+                        AdapterView.OnItemClickListener { parent, _, position, _ ->
+                            val selectedItem = parent.getItemAtPosition(position) as String
+                            val intent = Intent(applicationContext, IndividualIssue::class.java)
+                            val bundle = Bundle()
+                            bundle.putString("issueData", selectedItem)
+                            intent.putExtras(bundle)
+                            startActivity(intent)
+                        }
+                    showAll()
+                }
 
-                                        (listView2 ?: return).onItemClickListener =
-                                                AdapterView.OnItemClickListener { parent, _, position, _ ->
-                                                    val selectedItem = parent.getItemAtPosition(position) as String
-                                                    val intent = Intent(applicationContext, IndividualIssue::class.java)
-                                                    val bundle = Bundle()
-                                                    bundle.putString("issueData", selectedItem)
-                                                    intent.putExtras(bundle)
-                                                    startActivity(intent)
-                                                }
-                                        showAll()
-                                    }
-
-                                    override fun onError(anError: ANError?) {
-                                        Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
-                                    }
-                                })
+                override fun onError(anError: ANError?) {
+                    Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
+                }
+            })
 
     }
 

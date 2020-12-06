@@ -10,13 +10,12 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.core.User
 import org.json.JSONObject
 
 class TodoAdapter(private val context: Activity, private val text: Array<String?>) :
-    BaseAdapter() {
+        BaseAdapter() {
 
-    var profile = Profile()
+    var profile: Profile = Profile()
 
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
@@ -34,13 +33,13 @@ class TodoAdapter(private val context: Activity, private val text: Array<String?
 
         if (jsonObj.getString("target_type") == "Issue") {
             if (jsonObj.getJSONObject("target").getJSONObject("assignee")
-                    .getString("username") == profile.getData("username")
+                            .getString("username") == profile.getData("username")
             ) {
                 visibility.text = "Assigned by you"
             } else {
                 visibility.text =
-                    "Assigned by " + jsonObj.getJSONObject("target").getJSONObject("assignee")
-                        .getString("name")
+                        "Assigned by " + jsonObj.getJSONObject("target").getJSONObject("assignee")
+                                .getString("name")
             }
         }
 

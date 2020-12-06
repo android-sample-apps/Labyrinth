@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
@@ -249,11 +248,11 @@ class ProjectAct : AppCompatActivity() {
             .build()
             .getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject?) {
-                    commitsCount = response!!.getJSONObject("statistics").getInt("commit_count")
+                    commitsCount = (response ?: return).getJSONObject("statistics").getInt("commit_count")
                     filesSize =
-                        response!!.getJSONObject("statistics").getInt("repository_size").toFloat()
+                        response.getJSONObject("statistics").getInt("repository_size").toFloat()
 
-                    var fileSizeStr = Helpful().humanReadableByteCountSI(filesSize.toLong())
+                    val fileSizeStr = Helpful().humanReadableByteCountSI(filesSize.toLong())
                     infoList.add("{ 'left' : 'Issues', 'right' : '$issueNum' }")
                     infoList.add("{ 'left' : 'Branch', 'right' : '$defaultBranch' }")
                     infoList.add("{ 'left' : 'View Files', 'right' : '$fileSizeStr' }")
@@ -267,39 +266,44 @@ class ProjectAct : AppCompatActivity() {
                         AdapterView.OnItemClickListener { parent, view, position, id ->
                             val selectedItem = parent.getItemAtPosition(position) as String
                             val obj = JSONObject(selectedItem)
-                            if (obj.getString("left") == "Issues") {
-                                val intent = Intent(applicationContext, IssuesList::class.java)
-                                val bundle = Bundle()
-                                bundle.putString("repo", data)
-                                intent.putExtras(bundle)
-                                startActivity(intent)
-                            } else if (obj.getString("left") == "Commits") {
-                                val intent = Intent(applicationContext, Commits::class.java)
-                                val bundle = Bundle()
-                                bundle.putString("repo", data)
-                                intent.putExtras(bundle)
-                                startActivity(intent)
-                            } else if (obj.getString("left") == "View Files") {
-                                val dataJs = JSONObject(data)
-                                val intent = Intent(applicationContext, FileViewer::class.java)
-                                val bundle = Bundle()
-                                bundle.putString("repoName", dataJs.getString("name"))
-                                bundle.putString("repoLogoUrl", dataJs.getString("avatar_url"))
-                                bundle.putString("repoId", dataJs.getString("id"))
-                                bundle.putString("path", "")
-                                bundle.putString("branch", defaultBranch)
-                                intent.putExtras(bundle)
-                                startActivity(intent)
-                            } else if (obj.getString("left") == "Branch") {
-                                val dataJs = JSONObject(data)
-                                val intent = Intent(applicationContext, BranchSelector::class.java)
-                                val bundle = Bundle()
-                                bundle.putString("repoName", dataJs.getString("name"))
-                                bundle.putString("repoLogoUrl", dataJs.getString("avatar_url"))
-                                bundle.putString("repoId", dataJs.getString("id"))
-                                bundle.putString("branch", defaultBranch)
-                                intent.putExtras(bundle)
-                                startActivityForResult(intent, 0)
+                            when {
+                                obj.getString("left") == "Issues" -> {
+                                    val intent = Intent(applicationContext, IssuesList::class.java)
+                                    val bundle = Bundle()
+                                    bundle.putString("repo", data)
+                                    intent.putExtras(bundle)
+                                    startActivity(intent)
+                                }
+                                obj.getString("left") == "Commits" -> {
+                                    val intent = Intent(applicationContext, Commits::class.java)
+                                    val bundle = Bundle()
+                                    bundle.putString("repo", data)
+                                    intent.putExtras(bundle)
+                                    startActivity(intent)
+                                }
+                                obj.getString("left") == "View Files" -> {
+                                    val dataJs = JSONObject(data)
+                                    val intent = Intent(applicationContext, FileViewer::class.java)
+                                    val bundle = Bundle()
+                                    bundle.putString("repoName", dataJs.getString("name"))
+                                    bundle.putString("repoLogoUrl", dataJs.getString("avatar_url"))
+                                    bundle.putString("repoId", dataJs.getString("id"))
+                                    bundle.putString("path", "")
+                                    bundle.putString("branch", defaultBranch)
+                                    intent.putExtras(bundle)
+                                    startActivity(intent)
+                                }
+                                obj.getString("left") == "Branch" -> {
+                                    val dataJs = JSONObject(data)
+                                    val intent = Intent(applicationContext, BranchSelector::class.java)
+                                    val bundle = Bundle()
+                                    bundle.putString("repoName", dataJs.getString("name"))
+                                    bundle.putString("repoLogoUrl", dataJs.getString("avatar_url"))
+                                    bundle.putString("repoId", dataJs.getString("id"))
+                                    bundle.putString("branch", defaultBranch)
+                                    intent.putExtras(bundle)
+                                    startActivityForResult(intent, 0)
+                                }
                             }
                         }
 
@@ -324,13 +328,13 @@ class ProjectAct : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode != Activity.RESULT_OK) return
         when(requestCode) {
-            0 -> { updateBranch(data!!.getStringExtra("newBranch").toString()) }
+            0 -> { updateBranch((data ?: return).getStringExtra("newBranch").toString()) }
             // Other result codes
             else -> {}
         }
     }
 
-    fun updateBranch(branch: String){
+    private fun updateBranch(branch: String){
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
         with (sharedPref.edit()) {
             putString(projectId+"_branch", branch)
@@ -339,10 +343,9 @@ class ProjectAct : AppCompatActivity() {
         filldata()
     }
 
-    fun getBranch(dataJson:JSONObject): String{
+    private fun getBranch(dataJson:JSONObject): String{
         val sharedPref = getPreferences(Context.MODE_PRIVATE)
-        val branch = sharedPref.getString(projectId+"_branch", "default")
-        return when(branch){
+        return when(val branch = sharedPref.getString(projectId+"_branch", "default")){
             "default" -> dataJson.getString("default_branch")
             else -> branch.toString()
         }

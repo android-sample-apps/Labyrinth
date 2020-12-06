@@ -8,8 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
-import coil.load
-import coil.transform.RoundedCornersTransformation
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
@@ -18,7 +16,7 @@ import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.FileViewAdapter
 import org.bandev.labyrinth.core.Animations
-import org.bandev.labyrinth.core.Compatability
+import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.databinding.FileViewerBinding
 import org.json.JSONArray
 import org.json.JSONObject
@@ -76,10 +74,10 @@ class FileViewer : AppCompatActivity() {
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         //Toolbar shadow animation
-        Animations().ToolbarShadowScroll(binding.scroll, toolbar)
+        Animations().toolbarShadowScroll(binding.scroll, toolbar)
 
         //Turn on edge to edge
-        Compatability().edgeToEdge(window, View(this), toolbar, resources)
+        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
 
         //Set title depending on folder
         binding.title.text = if (path == "") {

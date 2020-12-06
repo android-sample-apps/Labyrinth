@@ -3,8 +3,6 @@ package org.bandev.labyrinth.account
 import android.accounts.Account
 import android.content.*
 import android.os.Bundle
-import android.view.View
-import androidx.core.content.ContentProviderCompat.requireContext
 
 class SyncAdapter @JvmOverloads constructor(
     context: Context,
@@ -29,7 +27,7 @@ class SyncAdapter @JvmOverloads constructor(
         syncResult: SyncResult?
     ) {
 
-        var profile = Profile()
+        val profile = Profile()
 
         profile.login(context, 0)
 

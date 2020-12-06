@@ -13,7 +13,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>
 
         <!-- Disable AppBar cus ToolBar is cool -->
         <item name="windowActionBar">false</item>

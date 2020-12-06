@@ -3,17 +3,14 @@ package org.bandev.labyrinth.adapters
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.ColorStateList
 import android.preference.PreferenceManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import coil.load
 import coil.transform.CircleCropTransformation
-import com.google.android.material.chip.Chip
 import org.bandev.labyrinth.R
 import org.json.JSONObject
 

@@ -11,9 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import coil.load
 import coil.transform.RoundedCornersTransformation
-import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.RoundedTransform
 import org.json.JSONObject
 
 class GroupOrProjectListAdapter(private val context: Activity, private val text: Array<String?>) :

@@ -1,11 +1,5 @@
 package org.bandev.labyrinth.core
 
-import android.content.Context
-import android.graphics.Color
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
@@ -40,8 +34,4 @@ class Helpful {
         listView.layoutParams = par
         listView.requestLayout()
     }
-
-
-
-
 }

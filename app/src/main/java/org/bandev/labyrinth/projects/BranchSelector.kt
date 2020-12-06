@@ -1,6 +1,5 @@
 package org.bandev.labyrinth.projects
 
-import android.R.id.message
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -10,21 +9,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
-import coil.load
-import coil.transform.RoundedCornersTransformation
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.selects.select
-import org.bandev.labyrinth.ProjectAct
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.BranchSelectorAdapter
 import org.bandev.labyrinth.core.Animations
-import org.bandev.labyrinth.core.Compatability
+import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.databinding.BranchSelectorBinding
-import org.bandev.labyrinth.databinding.FileViewerBinding
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -80,10 +74,10 @@ class BranchSelector : AppCompatActivity() {
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         //Toolbar shadow animation
-        Animations().ToolbarShadowScroll(binding.scroll, toolbar)
+        Animations().toolbarShadowScroll(binding.scroll, toolbar)
 
         //Turn on edge to edge
-        Compatability().edgeToEdge(window, View(this), toolbar, resources)
+        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
 
         //Set title depending on folder
         binding.title.text = "Select branch"
@@ -167,7 +161,7 @@ class BranchSelector : AppCompatActivity() {
         val selectedItem = parent.getItemAtPosition(position) as String
         val data = Intent()
         data.putExtra("newBranch", JSONObject(selectedItem).getString("name"))
-        setResult(Activity.RESULT_OK, data);
+        setResult(Activity.RESULT_OK, data)
         finish()
     }
 

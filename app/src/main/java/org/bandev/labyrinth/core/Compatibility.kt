@@ -9,12 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowInsetsController
-import android.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
 import org.bandev.labyrinth.R
 
-class Compatability {
+class Compatibility {
 
     /**
      * Sets navigation bar based off android version
@@ -25,12 +24,29 @@ class Compatability {
      * @added [1008] v1.5.0 - 29/10/2020
      */
 
-    fun setSystemBarColor(context: Context, window: Window, resources: Resources) {
+    fun setSystemBars(context: Context, window: Window, resources: Resources) {
         when (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_NO -> {
-                WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-                window.decorView.systemUiVisibility =
-                        View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    @Suppress("DEPRECATION")
+                    window.decorView.systemUiVisibility =
+                            View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    window.navigationBarColor = Color.TRANSPARENT
+                } else {
+                    window.navigationBarColor =
+                            ResourcesCompat.getColor(resources, R.color.design_default_color_primary_dark, null)
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    @Suppress("DEPRECATION")
+                    window.decorView.systemUiVisibility =
+                            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                }
             }
             Configuration.UI_MODE_NIGHT_YES -> {
                 window.navigationBarColor = Color.TRANSPARENT
@@ -49,36 +65,12 @@ class Compatability {
 
         var statusBarHeight = 0
         val resourceId = resources.getIdentifier("status_bar_height", "dimen",
-            "android")
+                "android")
         if (resourceId > 0) {
             statusBarHeight = resources.getDimensionPixelSize(resourceId)
         }
         val param = toolbar.layoutParams as ViewGroup.MarginLayoutParams
         param.setMargins(0, statusBarHeight, 0, 0)
         toolbar.layoutParams = param
-    }
-
-
-    fun setNavigationBarColour(context: Context, window: Window, resources: Resources) {
-        when (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_NO -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    @Suppress("DEPRECATION")
-                    window.decorView.systemUiVisibility =
-                            View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    window.navigationBarColor = Color.TRANSPARENT
-                } else {
-                    window.navigationBarColor =
-                            ResourcesCompat.getColor(resources, R.color.design_default_color_primary_dark, null)
-                }
-            }
-            Configuration.UI_MODE_NIGHT_YES -> {
-                window.navigationBarColor = Color.TRANSPARENT
-            }
-        }
     }
 }

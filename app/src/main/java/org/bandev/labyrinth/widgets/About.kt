@@ -1,7 +1,6 @@
 package org.bandev.labyrinth.widgets
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import mehdi.sakout.aboutpage.AboutPage
@@ -13,19 +12,19 @@ class About : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val versionElement = Element()
-        versionElement.setTitle("Version 6.2")
-        versionElement.setIconDrawable(R.mipmap.ic_launcher_round)
+        versionElement.title = "Version 6.2"
+        versionElement.iconDrawable = R.mipmap.ic_launcher_round
 
         val aboutPage = AboutPage(this)
             .isRTL(false)
             .enableDarkMode(false)
-            .setImage(R.drawable.bandev)
+            .setImage(R.mipmap.bandev)
             .setCustomFont(ResourcesCompat.getFont(this, R.font.jb))
             .addItem(versionElement)
             .addGroup("Connect with us")
             .addWebsite("https://bandev.computub.com")
             .addTwitter("BanDevApps")
-            .addPlayStore("org.bandeb.labyrinth")
+            .addPlayStore("org.bandev.labyrinth")
             .create()
 
         setContentView(aboutPage)

@@ -8,8 +8,6 @@ import android.view.View
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
-import com.google.android.material.snackbar.BaseTransientBottomBar.ANIMATION_MODE_FADE
-import com.google.android.material.snackbar.BaseTransientBottomBar.ANIMATION_MODE_SLIDE
 import com.google.android.material.snackbar.Snackbar
 import org.bandev.labyrinth.core.Api
 import org.json.JSONObject
@@ -37,8 +35,8 @@ class Profile {
     }
 
     fun sync(context: Context, view: View) {
-        var token = getData("token")
-        var server = getData("server")
+        val token = getData("token")
+        val server = getData("server")
 
         AndroidNetworking.initialize(context)
         AndroidNetworking.get("$server/api/v4/user?access_token=$token")
@@ -80,8 +78,8 @@ class Profile {
     }
 
     fun syncNoFeedback(context: Context) {
-        var token = getData("token")
-        var server = getData("server")
+        val token = getData("token")
+        val server = getData("server")
 
         AndroidNetworking.initialize(context)
         AndroidNetworking.get("$server/api/v4/user?access_token=$token")

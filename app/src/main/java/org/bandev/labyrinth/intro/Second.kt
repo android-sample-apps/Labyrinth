@@ -2,9 +2,7 @@ package org.bandev.labyrinth.intro
 
 import android.accounts.Account
 import android.accounts.AccountManager
-import android.content.Context
 import android.content.Intent
-import android.media.tv.TvContract.AUTHORITY
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -12,7 +10,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
@@ -25,7 +22,7 @@ import org.json.JSONObject
 
 class Second : AppCompatActivity() {
 
-    var username = ""
+    var username: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +30,8 @@ class Second : AppCompatActivity() {
 
         val button: Button = findViewById(R.id.button)
         val button2: Button = findViewById(R.id.button2)
-
         val userData = Bundle()
-
-
-
         val title = findViewById<TextView>(R.id.title)
-
         val token = (intent.extras ?: return).get("token").toString()
 
         AndroidNetworking.initialize(this)
@@ -72,8 +64,6 @@ class Second : AppCompatActivity() {
                     userData.putInt("id", response.getInt("id"))
                     userData.putString("avatarUrl", response.getString("avatar_url"))
                     userData.putString("webUrl", response.getString("web_url"))
-
-
                 }
 
                 override fun onError(error: ANError?) {

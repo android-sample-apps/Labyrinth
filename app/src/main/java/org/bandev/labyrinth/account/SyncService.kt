@@ -9,8 +9,7 @@ import android.os.Parcelable
 
 @SuppressLint("ParcelCreator")
 class SyncService() : Service(), Parcelable {
-    constructor(parcel: Parcel) : this() {
-    }
+    constructor(parcel: Parcel) : this()
 
     /*
          * Instantiate the sync adapter object.
