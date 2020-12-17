@@ -7,12 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView.OnItemClickListener
-import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import org.bandev.labyrinth.ProjectAct
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
-import org.bandev.labyrinth.ProjectAct
 import org.bandev.labyrinth.widgets.NonScrollListView
 
 class DashboardFragment : Fragment() {

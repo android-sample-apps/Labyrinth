@@ -2,19 +2,15 @@ package org.bandev.labyrinth.account
 
 import android.accounts.Account
 import android.accounts.AccountManager
-import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.annotation.RequiresApi
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
-import com.google.android.material.snackbar.Snackbar
 import org.bandev.labyrinth.core.Api
 import org.json.JSONObject
-import java.lang.IndexOutOfBoundsException
 
 class Profile {
 

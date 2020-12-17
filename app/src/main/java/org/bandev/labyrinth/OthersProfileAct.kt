@@ -12,7 +12,6 @@ import android.widget.*
 import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import coil.load
@@ -21,11 +20,9 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.androidnetworking.interfaces.JSONObjectRequestListener
-import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.core.Api
-import org.bandev.labyrinth.core.User
 import org.bandev.labyrinth.databinding.OthersprofileActBinding
 import org.json.JSONArray
 import org.json.JSONObject
@@ -141,7 +138,7 @@ class OthersProfileAct : AppCompatActivity() {
                 .build()
                 .getAsJSONArray(object : JSONArrayRequestListener {
                     override fun onResponse(response: JSONArray) {
-                        var list: MutableList<String> = ArrayList()
+                        val list: MutableList<String> = ArrayList()
                         var index = 0
                         while (index != response.length()) {
                             list.add(response[index].toString())

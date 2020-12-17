@@ -4,8 +4,6 @@ import android.app.Activity
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 
 class SearchActivity : Activity() {
 

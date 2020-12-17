@@ -2,7 +2,6 @@ package org.bandev.labyrinth.core
 
 import android.content.Context
 import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.common.ANResponse
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.androidnetworking.interfaces.JSONObjectRequestListener

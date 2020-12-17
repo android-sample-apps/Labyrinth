@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
-import com.androidnetworking.interfaces.JSONObjectRequestListener
 import org.bandev.labyrinth.OthersProfileAct
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
@@ -25,7 +24,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
 
-     var profile = Profile()
+     var profile: Profile = Profile()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -49,10 +48,10 @@ class HomeFragment : Fragment() {
                     .build()
                     .getAsJSONArray(object : JSONArrayRequestListener {
                         override fun onResponse(response: JSONArray?) {
-                            var ids = response!![0].toString()
+                            val ids = (response ?: return)[0].toString()
 
-                            var id = JSONObject(ids).getInt("id")
-                            var i = Intent(requireContext(), OthersProfileAct::class.java)
+                            val id = JSONObject(ids).getInt("id")
+                            val i = Intent(requireContext(), OthersProfileAct::class.java)
                             i.putExtra("data", "{" +
                                     "   'id': $id" +
                                     "}")

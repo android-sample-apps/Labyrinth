@@ -15,7 +15,6 @@ import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isGone
@@ -121,7 +120,8 @@ class ProjectAct : AppCompatActivity() {
                                     override fun onResponse(response: JSONObject) {
 
                                         val unwrappedDrawable = AppCompatResources.getDrawable(applicationContext, R.drawable.ic_dot)
-                                        val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
+                                        val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable
+                                            ?: return)
                                         DrawableCompat.setTint(wrappedDrawable, Color.parseColor(response.getJSONObject(Mainlang.text as String).getString("color")))
                                         Mainlang.setCompoundDrawablesWithIntrinsicBounds(wrappedDrawable, null, null, null)
                                     }
@@ -304,11 +304,10 @@ class ProjectAct : AppCompatActivity() {
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject?) {
                         if(response?.has("statistics") == true){
-                            commitsCount = (response
-                                    ?: return).getJSONObject("statistics").getInt("commit_count").toString()
+                            commitsCount = response.getJSONObject("statistics").getInt("commit_count").toString()
                             filesSize =
                                     response.getJSONObject("statistics").getInt("repository_size").toLong()
-                            fileSizeStr = Helpful().humanReadableByteCountSI(filesSize.toLong()).toString()
+                            fileSizeStr = Helpful().humanReadableByteCountSI(filesSize).toString()
                         }else{
                             commitsCount = "Unknown"
                             fileSizeStr = "Unknown"
