@@ -1,9 +1,11 @@
 package org.bandev.labyrinth.projects
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
@@ -14,6 +16,7 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import io.noties.markwon.Markwon
+import org.bandev.labyrinth.OthersProfileAct
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.IssueNotesAdapter
@@ -56,6 +59,13 @@ class IndividualIssue : AppCompatActivity() {
         }
         binding.content.creator.text = issueData.getJSONObject("author").getString("name")
         binding.title.text = "Issue #" + issueData.getInt("iid").toString()
+
+        binding.content.creator.setOnClickListener{
+            toPoster()
+        }
+        binding.content.avatar.setOnClickListener{
+            toPoster()
+        }
 
         //Set description in markdown renderor
         val markwon: Markwon = Markwon.create(this)
@@ -107,28 +117,28 @@ class IndividualIssue : AppCompatActivity() {
         val iid = issueData.getInt("iid").toString()
 
         AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId2/issues/$iid/notes?sort=asc")
-            .addQueryParameter("access_token", token)
-            .build()
-            .getAsJSONArray(object : JSONArrayRequestListener {
-                override fun onResponse(response: JSONArray) {
-                    // do anything with response
+                .addQueryParameter("access_token", token)
+                .build()
+                .getAsJSONArray(object : JSONArrayRequestListener {
+                    override fun onResponse(response: JSONArray) {
+                        // do anything with response
 
-                    for (i in 0 until response.length()) {
-                        list.add(response.getJSONObject(i).toString())
+                        for (i in 0 until response.length()) {
+                            list.add(response.getJSONObject(i).toString())
+                        }
+
+                        val adapter2 = IssueNotesAdapter(this@IndividualIssue, list.toTypedArray())
+                        binding.content.listView.adapter = adapter2
+                        binding.content.listView.divider = null
+
+                        showAll()
+
                     }
 
-                    val adapter2 = IssueNotesAdapter(this@IndividualIssue, list.toTypedArray())
-                    binding.content.listView.adapter = adapter2
-                    binding.content.listView.divider = null
-
-                    showAll()
-
-                }
-
-                override fun onError(error: ANError) {
-                    // handle error
-                }
-            })
+                    override fun onError(error: ANError) {
+                        // handle error
+                    }
+                })
 
     }
 
@@ -160,6 +170,12 @@ class IndividualIssue : AppCompatActivity() {
     fun showAll() {
         binding.content.listView.isGone = false
         progressBar?.isGone = true
+    }
+
+    private fun toPoster(){
+        val i = Intent(this, OthersProfileAct::class.java)
+        i.putExtra("data", issueData.getJSONObject("author").toString())
+        startActivity(i)
     }
 
 }

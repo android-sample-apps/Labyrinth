@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.adapters.TodoAdapter
+import org.bandev.labyrinth.widgets.NonScrollListView
 
 class NotificationsFragment : Fragment() {
 
@@ -27,7 +28,7 @@ class NotificationsFragment : Fragment() {
 
         val projectLists = requireContext().getSharedPreferences("User-Todos", 0)
 
-        val listViewProjects = root.findViewById<ListView>(R.id.projects)
+        val listViewProjects = root.findViewById<NonScrollListView>(R.id.projects)
 
         var i2 = 0
         val list2: MutableList<String?> = mutableListOf()
@@ -41,7 +42,6 @@ class NotificationsFragment : Fragment() {
         if (projectLists.getInt("numTodos", 0) != 0) {
             listViewProjects.divider = null
         }
-        justifyListViewHeightBasedOnChildren(listViewProjects)
 
         listViewProjects.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
@@ -56,18 +56,4 @@ class NotificationsFragment : Fragment() {
         return root
     }
 
-    private fun justifyListViewHeightBasedOnChildren(listView: ListView) {
-        val adapter = listView.adapter ?: return
-        val vg: ViewGroup = listView
-        var totalHeight = 0
-        for (i in 0 until adapter.count) {
-            val listItem: View = adapter.getView(i, null, vg)
-            listItem.measure(0, 0)
-            totalHeight += listItem.measuredHeight + 10
-        }
-        val par = listView.layoutParams
-        par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
-        listView.layoutParams = par
-        listView.requestLayout()
-    }
 }

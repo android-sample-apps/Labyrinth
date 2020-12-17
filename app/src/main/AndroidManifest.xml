@@ -77,7 +77,17 @@
             android:name=".projects.IndividualCommit" />
         <activity
             android:name=".MainAct"
-            android:theme="@style/Theme.Labyrinth"/>
+            android:theme="@style/Theme.Labyrinth">
+
+        </activity>
+        <activity android:name=".SearchActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
         <activity
             android:name=".projects.IssuesList" />
         <activity

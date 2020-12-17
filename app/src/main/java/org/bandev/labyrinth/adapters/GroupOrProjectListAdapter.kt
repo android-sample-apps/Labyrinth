@@ -27,34 +27,22 @@ class GroupOrProjectListAdapter(private val context: Activity, private val text:
 
         val jsonObj = JSONObject(text[p0])
         name.text = jsonObj.getString("name")
-        if (jsonObj.getString("visibility") == "public") {
-            visibility.text = "Public"
-            avatar.load(jsonObj.getString("avatar_url")) {
-                crossfade(true)
-                transformations(
+        avatar.load(jsonObj.getString("avatar_url")) {
+            crossfade(true)
+            transformations(
                     RoundedCornersTransformation(
-                        20f,
-                        20f,
-                        20f,
-                        20f
+                            20f,
+                            20f,
+                            20f,
+                            20f
                     )
-                )
-            }
-
-        } else {
-            visibility.text = "Private"
-            visibility.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_padlock, 0, 0, 0)
-            avatar.load("file:///android_asset/lock.png") {
-                crossfade(true)
-                transformations(
-                    RoundedCornersTransformation(
-                        20f,
-                        20f,
-                        20f,
-                        20f
-                    )
-                )
-            }
+            )
+        }
+        visibility.text = jsonObj.getString("description")
+        if(jsonObj.getString("description") != ""){
+            visibility.text = jsonObj.getString("description")
+        }else{
+            visibility.text = "No description"
         }
         return rowView
     }

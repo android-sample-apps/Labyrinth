@@ -8,46 +8,51 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
+import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.core.Api
 import org.bandev.labyrinth.core.User
+import org.bandev.labyrinth.databinding.OthersprofileActBinding
+import org.json.JSONArray
 import org.json.JSONObject
-
 
 class OthersProfileAct : AppCompatActivity() {
 
     val userData: HashMap<String, String> = HashMap()
-
     private val profile: Profile = Profile()
+    private lateinit var binding: OthersprofileActBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.othersprofile_act)
 
+        //Setup view binding
+        binding = OthersprofileActBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        //Logs the user into our profile API
         profile.login(this, 0)
 
-        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
+        //Sets up toolbar & sets navigation icons
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
-        fillCommonData(intent.extras?.getString("data").toString())
-
+        //Fills the data we already know from the activity
         getData(intent.extras?.getString("data").toString())
 
 
@@ -62,93 +67,110 @@ class OthersProfileAct : AppCompatActivity() {
         }
     }
 
-    private fun fillCommonData(data: String) {
-        val dataJson = JSONObject(data)
-        val avatar = findViewById<ImageView>(R.id.avatar)
-        val usernameTextView: TextView = findViewById(R.id.usernmame)
-        val emailTextView: TextView = findViewById(R.id.email)
-
-        Picasso.get().load(dataJson.getString("avatar_url"))
-            .transform(RoundedTransform(90, 0))
-            .into(avatar)
-
-        usernameTextView.text = dataJson.getString("username")
-
-        if (dataJson.has("email")) {
-            emailTextView.text = dataJson.getString("email")
-        } else {
-            emailTextView.text = "No public email"
-        }
-    }
-
     private fun getData(data: String) {
         val id = JSONObject(data).getInt("id")
-        val token = User().getToken(applicationContext)
 
-
+        //Contact GitLab then set the userData hashmap with our data
         AndroidNetworking.initialize(applicationContext)
-        AndroidNetworking.get("https://gitlab.com/api/v4/users/$id?access_token=$token")
-            .build()
-            .getAsJSONObject(object : JSONObjectRequestListener {
-                override fun onResponse(response: JSONObject) {
-                    userData["username"] = response.getString("username")
-                    userData["avatar_url"] = response.getString("avatar_url")
-                    userData["public_email"] = response.getString("public_email")
-                    userData["bio"] = response.getString("bio")
-                    userData["location"] = response.getString("location")
+        AndroidNetworking.get("https://gitlab.com/api/v4/users/$id")
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject) {
+                        userData["username"] = response.getString("username")
+                        userData["avatar_url"] = response.getString("avatar_url")
+                        userData["email"] = response.getString("public_email")
+                        userData["bio"] = response.getString("bio")
+                        userData["location"] = response.getString("location")
+                        userData["id"] = response.getInt("id").toString()
+                        filldata()
+                    }
 
-
-                    filldata()
-                }
-
-                override fun onError(error: ANError?) {
-
-                }
-            })
+                    override fun onError(error: ANError?) {
+                        Toast.makeText(
+                                applicationContext,
+                                "Error while fetching profile from GitLab. Try Again Later",
+                                LENGTH_SHORT).show()
+                    }
+                })
     }
 
     internal fun filldata() {
 
-
-        val baseProfile: View = findViewById(R.id.contentView)
-
-
-        if (userData["bio"] == "" && userData["location"] == "") {
-            //Hide Extended Profile
-
-            baseProfile.background = ContextCompat.getDrawable(this, R.drawable.toolbar_line)
-
-            val param = baseProfile.layoutParams as ViewGroup.MarginLayoutParams
-            param.setMargins(0, 0, 0, 20)
-            baseProfile.layoutParams = param
-
+        binding.content.avatar.load(userData["avatar_url"]) {
+            crossfade(true)
+            transformations(RoundedCornersTransformation(20f))
         }
 
-        val userGroups = getSharedPreferences("User-Groups", 0)
+        //Set their username
+        binding.content.username.text =  userData["username"]
 
-        val listView = findViewById<ListView>(R.id.groupsList)
-
-        var i = 0
-        val list: MutableList<String?> = mutableListOf()
-        while (i != userGroups.getInt("numGroups", 0)) {
-            list.add(userGroups.getString(i.toString(), "null"))
-            i++
+        //Check if they have an email
+        if (userData["email"] != "") {
+            //Yep, show it
+            binding.content.email.text = userData["email"]
+        } else {
+            //Nope show something else
+            binding.content.email.text = "No public email"
         }
 
-        val adapter = GroupOrProjectListAdapter(this, list.toTypedArray())
-        listView.adapter = adapter
-        listView.divider = null
-        justifyListViewHeightBasedOnChildren(listView)
+        //Check if they have a bio
+        if (userData["bio"] != "") {
+            //Yep, show it
+            binding.content.description.text = userData["bio"]
+        } else {
+            //Nope show something else
+            binding.content.description.text = "No description"
+        }
 
-        listView.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                val selectedItem = parent.getItemAtPosition(position) as String
-                val intent = Intent(this, GroupsAct::class.java)
-                val bundle = Bundle()
-                bundle.putString("data", selectedItem)
-                intent.putExtras(bundle)
-                startActivity(intent)
-            }
+        //Check if they have a location
+        if (userData["location"] != "") {
+            //Yep, show it
+            binding.content.location.text = userData["location"]
+        } else {
+            //Nope show something else
+            binding.content.location.text = "Worldwide"
+        }
+
+        val id = userData["id"]
+
+        //Contact GitLab then set the userData hashmap with our data
+        AndroidNetworking.initialize(applicationContext)
+        AndroidNetworking.get("https://gitlab.com/api/v4/users/$id/projects")
+                .addQueryParameter("access_token", profile.getData("token"))
+                .addQueryParameter("statistics", "true")
+                .build()
+                .getAsJSONArray(object : JSONArrayRequestListener {
+                    override fun onResponse(response: JSONArray) {
+                        var list: MutableList<String> = ArrayList()
+                        var index = 0
+                        while (index != response.length()) {
+                            list.add(response[index].toString())
+                            index++
+                        }
+
+                        binding.content.projectsList.adapter = GroupOrProjectListAdapter(
+                                this@OthersProfileAct,
+                                list.toTypedArray())
+
+                        binding.content.projectsList.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+                            val selectedItem = parent.getItemAtPosition(position) as String
+                            val intent = Intent(applicationContext, ProjectAct::class.java)
+                            val bundle = Bundle()
+                            bundle.putString("data", selectedItem)
+                            intent.putExtras(bundle)
+                            startActivity(intent)
+                        }
+
+                    }
+
+                    override fun onError(error: ANError?) {
+                        Toast.makeText(
+                                applicationContext,
+                                "Error while fetching profile from GitLab. Try Again Later",
+                                LENGTH_SHORT).show()
+                    }
+                })
+
 
         val projectLists = getSharedPreferences("User-Projects", 0)
 
@@ -161,20 +183,20 @@ class OthersProfileAct : AppCompatActivity() {
             i2++
         }
 
-        val adapter2 = GroupOrProjectListAdapter(this, list2.toTypedArray())
-        listViewProjects.adapter = adapter2
+        //val adapter2 = GroupOrProjectListAdapter(this, list2.toTypedArray())
+        //listViewProjects.adapter = adapter2
         listViewProjects.divider = null
         justifyListViewHeightBasedOnChildren(listViewProjects)
 
         listViewProjects.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                val selectedItem = parent.getItemAtPosition(position) as String
-                val intent = Intent(this, ProjectAct::class.java)
-                val bundle = Bundle()
-                bundle.putString("data", selectedItem)
-                intent.putExtras(bundle)
-                startActivity(intent)
-            }
+                AdapterView.OnItemClickListener { parent, view, position, id ->
+                    val selectedItem = parent.getItemAtPosition(position) as String
+                    val intent = Intent(this, ProjectAct::class.java)
+                    val bundle = Bundle()
+                    bundle.putString("data", selectedItem)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+                }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -188,10 +210,7 @@ class OthersProfileAct : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.open -> {
-
-                //FIX THIS PLS
-
-                val url = "https://gitlab.com"
+                val url = "https://gitlab.com/" + userData["username"]
                 val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
                 builder.setToolbarColor(Color.parseColor("#0067f4"))
                 val customTabsIntent: CustomTabsIntent = builder.build()

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.alorma.diff.lib.DiffTextView
 import org.bandev.labyrinth.R
 import org.json.JSONObject
 
@@ -18,7 +19,7 @@ class CommitDiffAdapter(private val context: Activity, private val text: Array<S
         val inflater = context.layoutInflater
 
         val rowView = inflater.inflate(R.layout.commit_diff_adapter, null)
-        val body = rowView.findViewById(R.id.description) as TextView
+        val body = rowView.findViewById(R.id.description) as DiffTextView
         val creator = rowView.findViewById(R.id.creator) as TextView
         var date = rowView.findViewById<TextView>(R.id.time)
         val jsonObj = JSONObject(text[p0])

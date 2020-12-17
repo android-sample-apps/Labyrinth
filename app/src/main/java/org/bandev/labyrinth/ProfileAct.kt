@@ -17,6 +17,8 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
@@ -57,15 +59,23 @@ class ProfileAct : AppCompatActivity() {
 
     private fun filldata() {
 
-        val avatar = findViewById<ImageView>(R.id.avatar)
-        Picasso.get().load(profile.getData("avatarUrl")).resize(400, 400)
-            .transform(RoundedTransform(90, 0))
-            .into(avatar)
+        val avatar = findViewById<ImageView>(R.id.avatar2)
+        avatar.load(profile.getData("avatarUrl")) {
+            crossfade(true)
+            transformations(
+                    RoundedCornersTransformation(
+                            20f,
+                            20f,
+                            20f,
+                            20f
+                    )
+            )
+        }
 
-        val usernameTextView: TextView = findViewById(R.id.usernmame)
-        val emailTextView: TextView = findViewById(R.id.email)
-        val descriptionTextView: TextView = findViewById(R.id.description)
-        val locationTextView: TextView = findViewById(R.id.location)
+        val usernameTextView: TextView = findViewById(R.id.name_)
+        val emailTextView: TextView = findViewById(R.id.slug2)
+        val descriptionTextView: TextView = findViewById(R.id.description2)
+        val locationTextView: TextView = findViewById(R.id.forks2)
 
         usernameTextView.text = profile.getData("username")
         emailTextView.text = profile.getData("email")

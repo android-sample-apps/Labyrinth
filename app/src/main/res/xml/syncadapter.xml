@@ -2,7 +2,7 @@
 <sync-adapter
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:contentAuthority="org.bandev.labyrinth.account.provider"
-    android:accountType="org.bandev.labyrinth.account.authenticator"
+    android:accountType="org.bandev.labyrinth.account"
     android:userVisible="true"
     android:supportsUploading="false"
     android:allowParallelSyncs="false"

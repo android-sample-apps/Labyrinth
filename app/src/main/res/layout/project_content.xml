@@ -44,16 +44,19 @@
             app:layout_constraintTop_toTopOf="@+id/contentView3" />
 
         <include
-            android:id="@+id/include2"
+            android:id="@+id/latest_commit"
             layout="@layout/commit_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
+            android:clickable="true"
+            android:background="?android:attr/selectableItemBackground"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/groups" />
+            app:layout_constraintTop_toBottomOf="@+id/groups"
+            android:focusable="true" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -130,7 +133,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/avatar"
-        app:layout_constraintTop_toBottomOf="@+id/avatar" />
+        app:layout_constraintTop_toBottomOf="@+id/slug" />
 
 
     <TextView
@@ -161,6 +164,20 @@
         android:textSize="16sp"
         app:drawableStartCompat="@drawable/ic_forks"
         app:layout_constraintStart_toEndOf="@+id/stars"
+        app:layout_constraintTop_toTopOf="@+id/stars" />
+
+    <TextView
+        android:id="@+id/mainLang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="10dp"
+        android:drawablePadding="5dp"
+        android:paddingBottom="20dp"
+        android:text="Kotlin"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/forks"
         app:layout_constraintTop_toTopOf="@+id/stars" />
 
 

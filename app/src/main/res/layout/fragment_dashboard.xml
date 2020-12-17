@@ -8,7 +8,7 @@
     tools:context=".ui.dashboard.DashboardFragment">
 
 
-    <ListView
+    <org.bandev.labyrinth.widgets.NonScrollListView
         android:id="@+id/projects"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -36,47 +36,47 @@ class Second : AppCompatActivity() {
 
         AndroidNetworking.initialize(this)
         AndroidNetworking.get("https://gitlab.com/api/v4/user?access_token=$token")
-            .build()
-            .getAsJSONObject(object : JSONObjectRequestListener {
-                override fun onResponse(response: JSONObject?) {
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject?) {
 
 
-                    val avatar = findViewById<ImageView>(R.id.avatar)
+                        val avatar = findViewById<ImageView>(R.id.avatar)
 
-                    Picasso.get().load((response ?: return).getString("avatar_url"))
-                        .transform(RoundedTransform(30, 0))
-                        .into(avatar)
+                        Picasso.get().load((response ?: return).getString("avatar_url"))
+                                .transform(RoundedTransform(30, 0))
+                                .into(avatar)
 
-                    val usernameTextView: TextView = findViewById(R.id.usernmame)
-                    val emailTextView: TextView = findViewById(R.id.email)
+                        val usernameTextView: TextView = findViewById(R.id.usernmame)
+                        val emailTextView: TextView = findViewById(R.id.email)
 
-                    usernameTextView.text = response.getString("username")
-                    emailTextView.text = response.getString("email")
+                        usernameTextView.text = response.getString("username")
+                        emailTextView.text = response.getString("email")
 
-                    title.text = "Hi " + response.getString("username")
+                        title.text = "Hi " + response.getString("username")
 
-                    userData.putString("token", token)
-                    userData.putString("server", "https://gitlab.com")
-                    userData.putString("username", response.getString("username"))
-                    userData.putString("email", response.getString("email"))
-                    userData.putString("bio", response.getString("bio"))
-                    userData.putString("location", response.getString("location"))
-                    userData.putInt("id", response.getInt("id"))
-                    userData.putString("avatarUrl", response.getString("avatar_url"))
-                    userData.putString("webUrl", response.getString("web_url"))
-                }
+                        userData.putString("token", token)
+                        userData.putString("server", "https://gitlab.com")
+                        userData.putString("username", response.getString("username"))
+                        userData.putString("email", response.getString("email"))
+                        userData.putString("bio", response.getString("bio"))
+                        userData.putString("location", response.getString("location"))
+                        userData.putInt("id", response.getInt("id"))
+                        userData.putString("avatarUrl", response.getString("avatar_url"))
+                        userData.putString("webUrl", response.getString("web_url"))
+                    }
 
-                override fun onError(error: ANError?) {
-                    // handle error
-                }
-            })
+                    override fun onError(error: ANError?) {
+
+                    }
+                })
 
         button.setOnClickListener {
 
             val accountManager: AccountManager = AccountManager.get(this)
             username = userData.getString("username").toString()
 
-            Account(username, "org.bandev.labyrinth.account.authenticator").also { account ->
+            Account(username, "org.bandev.labyrinth.account").also { account ->
                 accountManager.addAccountExplicitly(account, token, userData)
             }
 

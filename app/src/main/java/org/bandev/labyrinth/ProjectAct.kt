@@ -13,8 +13,11 @@ import android.view.View
 import android.widget.*
 import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import coil.load
@@ -23,6 +26,7 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.androidnetworking.interfaces.StringRequestListener
 import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.InfoListAdapter
@@ -85,30 +89,71 @@ class ProjectAct : AppCompatActivity() {
 
         val dataJson = JSONObject(data)
 
+        projectId = dataJson.getString("id")
+
+
         val nameTextView: TextView = findViewById(R.id.name_1)
         val slugTextView: TextView = findViewById(R.id.slug)
         val descriptionTextView: TextView = findViewById(R.id.description)
         val starsTextView: TextView = findViewById(R.id.stars)
         val forksTextView: TextView = findViewById(R.id.forks)
 
-        val avatar = findViewById<ImageView>(R.id.avatar)
-        if (dataJson.getString("visibility") == "public") {
+        val Mainlang: TextView = findViewById(R.id.mainLang)
 
-            avatar.load(dataJson.getString("avatar_url")) {
-                crossfade(true)
-                transformations(
-                        RoundedCornersTransformation(
-                                20f,
-                                20f,
-                                20f,
-                                20f
-                        )
-                )
-            }
-        } else {
-            Picasso.get().load("file:///android_asset/lock.png").transform(RoundedTransform(60, 0))
-                .resize(400, 400)
-                .into(avatar)
+
+        AndroidNetworking.initialize(this)
+        AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId/languages")
+                .build()
+                .getAsString(object : StringRequestListener {
+                    override fun onResponse(response: String) {
+                        val languages = response.removeSurrounding("{", "}")
+                        val languages_arr = languages.split(",")
+
+                        val main_lang_arr = languages_arr[0].split(":")
+
+                        Mainlang.text = main_lang_arr[0].removeSurrounding('"'.toString(), '"'.toString())
+
+
+                        AndroidNetworking.initialize(applicationContext)
+                        AndroidNetworking.get("https://bandev.uk/api/labyrinth/resources/colours")
+                                .build()
+                                .getAsJSONObject(object : JSONObjectRequestListener {
+                                    override fun onResponse(response: JSONObject) {
+
+                                        val unwrappedDrawable = AppCompatResources.getDrawable(applicationContext, R.drawable.ic_dot)
+                                        val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
+                                        DrawableCompat.setTint(wrappedDrawable, Color.parseColor(response.getJSONObject(Mainlang.text as String).getString("color")))
+                                        Mainlang.setCompoundDrawablesWithIntrinsicBounds(wrappedDrawable, null, null, null)
+                                    }
+
+                                    override fun onError(error: ANError?) {
+                                        // handle error
+                                        Toast.makeText(applicationContext, error.toString(), LENGTH_LONG).show()
+                                    }
+
+                                })
+
+                    }
+
+                    override fun onError(error: ANError?) {
+                        // handle error
+                        Toast.makeText(applicationContext, "error", LENGTH_LONG).show()
+                    }
+
+                })
+
+
+        val avatar = findViewById<ImageView>(R.id.avatar)
+        avatar.load(dataJson.getString("avatar_url")) {
+            crossfade(true)
+            transformations(
+                    RoundedCornersTransformation(
+                            20f,
+                            20f,
+                            20f,
+                            20f
+                    )
+            )
         }
 
         url = dataJson.getString("web_url")
@@ -133,104 +178,113 @@ class ProjectAct : AppCompatActivity() {
 
         AndroidNetworking.initialize(this)
         AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId/repository/commits/$branch?access_token=$token")
-            .addHeaders("PRIVATE-TOKEN: $token")
-            .build()
-            .getAsJSONObject(object : JSONObjectRequestListener {
-                override fun onResponse(objec: JSONObject) {
+                .addHeaders("PRIVATE-TOKEN: $token")
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(objec: JSONObject) {
 
-                    val commitTitle = findViewById<TextView>(R.id.name)
+                        val commitTitle = findViewById<TextView>(R.id.name)
 
-                    commitTitle.text = objec.getString("title")
-
-
-                    val commitTitle2 = findViewById<TextView>(R.id.visibility)
+                        commitTitle.text = objec.getString("title")
 
 
-                    commitTitle2.text = objec.getString("short_id")
-
-                    val avatar = findViewById<ImageView>(R.id.avatar_list)
-
-                    val em = objec.getString("committer_email")
+                        val commitTitle2 = findViewById<TextView>(R.id.visibility)
 
 
-                    val pipeline = objec.getString("status")
+                        commitTitle2.text = objec.getString("short_id")
 
-                    val pipelineStatus = findViewById<ImageView>(R.id.pipeline)
+                        val avatar = findViewById<ImageView>(R.id.avatar_list)
 
-                    when (pipeline) {
-                        "success" -> {
-                            pipelineStatus.setImageDrawable(
-                                ContextCompat.getDrawable(
-                                    applicationContext,
-                                    R.drawable.ic_success
-                                )
-                            )
+                        val em = objec.getString("committer_email")
+
+
+                        val pipeline = objec.getString("status")
+
+                        val pipelineStatus = findViewById<ImageView>(R.id.pipeline)
+
+                        val latestCommit = findViewById<View>(R.id.latest_commit)
+                        latestCommit.setOnClickListener{
+                            val i = Intent(applicationContext, IndividualCommit::class.java)
+                            i.putExtra("projectId", this@ProjectAct.projectId.toInt())
+                            i.putExtra("commitDataIn", objec.toString())
+                            startActivity(i)
                         }
-                        "failed" -> {
-                            pipelineStatus.setImageDrawable(
-                                ContextCompat.getDrawable(
-                                    applicationContext,
-                                    R.drawable.ic_failed
+
+
+                        when (pipeline) {
+                            "success" -> {
+                                pipelineStatus.setImageDrawable(
+                                        ContextCompat.getDrawable(
+                                                applicationContext,
+                                                R.drawable.ic_success
+                                        )
                                 )
-                            )
-                        }
-                        "running" -> {
-                            pipelineStatus.setImageDrawable(
-                                ContextCompat.getDrawable(
-                                    applicationContext,
-                                    R.drawable.ic_running
+                            }
+                            "failed" -> {
+                                pipelineStatus.setImageDrawable(
+                                        ContextCompat.getDrawable(
+                                                applicationContext,
+                                                R.drawable.ic_failed
+                                        )
                                 )
-                            )
-                        }
-                        "canceled" -> {
-                            pipelineStatus.setImageDrawable(
-                                ContextCompat.getDrawable(
-                                    applicationContext,
-                                    R.drawable.ic_canceled
+                            }
+                            "running" -> {
+                                pipelineStatus.setImageDrawable(
+                                        ContextCompat.getDrawable(
+                                                applicationContext,
+                                                R.drawable.ic_running
+                                        )
                                 )
-                            )
+                            }
+                            "canceled" -> {
+                                pipelineStatus.setImageDrawable(
+                                        ContextCompat.getDrawable(
+                                                applicationContext,
+                                                R.drawable.ic_canceled
+                                        )
+                                )
+                            }
                         }
+
+                        AndroidNetworking.initialize(applicationContext)
+                        AndroidNetworking.get("https://gitlab.com/api/v4/avatar?email=$em")
+                                .build()
+                                .getAsJSONObject(object : JSONObjectRequestListener {
+                                    override fun onResponse(response: JSONObject?) {
+
+                                        Picasso.get().load(
+                                                (response
+                                                        ?: return).getString("avatar_url")
+                                        )
+                                                .transform(CircleTransform()).into(avatar)
+                                        showAll()
+                                    }
+
+                                    override fun onError(error: ANError?) {
+                                        // handle error
+                                        Toast.makeText(
+                                                applicationContext,
+                                                "Error retrieving committer avatar!",
+                                                LENGTH_LONG
+                                        ).show()
+                                    }
+                                })
+
+                        Log.d("em", objec.getString("committer_email"))
                     }
 
-                    AndroidNetworking.initialize(applicationContext)
-                    AndroidNetworking.get("https://gitlab.com/api/v4/avatar?email=$em")
-                        .build()
-                        .getAsJSONObject(object : JSONObjectRequestListener {
-                            override fun onResponse(response: JSONObject?) {
-
-                                Picasso.get().load(
-                                    (response
-                                        ?: return).getString("avatar_url")
-                                )
-                                    .transform(CircleTransform()).into(avatar)
-                                showAll()
-                            }
-
-                            override fun onError(error: ANError?) {
-                                // handle error
-                                Toast.makeText(
-                                    applicationContext,
-                                    "Error retrieving committer avatar!",
-                                    LENGTH_LONG
-                                ).show()
-                            }
-                        })
-
-                    Log.d("em", objec.getString("committer_email"))
-                }
-
-                override fun onError(error: ANError?) {
-                    // handle error
-                    Toast.makeText(applicationContext, "error", LENGTH_LONG).show()
-                }
-            })
+                    override fun onError(error: ANError?) {
+                        // handle error
+                        Toast.makeText(applicationContext, "error", LENGTH_LONG).show()
+                    }
+                })
 
         nameTextView.text = dataJson.getString("name")
         slugTextView.text = "Id: " + dataJson.getString("id")
         if (dataJson.getString("description") != "") {
             descriptionTextView.text = dataJson.getString("description")
         } else {
-            descriptionTextView.isGone = true
+            descriptionTextView.text = "No Description"
         }
 
         val infoListView = findViewById<NonScrollListView>(R.id.infoList)
@@ -240,112 +294,123 @@ class ProjectAct : AppCompatActivity() {
         val issueNum = dataJson.getInt("open_issues_count")
         val defaultBranch = getBranch(dataJson)
 
-        var commitsCount = 0
-        var filesSize = 0f
+        var commitsCount = ""
+        var filesSize: Long
+        var fileSizeStr = ""
 
         AndroidNetworking.initialize(applicationContext)
         AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId?statistics=true&access_token=$token")
-            .build()
-            .getAsJSONObject(object : JSONObjectRequestListener {
-                override fun onResponse(response: JSONObject?) {
-                    commitsCount = (response ?: return).getJSONObject("statistics").getInt("commit_count")
-                    filesSize =
-                        response.getJSONObject("statistics").getInt("repository_size").toFloat()
-
-                    val fileSizeStr = Helpful().humanReadableByteCountSI(filesSize.toLong())
-                    infoList.add("{ 'left' : 'Issues', 'right' : '$issueNum' }")
-                    infoList.add("{ 'left' : 'Branch', 'right' : '$defaultBranch' }")
-                    infoList.add("{ 'left' : 'View Files', 'right' : '$fileSizeStr' }")
-                    infoList.add("{ 'left' : 'Commits', 'right' : '$commitsCount' }")
-
-                    val infoListAdapter = InfoListAdapter(this@ProjectAct, infoList.toTypedArray())
-                    infoListView.adapter = infoListAdapter
-                    infoListView.divider = null
-
-                    infoListView.onItemClickListener =
-                        AdapterView.OnItemClickListener { parent, view, position, id ->
-                            val selectedItem = parent.getItemAtPosition(position) as String
-                            val obj = JSONObject(selectedItem)
-                            when {
-                                obj.getString("left") == "Issues" -> {
-                                    val intent = Intent(applicationContext, IssuesList::class.java)
-                                    val bundle = Bundle()
-                                    bundle.putString("repo", data)
-                                    intent.putExtras(bundle)
-                                    startActivity(intent)
-                                }
-                                obj.getString("left") == "Commits" -> {
-                                    val intent = Intent(applicationContext, Commits::class.java)
-                                    val bundle = Bundle()
-                                    bundle.putString("repo", data)
-                                    intent.putExtras(bundle)
-                                    startActivity(intent)
-                                }
-                                obj.getString("left") == "View Files" -> {
-                                    val dataJs = JSONObject(data)
-                                    val intent = Intent(applicationContext, FileViewer::class.java)
-                                    val bundle = Bundle()
-                                    bundle.putString("repoName", dataJs.getString("name"))
-                                    bundle.putString("repoLogoUrl", dataJs.getString("avatar_url"))
-                                    bundle.putString("repoId", dataJs.getString("id"))
-                                    bundle.putString("path", "")
-                                    bundle.putString("branch", defaultBranch)
-                                    intent.putExtras(bundle)
-                                    startActivity(intent)
-                                }
-                                obj.getString("left") == "Branch" -> {
-                                    val dataJs = JSONObject(data)
-                                    val intent = Intent(applicationContext, BranchSelector::class.java)
-                                    val bundle = Bundle()
-                                    bundle.putString("repoName", dataJs.getString("name"))
-                                    bundle.putString("repoLogoUrl", dataJs.getString("avatar_url"))
-                                    bundle.putString("repoId", dataJs.getString("id"))
-                                    bundle.putString("branch", defaultBranch)
-                                    intent.putExtras(bundle)
-                                    startActivityForResult(intent, 0)
-                                }
-                            }
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject?) {
+                        if(response?.has("statistics") == true){
+                            commitsCount = (response
+                                    ?: return).getJSONObject("statistics").getInt("commit_count").toString()
+                            filesSize =
+                                    response.getJSONObject("statistics").getInt("repository_size").toLong()
+                            fileSizeStr = Helpful().humanReadableByteCountSI(filesSize.toLong()).toString()
+                        }else{
+                            commitsCount = "Unknown"
+                            fileSizeStr = "Unknown"
                         }
 
-                }
 
 
+                        infoList.add("{ 'left' : 'Issues', 'right' : '$issueNum' }")
+                        infoList.add("{ 'left' : 'Branch', 'right' : '$defaultBranch' }")
+                        infoList.add("{ 'left' : 'View Files', 'right' : '$commitsCount' }")
+                        infoList.add("{ 'left' : 'Commits', 'right' : '$fileSizeStr' }")
 
-                override fun onError(error: ANError?) {
-                    // handle error
-                    Toast.makeText(
-                        applicationContext,
-                        "Error retrieving committer avatar!",
-                        LENGTH_LONG
-                    ).show()
-                }
-            })
+                        val infoListAdapter = InfoListAdapter(this@ProjectAct, infoList.toTypedArray())
+                        infoListView.adapter = infoListAdapter
+                        infoListView.divider = null
+
+                        infoListView.onItemClickListener =
+                                AdapterView.OnItemClickListener { parent, view, position, id ->
+                                    val selectedItem = parent.getItemAtPosition(position) as String
+                                    val obj = JSONObject(selectedItem)
+                                    when {
+                                        obj.getString("left") == "Issues" -> {
+                                            val intent = Intent(applicationContext, IssuesList::class.java)
+                                            val bundle = Bundle()
+                                            bundle.putString("repo", data)
+                                            intent.putExtras(bundle)
+                                            startActivity(intent)
+                                        }
+                                        obj.getString("left") == "Commits" -> {
+                                            val intent = Intent(applicationContext, Commits::class.java)
+                                            val bundle = Bundle()
+                                            bundle.putString("repo", data)
+                                            intent.putExtras(bundle)
+                                            startActivity(intent)
+                                        }
+                                        obj.getString("left") == "View Files" -> {
+                                            val dataJs = JSONObject(data)
+                                            val intent = Intent(applicationContext, FileViewer::class.java)
+                                            val bundle = Bundle()
+                                            bundle.putString("repoName", dataJs.getString("name"))
+                                            bundle.putString("repoLogoUrl", dataJs.getString("avatar_url"))
+                                            bundle.putString("repoId", dataJs.getString("id"))
+                                            bundle.putString("path", "")
+                                            bundle.putString("branch", defaultBranch)
+                                            intent.putExtras(bundle)
+                                            startActivity(intent)
+                                        }
+                                        obj.getString("left") == "Branch" -> {
+                                            val dataJs = JSONObject(data)
+                                            val intent = Intent(applicationContext, BranchSelector::class.java)
+                                            val bundle = Bundle()
+                                            bundle.putString("repoName", dataJs.getString("name"))
+                                            bundle.putString("repoLogoUrl", dataJs.getString("avatar_url"))
+                                            bundle.putString("repoId", dataJs.getString("id"))
+                                            bundle.putString("branch", defaultBranch)
+                                            intent.putExtras(bundle)
+                                            startActivityForResult(intent, 0)
+                                        }
+                                    }
+                                }
+
+                    }
+
+
+                    override fun onError(error: ANError?) {
+                        // handle error
+                        Toast.makeText(
+                                applicationContext,
+                                "Error retrieving committer avatar!",
+                                LENGTH_LONG
+                        ).show()
+                    }
+                })
 
     }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode != Activity.RESULT_OK) return
-        when(requestCode) {
-            0 -> { updateBranch((data ?: return).getStringExtra("newBranch").toString()) }
+        if (resultCode != Activity.RESULT_OK) return
+        when (requestCode) {
+            0 -> {
+                updateBranch((data ?: return).getStringExtra("newBranch").toString())
+            }
             // Other result codes
-            else -> {}
+            else -> {
+            }
         }
     }
 
-    private fun updateBranch(branch: String){
+    private fun updateBranch(branch: String) {
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
-        with (sharedPref.edit()) {
-            putString(projectId+"_branch", branch)
+        with(sharedPref.edit()) {
+            putString(projectId + "_branch", branch)
             apply()
         }
         filldata()
     }
 
-    private fun getBranch(dataJson:JSONObject): String{
+    private fun getBranch(dataJson: JSONObject): String {
         val sharedPref = getPreferences(Context.MODE_PRIVATE)
-        return when(val branch = sharedPref.getString(projectId+"_branch", "default")){
+        return when (val branch = sharedPref.getString(projectId + "_branch", "default")) {
             "default" -> dataJson.getString("default_branch")
             else -> branch.toString()
         }
@@ -361,20 +426,20 @@ class ProjectAct : AppCompatActivity() {
         val token = profile.getData("token")
         AndroidNetworking.initialize(this)
         AndroidNetworking.post("https://gitlab.com/api/v4/projects/$projectId/star")
-            .addHeaders("PRIVATE-TOKEN:", token)
-            .build()
-            .getAsJSONArray(object : JSONArrayRequestListener {
-                override fun onResponse(response: JSONArray?) {
-                    //handle response
-                    Toast.makeText(applicationContext, "Starred", LENGTH_LONG).show()
-                }
+                .addHeaders("PRIVATE-TOKEN:", token)
+                .build()
+                .getAsJSONArray(object : JSONArrayRequestListener {
+                    override fun onResponse(response: JSONArray?) {
+                        //handle response
+                        Toast.makeText(applicationContext, "Starred", LENGTH_LONG).show()
+                    }
 
-                override fun onError(error: ANError?) {
-                    // handle error
-                    Toast.makeText(applicationContext, error.toString(), LENGTH_LONG).show()
-                }
+                    override fun onError(error: ANError?) {
+                        // handle error
+                        Toast.makeText(applicationContext, error.toString(), LENGTH_LONG).show()
+                    }
 
-            })
+                })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

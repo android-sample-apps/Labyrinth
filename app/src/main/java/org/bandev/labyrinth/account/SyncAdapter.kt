@@ -31,7 +31,7 @@ class SyncAdapter @JvmOverloads constructor(
 
         profile.login(context, 0)
 
-        profile.syncNoFeedback(context)
+        profile.sync(context)
 
 
 

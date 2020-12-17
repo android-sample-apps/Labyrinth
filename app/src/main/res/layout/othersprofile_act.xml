@@ -12,8 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/white"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -31,6 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <ScrollView
+            android:id="@+id/scroll"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:overScrollMode="never"
@@ -40,6 +39,7 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
             <include
+                android:id="@+id/content"
                 layout="@layout/othersprofile_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

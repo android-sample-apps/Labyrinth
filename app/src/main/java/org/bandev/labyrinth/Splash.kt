@@ -33,7 +33,7 @@ class Splash : AppCompatActivity() {
 
         accountManager = AccountManager.get(this)
         val accounts: Array<out Account> =
-            accountManager.getAccountsByType("org.bandev.labyrinth.account.authenticator")
+            accountManager.getAccountsByType("org.bandev.labyrinth.account")
         if (accounts.isNotEmpty()) {
             hasAccount = true
         }

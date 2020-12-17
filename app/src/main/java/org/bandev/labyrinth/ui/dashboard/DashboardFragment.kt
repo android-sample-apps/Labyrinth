@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.ProjectAct
+import org.bandev.labyrinth.widgets.NonScrollListView
 
 class DashboardFragment : Fragment() {
 
@@ -29,7 +30,7 @@ class DashboardFragment : Fragment() {
 
         val projectLists = requireContext().getSharedPreferences("User-Projects", 0)
 
-        val listViewProjects = root.findViewById<ListView>(R.id.projects)
+        val listViewProjects = root.findViewById<NonScrollListView>(R.id.projects)
 
         var i2 = 0
         val list2: MutableList<String?> = mutableListOf()
@@ -41,7 +42,6 @@ class DashboardFragment : Fragment() {
         val adapter2 = GroupOrProjectListAdapter(context as Activity, list2.toTypedArray())
         listViewProjects.adapter = adapter2
         listViewProjects.divider = null
-        justifyListViewHeightBasedOnChildren(listViewProjects)
 
         listViewProjects.onItemClickListener = OnItemClickListener { parent, view, position, id ->
             val selectedItem = parent.getItemAtPosition(position) as String
@@ -54,18 +54,4 @@ class DashboardFragment : Fragment() {
         return root
     }
 
-    private fun justifyListViewHeightBasedOnChildren(listView: ListView) {
-        val adapter = listView.adapter ?: return
-        val vg: ViewGroup = listView
-        var totalHeight = 0
-        for (i in 0 until adapter.count) {
-            val listItem: View = adapter.getView(i, null, vg)
-            listItem.measure(0, 0)
-            totalHeight += listItem.measuredHeight + 10
-        }
-        val par = listView.layoutParams
-        par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
-        listView.layoutParams = par
-        listView.requestLayout()
-    }
 }
