@@ -162,7 +162,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/contentView4" />
 
-        <org.bandev.labyrinth.widgets.NonScrollListView
+        <org.bandev.libraries.NonScroll.ListView
             android:id="@+id/projectsList"
             android:layout_width="0dp"
             android:layout_height="100dp"

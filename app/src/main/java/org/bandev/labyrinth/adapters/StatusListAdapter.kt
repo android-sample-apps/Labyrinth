@@ -4,39 +4,33 @@ import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import android.text.SpannableStringBuilder
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
+import io.wax911.emojify.parser.EmojiParser
 import org.bandev.labyrinth.R
 import org.json.JSONObject
+import java.io.IOException
 
-class InfoListAdapter(private val context: Activity, private val text: Array<String?>) :
-    BaseAdapter() {
+
+class StatusListAdapter(private val context: Activity, private val text: Array<String?>) : BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater
 
-        val rowView = inflater.inflate(R.layout.info_view, null)
-        val left = rowView.findViewById(R.id.textLeft) as TextView
-        val right = rowView.findViewById(R.id.textRight) as TextView
-        val icon = rowView.findViewById(R.id.icon) as ImageView
-
+        val rowView = inflater.inflate(R.layout.status_item, null)
+        val title = rowView.findViewById(R.id.emoji) as TextView
+        val title2 = rowView.findViewById(R.id.title) as TextView
         val jsonObj = JSONObject(text[p0])
-        left.text = jsonObj.getString("left")
-        right.text = jsonObj.getString("right")
 
-        val image = when(jsonObj.getString("icon")){
-            "status" -> R.drawable.ic_status
-            "secure" -> R.drawable.ic_secure
-            "email" -> R.drawable.ic_email
-            else -> R.drawable.ic_key
-        }
+        io.wax911.emojify.EmojiManager.initEmojiData(context)
 
-        icon.setImageResource(image)
-
-
+        title.text = EmojiParser.parseToUnicode(":"+jsonObj.getString("emoji")+":")
+        title2.text = jsonObj.getString("message")
 
         return rowView
 

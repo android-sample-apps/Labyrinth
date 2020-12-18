@@ -7,36 +7,21 @@ import android.preference.PreferenceManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ImageView
 import android.widget.TextView
 import org.bandev.labyrinth.R
 import org.json.JSONObject
 
-class InfoListAdapter(private val context: Activity, private val text: Array<String?>) :
-    BaseAdapter() {
+class TokenListAdapter(private val context: Activity, private val text: Array<String?>) : BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater
 
-        val rowView = inflater.inflate(R.layout.info_view, null)
-        val left = rowView.findViewById(R.id.textLeft) as TextView
-        val right = rowView.findViewById(R.id.textRight) as TextView
-        val icon = rowView.findViewById(R.id.icon) as ImageView
+        val rowView = inflater.inflate(R.layout.tokens_item, null)
+        val title = rowView.findViewById(R.id.title) as TextView
 
         val jsonObj = JSONObject(text[p0])
-        left.text = jsonObj.getString("left")
-        right.text = jsonObj.getString("right")
 
-        val image = when(jsonObj.getString("icon")){
-            "status" -> R.drawable.ic_status
-            "secure" -> R.drawable.ic_secure
-            "email" -> R.drawable.ic_email
-            else -> R.drawable.ic_key
-        }
-
-        icon.setImageResource(image)
-
-
+        title.text = jsonObj.getString("name")
 
         return rowView
 

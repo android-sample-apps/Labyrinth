@@ -3,40 +3,37 @@ package org.bandev.labyrinth.adapters
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.preference.PreferenceManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import org.bandev.labyrinth.R
 import org.json.JSONObject
+import org.ocpsoft.prettytime.PrettyTime
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter.ISO_INSTANT
+import java.util.*
 
-class InfoListAdapter(private val context: Activity, private val text: Array<String?>) :
-    BaseAdapter() {
+class GpgKeysItemAdapter(private val context: Activity, private val text: Array<String?>) : BaseAdapter() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater
 
-        val rowView = inflater.inflate(R.layout.info_view, null)
-        val left = rowView.findViewById(R.id.textLeft) as TextView
-        val right = rowView.findViewById(R.id.textRight) as TextView
-        val icon = rowView.findViewById(R.id.icon) as ImageView
+        val rowView = inflater.inflate(R.layout.keys_item, null)
+        val title = rowView.findViewById(R.id.title) as TextView
+        val date = rowView.findViewById(R.id.date) as TextView
 
         val jsonObj = JSONObject(text[p0])
-        left.text = jsonObj.getString("left")
-        right.text = jsonObj.getString("right")
 
-        val image = when(jsonObj.getString("icon")){
-            "status" -> R.drawable.ic_status
-            "secure" -> R.drawable.ic_secure
-            "email" -> R.drawable.ic_email
-            else -> R.drawable.ic_key
-        }
-
-        icon.setImageResource(image)
-
-
+        title.text = "#" + jsonObj.getString("id")
+        date.text = jsonObj.getString("created_at")
 
         return rowView
 

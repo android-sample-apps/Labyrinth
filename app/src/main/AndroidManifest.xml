@@ -52,7 +52,21 @@
             android:name=".SettingsAct" >
         </activity>
         <activity
-            android:name=".ProfileAct" />
+            android:name=".ProfileAct"
+            android:theme="@style/Theme.Labyrinth.LightStatusBar">
+        </activity>
+        <activity
+            android:name=".ProfileKeysAct"
+            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
+        <activity
+            android:name=".account.activities.ProfileEmailsAct"
+            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
+        <activity
+            android:name=".account.activities.ProfileStatusAct"
+            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
+        <activity
+            android:name=".account.activities.ProfileTokenAct"
+            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
         <activity
             android:name=".OthersProfileAct" />
         <activity
@@ -77,7 +91,7 @@
             android:name=".projects.IndividualCommit" />
         <activity
             android:name=".MainAct"
-            android:theme="@style/Theme.Labyrinth">
+            android:theme="@style/Theme.Labyrinth.LightStatusBar">
 
         </activity>
         <activity android:name=".SearchActivity"

@@ -86,4 +86,13 @@ dependencies {
     implementation 'com.github.alorma:diff-textview:1.1.0'
 
     implementation 'com.first.avatargenerator:AvatarImageGenerator:1.4'
+
+
+    implementation 'com.github.BanDev:NonScrollListView:1.0.0'
+
+    implementation "com.google.android.material:material:1.2.0"
+
+    implementation 'org.ocpsoft.prettytime:prettytime:4.0.4.Final'
+    implementation 'com.github.wax911:android-emojify:1.5.3'
+
 }

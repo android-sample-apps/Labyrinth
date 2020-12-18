@@ -33,8 +33,12 @@ class MainAct : AppCompatActivity() {
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+
+        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            window.statusBarColor = getColor(R.color.colorPrimary)
+        }
         val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
                 setOf(

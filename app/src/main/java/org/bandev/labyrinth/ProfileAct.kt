@@ -18,10 +18,22 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import coil.load
+import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
+import com.google.android.material.imageview.ShapeableImageView
 import org.bandev.labyrinth.account.Profile
+import org.bandev.labyrinth.account.activities.ProfileEmailsAct
+import org.bandev.labyrinth.account.activities.ProfileStatusAct
+import org.bandev.labyrinth.account.activities.ProfileTokenAct
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
+import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Api
+import org.bandev.labyrinth.core.Compatibility
+import org.bandev.labyrinth.projects.BranchSelector
+import org.bandev.labyrinth.projects.Commits
+import org.bandev.labyrinth.projects.FileViewer
+import org.bandev.labyrinth.projects.IssuesList
+import org.json.JSONObject
 
 
 class ProfileAct : AppCompatActivity() {
@@ -38,10 +50,15 @@ class ProfileAct : AppCompatActivity() {
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+        Compatibility().edgeToEdge2(window, View(this), toolbar, resources)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            window.statusBarColor = getColor(android.R.color.transparent)
+
+        }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back_white)
 
         filldata()
 
@@ -62,34 +79,65 @@ class ProfileAct : AppCompatActivity() {
         avatar.load(profile.getData("avatarUrl")) {
             crossfade(true)
             transformations(
-                    RoundedCornersTransformation(
-                            20f,
-                            20f,
-                            20f,
-                            20f
-                    )
+                    CircleCropTransformation()
             )
         }
 
         val usernameTextView: TextView = findViewById(R.id.name_)
         val emailTextView: TextView = findViewById(R.id.slug2)
-        val descriptionTextView: TextView = findViewById(R.id.description2)
-        val locationTextView: TextView = findViewById(R.id.forks2)
+        val infoListView: ListView = findViewById(R.id.infoList)
+       // val descriptionTextView: TextView = findViewById(R.id.description2)
+      //  val locationTextView: TextView = findViewById(R.id.forks2)
 
         usernameTextView.text = profile.getData("username")
         emailTextView.text = profile.getData("email")
         if (profile.getData("bio") == "") {
-            descriptionTextView.isGone = true
+           // descriptionTextView.isGone = true
         } else {
-            descriptionTextView.text = profile.getData("bio")
+         //   descriptionTextView.text = profile.getData("bio")
         }
         if (profile.getData("location") == "") {
-            locationTextView.isGone = true
+           // locationTextView.isGone = true
         } else {
-            locationTextView.text = profile.getData("location")
+           // locationTextView.text = profile.getData("location")
         }
 
-        val userGroups = getSharedPreferences("User-Groups", 0)
+        val optionsList: MutableList<String> = mutableListOf()
+        optionsList.add("{ 'left' : 'Status', 'right' : '>', 'icon' : 'status' }")
+        optionsList.add("{ 'left' : 'Keys', 'right' : '>', 'icon' : 'key' }")
+        optionsList.add("{ 'left' : 'Emails', 'right' : '>', 'icon' : 'email' }")
+        optionsList.add("{ 'left' : 'Access Tokens', 'right' : '>', 'icon' : 'secure' }")
+
+        val infoListAdapter = InfoListAdapter(this@ProfileAct, optionsList.toTypedArray())
+        infoListView.adapter = infoListAdapter
+
+        infoListView.onItemClickListener =
+                AdapterView.OnItemClickListener { parent, view, position, id ->
+                    val selectedItem = parent.getItemAtPosition(position) as String
+                    val obj = JSONObject(selectedItem)
+                    when {
+                        obj.getString("left") == "Keys" -> {
+                            val intent = Intent(applicationContext, ProfileKeysAct::class.java)
+                            startActivity(intent)
+                        }
+                        obj.getString("left") == "Emails" -> {
+                            val intent = Intent(applicationContext, ProfileEmailsAct::class.java)
+                            startActivity(intent)
+                        }
+                        obj.getString("left") == "Status" -> {
+                            val intent = Intent(applicationContext, ProfileStatusAct::class.java)
+                            startActivity(intent)
+                        }
+                        obj.getString("left") == "Access Tokens" -> {
+                            val intent = Intent(applicationContext, ProfileTokenAct::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                }
+
+
+
+       /* val userGroups = getSharedPreferences("User-Groups", 0)
 
         val listView = findViewById<ListView>(R.id.groupsList)
 
@@ -139,7 +187,7 @@ class ProfileAct : AppCompatActivity() {
                 bundle.putString("data", selectedItem)
                 intent.putExtras(bundle)
                 startActivity(intent)
-            }
+            }*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -149,14 +197,6 @@ class ProfileAct : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.open -> {
-                val url = profile.getData("webUrl")
-                val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
-                builder.setToolbarColor(Color.parseColor("#0067f4"))
-                val customTabsIntent: CustomTabsIntent = builder.build()
-                customTabsIntent.launchUrl(this, Uri.parse(url))
-                super.onOptionsItemSelected(item)
-            }
             R.id.settings -> {
                 val i = Intent(this, SettingsAct::class.java)
                 startActivity(i)
