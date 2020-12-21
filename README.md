@@ -1,2 +1,2 @@
 # Labyrinth
-GitLab client for android
+GitLab client for android that looks nice
