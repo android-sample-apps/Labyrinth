@@ -34,4 +34,9 @@
     <!-- project.FileViewer & project.FolderViewer -->
     <string name="project_fv_error">Something went wrong</string>
     <string name="project_fv_error_retry">Retry</string>
+
+    <!-- Home (Work) page -->
+    <string name="home_top_title">Your Work</string>
+    <string name="home_bottom_title">Pins</string>
+    <string name="home_bottom_add_desc">Pin a new item</string>
 </resources>

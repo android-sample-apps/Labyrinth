@@ -29,16 +29,21 @@ class FileViewAdapter(private val context: Activity, private val text: Array<Str
 
         val rowView = inflater.inflate(R.layout.file_view_adapter, null)
 
-        val name = rowView.findViewById<TextView>(R.id.name)
+        val name = rowView.findViewById<TextView>(R.id.title)
         val icon = rowView.findViewById<ImageView>(R.id.icon)
+        val size = rowView.findViewById<TextView>(R.id.size)
 
         val jsonObj = JSONObject(text[p0] ?: return null)
         name.text = jsonObj.getString("name")
         when(jsonObj.getString("type")) {
-            "tree" -> icon.setImageResource(R.drawable.ic_folder)
-            "blob" -> icon.setImageResource(R.drawable.ic_paper)
+            "tree" -> icon.setImageResource(R.drawable.ic_repo)
+            "blob" -> icon.setImageResource(R.drawable.ic_file)
         }
 
+        size.text = when(jsonObj.getString("type")){
+            "tree" -> "Folder"
+            else -> "File"
+        }
         return rowView
     }
 

@@ -30,6 +30,7 @@ import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Api
+import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.core.Helpful
 import org.bandev.labyrinth.projects.*
 import org.bandev.labyrinth.widgets.NonScrollListView
@@ -68,7 +69,12 @@ class ProjectAct : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back_white)
+
+        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            window.statusBarColor = getColor(R.color.colorPrimary)
+        }
 
 
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
@@ -89,6 +95,8 @@ class ProjectAct : AppCompatActivity() {
         val dataJson = JSONObject(data)
 
         projectId = dataJson.getString("id")
+
+        findViewById<TextView>(R.id.title).text =  dataJson.getString("name")
 
 
         val nameTextView: TextView = findViewById(R.id.name_1)
@@ -330,14 +338,13 @@ class ProjectAct : AppCompatActivity() {
                         fileSizeStr = "Unknown"
                     }
 
-                    infoList.add("{ 'left' : 'Issues', 'right' : '$issueNum', 'icon' : 'security' }")
+                    infoList.add("{ 'left' : 'Issues', 'right' : '$issueNum', 'icon' : 'branch' }")
                     infoList.add("{ 'left' : 'Branch', 'right' : '$defaultBranch', 'icon' : 'security' }")
-                    infoList.add("{ 'left' : 'View Files', 'right' : '$commitsCount', 'icon' : 'security' }")
-                    infoList.add("{ 'left' : 'Commits', 'right' : '$fileSizeStr', 'icon' : 'security' }")
+                    infoList.add("{ 'left' : 'View Files', 'right' : '$fileSizeStr', 'icon' : 'file' }")
+                    infoList.add("{ 'left' : 'Commits', 'right' : '$commitsCount', 'icon' : 'commit' }")
 
                     val infoListAdapter = InfoListAdapter(this@ProjectAct, infoList.toTypedArray())
                     infoListView.adapter = infoListAdapter
-                    infoListView.divider = null
 
                     infoListView.onItemClickListener =
                         AdapterView.OnItemClickListener { parent, view, position, id ->

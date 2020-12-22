@@ -49,7 +49,8 @@
                 android:resource="@xml/authenticator"/>
         </service>
         <activity
-            android:name=".SettingsAct" >
+            android:name=".SettingsAct"
+            android:theme="@style/Theme.Labyrinth.LightStatusBar">
         </activity>
         <activity
             android:name=".ProfileAct"
@@ -68,17 +69,26 @@
             android:name=".account.activities.ProfileTokenAct"
             android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
         <activity
+            android:name=".account.activities.ProfileGroupsAct"
+            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
+        <activity
             android:name=".OthersProfileAct" />
         <activity
             android:name=".GroupsAct" />
         <activity
             android:name=".projects.ReadMe" />
         <activity
-            android:name=".ProjectAct" />
+            android:name=".PinSomething"
+            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
         <activity
-            android:name=".projects.Commits" />
+            android:name=".ProjectAct"
+            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
         <activity
-            android:name=".projects.FileViewer" />
+            android:name=".projects.Commits"
+            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
+        <activity
+            android:name=".projects.FileViewer"
+            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
         <activity
             android:name=".projects.IndividualIssue" />
         <activity

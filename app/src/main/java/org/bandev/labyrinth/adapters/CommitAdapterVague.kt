@@ -25,14 +25,18 @@ class CommitAdapterVague(private val context: Activity, private val text: Array<
         val inflater = context.layoutInflater
 
         val rowView = inflater.inflate(R.layout.commit_list_view_vague, null)
-        val name = rowView.findViewById(R.id.name) as TextView
-        val visibility = rowView.findViewById(R.id.visibility) as TextView
-        var avatar = rowView.findViewById<ImageView>(R.id.avatar_list)
+        val name = rowView.findViewById(R.id.title) as TextView
+        val visibility = rowView.findViewById(R.id.date) as TextView
+        val icon = rowView.findViewById<ImageView>(R.id.imageView2)
 
         val jsonObj = JSONObject(text[p0])
 
         name.text = jsonObj.getString("title")
         visibility.text = jsonObj.getString("author_name")
+        val image = R.drawable.ic_commit
+
+        icon.setImageResource(image)
+
 
 
 

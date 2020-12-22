@@ -40,7 +40,6 @@ class DashboardFragment : Fragment() {
 
         val adapter2 = GroupOrProjectListAdapter(context as Activity, list2.toTypedArray())
         listViewProjects.adapter = adapter2
-        listViewProjects.divider = null
 
         listViewProjects.onItemClickListener = OnItemClickListener { parent, view, position, id ->
             val selectedItem = parent.getItemAtPosition(position) as String

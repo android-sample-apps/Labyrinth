@@ -71,13 +71,17 @@ class FileViewer : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back_white)
 
         //Toolbar shadow animation
-        Animations().toolbarShadowScroll(binding.scroll, toolbar)
+        //Animations().toolbarShadowScroll(binding.scroll, toolbar)
 
         //Turn on edge to edge
         Compatibility().edgeToEdge(window, View(this), toolbar, resources)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            window.statusBarColor = getColor(R.color.colorPrimary)
+
+        }
 
         //Set title depending on folder
         binding.title.text = if (path == "") {
@@ -129,7 +133,6 @@ class FileViewer : AppCompatActivity() {
                         //Create adapter, and configure listview
                         val adapter = FileViewAdapter(this@FileViewer, fileList.toTypedArray())
                         binding.listView.adapter = adapter
-                        binding.listView.divider = null
                         //Helpful().justifyListViewHeightBasedOnChildren(binding.listView)
 
                         //Set on click listener for listview, route to function itemClick(parent, position)

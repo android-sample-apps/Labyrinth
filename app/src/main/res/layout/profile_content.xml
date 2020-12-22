@@ -101,10 +101,32 @@
         android:background="@drawable/toolbar_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/extended">
 
         <org.bandev.labyrinth.widgets.NonScrollListView
             android:id="@+id/infoList"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:dividerHeight="1px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/extended"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/toolbar_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <org.bandev.labyrinth.widgets.NonScrollListView
+            android:id="@+id/extendedList"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:dividerHeight="1px"

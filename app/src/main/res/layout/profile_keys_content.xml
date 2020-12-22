@@ -59,7 +59,7 @@
             android:fontFamily="@font/dm_sans_bold"
             android:text="Keys"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="#fff"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -18,10 +18,14 @@ class TokenListAdapter(private val context: Activity, private val text: Array<St
 
         val rowView = inflater.inflate(R.layout.tokens_item, null)
         val title = rowView.findViewById(R.id.title) as TextView
+        val scopes = rowView.findViewById(R.id.scopes) as TextView
 
         val jsonObj = JSONObject(text[p0])
 
+
+
         title.text = jsonObj.getString("name")
+        scopes.text = jsonObj.getString("created_at")
 
         return rowView
 

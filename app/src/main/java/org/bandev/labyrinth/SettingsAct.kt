@@ -26,13 +26,17 @@ class SettingsAct : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         Compatibility().edgeToEdge(window, View(this), toolbar, resources)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back_white)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            window.statusBarColor = getColor(R.color.colorPrimary)
+
+        }
 
         if (savedInstanceState == null) {
             supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.settings, SettingsFragment())
-                .commit()
+                    .beginTransaction()
+                    .replace(R.id.settings, SettingsFragment())
+                    .commit()
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -51,37 +55,39 @@ class SettingsAct : AppCompatActivity() {
 
             val theme = findPreference<Preference>("theme") as ListPreference?
             theme?.onPreferenceChangeListener =
-                Preference.OnPreferenceChangeListener { preference, newValue ->
-                    Appearance().setAppTheme(newValue.toString())
-                    true
-                }
+                    Preference.OnPreferenceChangeListener { preference, newValue ->
+                        Appearance().setAppTheme(newValue.toString())
+                        true
+                    }
 
             val about = findPreference("about") as Preference?
             about?.setOnPreferenceClickListener { preference ->
                 val intent = Intent(context, About::class.java)
                 startActivity(intent)
                 true
-                }
+            }
 
             val delete = findPreference("delete") as Preference?
             delete?.setOnPreferenceClickListener { preference ->
                 MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("Are you sure?")
-                    .setMessage("Removing your account will erase all of your user data on this device, this means you will need an access token to login again.")
-                    .setNeutralButton("No") { dialog, which ->
+                        .setTitle("Are you sure?")
+                        .setMessage("Removing your account will erase all of your user data on this device, this means you will need an access token to login again.")
+                        .setNeutralButton("No") { dialog, which ->
 
-                    }
-                    .setPositiveButton("Yes") { dialog, which ->
-                        profile.delete()
-                        val preferences: SharedPreferences =
-                            PreferenceManager.getDefaultSharedPreferences(requireContext())
-                        val editor = preferences.edit()
-                        editor.clear()
-                        editor.apply()
-                        val intent = Intent(requireContext(), First::class.java)
-                        this.startActivity(intent)
-                    }
-                    .show()
+                        }
+                        .setPositiveButton("Yes") { dialog, which ->
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                profile.delete()
+                            }
+                            val preferences: SharedPreferences =
+                                    PreferenceManager.getDefaultSharedPreferences(requireContext())
+                            val editor = preferences.edit()
+                            editor.clear()
+                            editor.apply()
+                            val intent = Intent(requireContext(), First::class.java)
+                            this.startActivity(intent)
+                        }
+                        .show()
                 true
             }
 
@@ -96,19 +102,18 @@ class SettingsAct : AppCompatActivity() {
             }
 
 
-
             val async = findPreference("async") as SwitchPreferenceCompat?
             async?.setOnPreferenceClickListener { preference ->
-                if(sharedPrefs.getBoolean("async", true)){
+                if (sharedPrefs.getBoolean("async", true)) {
                     ContentResolver.setSyncAutomatically(
-                        profile.account,
-                        "org.bandev.labyrinth.account.provider",
-                        true)
-                }else{
+                            profile.account,
+                            "org.bandev.labyrinth.account.provider",
+                            true)
+                } else {
                     ContentResolver.setSyncAutomatically(
-                        profile.account,
-                        "org.bandev.labyrinth.account.provider",
-                        false)
+                            profile.account,
+                            "org.bandev.labyrinth.account.provider",
+                            false)
                 }
                 true
             }
@@ -117,9 +122,9 @@ class SettingsAct : AppCompatActivity() {
 
         private fun setAutoSyncVals() {
             val async = findPreference("async") as SwitchPreferenceCompat?
-            if(ContentResolver.getSyncAutomatically(profile.account, "org.bandev.labyrinth.account.provider")){
+            if (ContentResolver.getSyncAutomatically(profile.account, "org.bandev.labyrinth.account.provider")) {
                 (async ?: return).isChecked = true
-            }else{
+            } else {
                 (async ?: return).isChecked = false
             }
         }

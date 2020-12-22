@@ -28,6 +28,12 @@ class InfoListAdapter(private val context: Activity, private val text: Array<Str
         right.text = jsonObj.getString("right")
 
         val image = when(jsonObj.getString("icon")){
+            "branch" -> R.drawable.ic_branch
+            "issue" -> R.drawable.ic_issue
+            "commit" -> R.drawable.ic_commit
+            "file" -> R.drawable.ic_file
+            "repo" -> R.drawable.ic_repo
+            "groups" -> R.drawable.ic_groups
             "status" -> R.drawable.ic_status
             "secure" -> R.drawable.ic_secure
             "email" -> R.drawable.ic_email

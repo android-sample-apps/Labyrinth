@@ -1,5 +1,6 @@
-package org.bandev.labyrinth.projects
+package org.bandev.labyrinth
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -16,13 +17,15 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.CommitAdapterVague
+import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.core.Animations
 import org.bandev.labyrinth.core.Compatibility
+import org.bandev.labyrinth.projects.IndividualCommit
 import org.bandev.labyrinth.widgets.NonScrollListView
 import org.json.JSONArray
 import org.json.JSONObject
 
-class Commits : AppCompatActivity() {
+class PinSomething : AppCompatActivity() {
 
     var issueArryIn: JSONArray? = null
     private var repoObjIn: JSONObject? = null
@@ -36,13 +39,12 @@ class Commits : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_commits_list)
+        setContentView(R.layout.pin_new_act)
 
         profile.login(this, 0)
         token = profile.getData("token")
         listView = findViewById(R.id.listView)
         progressBar = findViewById(R.id.progressBar2)
-        repoObjIn = JSONObject(intent.getStringExtra("repo").toString())
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -61,11 +63,6 @@ class Commits : AppCompatActivity() {
         val scroll = findViewById<ScrollView>(R.id.scroll)
         Animations().toolbarShadowScroll(scroll, toolbar)
 
-        val title: TextView = findViewById(R.id.title)
-        title.text = "Commits"
-
-        projectId = (repoObjIn ?: return).getString("id")
-
         fillData()
 
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
@@ -74,6 +71,15 @@ class Commits : AppCompatActivity() {
             fillData()
             refresher.isRefreshing = false
         }
+    }
+
+    fun itemClick(parent: AdapterView<*>, position: Int) {
+        //Work out what was pressed and send the user on their way
+        val selectedItem = parent.getItemAtPosition(position) as String
+        val data = Intent()
+        data.putExtra("newPin", selectedItem)
+        setResult(Activity.RESULT_OK, data)
+        finish()
     }
 
     private fun fillData() {
@@ -85,7 +91,7 @@ class Commits : AppCompatActivity() {
         val context = this
         AndroidNetworking.initialize(applicationContext)
         AndroidNetworking
-                .get("https://gitlab.com/api/v4/projects/$projectId/repository/commits?access_token=$token&with_stats=true")
+                .get("https://gitlab.com/api/v4/projects/?access_token=$token&membership=true")
                 .build()
                 .getAsJSONArray(object : JSONArrayRequestListener {
                     override fun onResponse(response: JSONArray?) {
@@ -93,19 +99,13 @@ class Commits : AppCompatActivity() {
                             list.add(response.getJSONObject(i).toString())
                         }
 
-                        val adapter = CommitAdapterVague(context, list.toTypedArray())
+                        val adapter = GroupOrProjectListAdapter(context, list.toTypedArray())
                         (listView ?: return).adapter = adapter
 
 
                         (listView ?: return).onItemClickListener =
                                 AdapterView.OnItemClickListener { parent, view, position, id ->
-                                    val selectedItem = parent.getItemAtPosition(position) as String
-                                    val intent = Intent(applicationContext, IndividualCommit::class.java)
-                                    val bundle = Bundle()
-                                    bundle.putString("commitDataIn", selectedItem)
-                                    bundle.putInt("projectId", projectId.toInt())
-                                    intent.putExtras(bundle)
-                                    startActivity(intent)
+                                    itemClick(parent, position)
                                 }
                         done = true
 

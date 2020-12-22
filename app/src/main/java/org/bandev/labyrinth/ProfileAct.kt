@@ -23,6 +23,7 @@ import coil.transform.RoundedCornersTransformation
 import com.google.android.material.imageview.ShapeableImageView
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.account.activities.ProfileEmailsAct
+import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.account.activities.ProfileStatusAct
 import org.bandev.labyrinth.account.activities.ProfileTokenAct
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
@@ -86,20 +87,20 @@ class ProfileAct : AppCompatActivity() {
         val usernameTextView: TextView = findViewById(R.id.name_)
         val emailTextView: TextView = findViewById(R.id.slug2)
         val infoListView: ListView = findViewById(R.id.infoList)
-       // val descriptionTextView: TextView = findViewById(R.id.description2)
-      //  val locationTextView: TextView = findViewById(R.id.forks2)
+        // val descriptionTextView: TextView = findViewById(R.id.description2)
+        //  val locationTextView: TextView = findViewById(R.id.forks2)
 
         usernameTextView.text = profile.getData("username")
         emailTextView.text = profile.getData("email")
         if (profile.getData("bio") == "") {
-           // descriptionTextView.isGone = true
+            // descriptionTextView.isGone = true
         } else {
-         //   descriptionTextView.text = profile.getData("bio")
+            //   descriptionTextView.text = profile.getData("bio")
         }
         if (profile.getData("location") == "") {
-           // locationTextView.isGone = true
+            // locationTextView.isGone = true
         } else {
-           // locationTextView.text = profile.getData("location")
+            // locationTextView.text = profile.getData("location")
         }
 
         val optionsList: MutableList<String> = mutableListOf()
@@ -135,9 +136,34 @@ class ProfileAct : AppCompatActivity() {
                     }
                 }
 
+        val extendedOptions: MutableList<String> = mutableListOf()
+        extendedOptions.add("{ 'left' : 'Groups', 'right' : '>', 'icon' : 'groups' }")
+        extendedOptions.add("{ 'left' : 'Projects', 'right' : '>', 'icon' : 'repo' }")
+
+        val extendedList = findViewById<ListView>(R.id.extendedList)
+        extendedList.adapter = InfoListAdapter(this@ProfileAct, extendedOptions.toTypedArray())
+
+        extendedList.onItemClickListener =
+                AdapterView.OnItemClickListener { parent, view, position, id ->
+                    val selectedItem = parent.getItemAtPosition(position) as String
+                    val obj = JSONObject(selectedItem)
+                    val left = obj.getString("left")
+                    when (left) {
+                        "Groups" -> {
+                            val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
+                            intent.putExtra("type", 0)
+                            startActivity(intent)
+                        }
+                        "Projects" -> {
+                            val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
+                            intent.putExtra("type", 1)
+                            startActivity(intent)
+                        }
+                    }
+                }
 
 
-       /* val userGroups = getSharedPreferences("User-Groups", 0)
+        /* val userGroups = getSharedPreferences("User-Groups", 0)
 
         val listView = findViewById<ListView>(R.id.groupsList)
 
