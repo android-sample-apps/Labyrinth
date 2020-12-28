@@ -34,6 +34,7 @@ import org.bandev.labyrinth.projects.BranchSelector
 import org.bandev.labyrinth.projects.Commits
 import org.bandev.labyrinth.projects.FileViewer
 import org.bandev.labyrinth.projects.IssuesList
+import org.bandev.labyrinth.widgets.About
 import org.json.JSONObject
 
 
@@ -163,6 +164,30 @@ class ProfileAct : AppCompatActivity() {
                 }
 
 
+        val settingsOptions: MutableList<String> = mutableListOf()
+        settingsOptions.add("{ 'left' : 'Settings', 'right' : '>', 'icon' : 'settings' }")
+        settingsOptions.add("{ 'left' : 'About App', 'right' : '>', 'icon' : 'about' }")
+
+        val settingsList = findViewById<ListView>(R.id.settingsList)
+        settingsList.adapter = InfoListAdapter(this@ProfileAct, settingsOptions.toTypedArray())
+
+        settingsList.onItemClickListener =
+                AdapterView.OnItemClickListener { parent, view, position, id ->
+                    val selectedItem = parent.getItemAtPosition(position) as String
+                    val obj = JSONObject(selectedItem)
+                    when (obj.getString("left")) {
+                        "Settings" -> {
+                            val intent = Intent(applicationContext, SettingsAct::class.java)
+                            startActivity(intent)
+                        }
+                        "About App" -> {
+                            val intent = Intent(applicationContext, About::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                }
+
+
         /* val userGroups = getSharedPreferences("User-Groups", 0)
 
         val listView = findViewById<ListView>(R.id.groupsList)
@@ -214,37 +239,6 @@ class ProfileAct : AppCompatActivity() {
                 intent.putExtras(bundle)
                 startActivity(intent)
             }*/
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.profile_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.settings -> {
-                val i = Intent(this, SettingsAct::class.java)
-                startActivity(i)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun justifyListViewHeightBasedOnChildren(listView: ListView) {
-        val adapter = listView.adapter ?: return
-        val vg: ViewGroup = listView
-        var totalHeight = 0
-        for (i in 0 until adapter.count) {
-            val listItem: View = adapter.getView(i, null, vg)
-            listItem.measure(0, 0)
-            totalHeight += listItem.measuredHeight
-        }
-        val par = listView.layoutParams
-        par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
-        listView.layoutParams = par
-        listView.requestLayout()
     }
 
     override fun onSupportNavigateUp(): Boolean {

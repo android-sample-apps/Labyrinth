@@ -11,22 +11,6 @@ class About : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val versionElement = Element()
-        versionElement.title = "Version 6.2"
-        versionElement.iconDrawable = R.mipmap.ic_launcher_round
 
-        val aboutPage = AboutPage(this)
-            .isRTL(false)
-            .enableDarkMode(false)
-            .setImage(R.mipmap.bandev)
-            .setCustomFont(ResourcesCompat.getFont(this, R.font.jb))
-            .addItem(versionElement)
-            .addGroup("Connect with us")
-            .addWebsite("https://bandev.computub.com")
-            .addTwitter("BanDevApps")
-            .addPlayStore("org.bandev.labyrinth")
-            .create()
-
-        setContentView(aboutPage)
     }
 }

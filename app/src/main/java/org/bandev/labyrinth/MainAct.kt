@@ -1,10 +1,16 @@
 package org.bandev.labyrinth
 
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.AutoCompleteTextView
 import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -86,5 +92,23 @@ class MainAct : AppCompatActivity() {
             setTitle("")
             textView.text = title
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.search_menu, menu)
+
+        // Associate searchable configuration with the SearchView
+        val searchItem: MenuItem? = menu?.findItem(R.id.search)
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView: SearchView = searchItem?.actionView as SearchView
+
+
+        val searchText = searchView!!.findViewById<View>(R.id.search_src_text) as AutoCompleteTextView
+        searchText.setHintTextColor(resources.getColor(android.R.color.white))
+        searchText.setTextColor(resources.getColor(android.R.color.white))
+
+        searchView?.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+
+        return true
     }
 }

@@ -94,5 +94,7 @@ dependencies {
 
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.4.Final'
     implementation 'com.github.wax911:android-emojify:1.5.3'
+    implementation 'nl.dionsegijn:konfetti:1.2.6-rc1'
+
 
 }

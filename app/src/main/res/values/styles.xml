@@ -13,6 +13,8 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
 
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:editTextColor">@android:color/white</item>
+
 
         <!-- Disable AppBar cus ToolBar is cool -->
         <item name="windowActionBar">false</item>
