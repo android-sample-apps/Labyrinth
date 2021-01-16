@@ -42,9 +42,6 @@ class MainAct : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
         Compatibility().edgeToEdge(window, View(this), toolbar, resources)
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            window.statusBarColor = getColor(R.color.colorPrimary)
-        }
         val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
                 setOf(
@@ -94,21 +91,5 @@ class MainAct : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.search_menu, menu)
 
-        // Associate searchable configuration with the SearchView
-        val searchItem: MenuItem? = menu?.findItem(R.id.search)
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchView: SearchView = searchItem?.actionView as SearchView
-
-
-        val searchText = searchView!!.findViewById<View>(R.id.search_src_text) as AutoCompleteTextView
-        searchText.setHintTextColor(resources.getColor(android.R.color.white))
-        searchText.setTextColor(resources.getColor(android.R.color.white))
-
-        searchView?.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-
-        return true
-    }
 }

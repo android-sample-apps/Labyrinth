@@ -186,11 +186,6 @@ class IndividualCommit : AppCompatActivity() {
         return true
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_commit, menu)
-
-        return true
-    }
 
     private fun hideAll() {
         binding.content.toggle.isGone = true

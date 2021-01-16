@@ -65,6 +65,7 @@ dependencies {
     // Navigation component
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.2"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.2"
+    implementation 'androidx.palette:palette-ktx:1.0.0'
 
     // [Testing] Basic
     testImplementation 'junit:junit:4.13.1'

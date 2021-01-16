@@ -49,7 +49,7 @@ class ProfileEmailsAct : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back_white)
+        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         filldata()
 

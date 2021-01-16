@@ -54,24 +54,18 @@
             android:theme="@style/Theme.Labyrinth.LightStatusBar">
         </activity>
         <activity
-            android:name=".ProfileAct"
-            android:theme="@style/Theme.Labyrinth.LightStatusBar">
+            android:name=".ProfileAct">
         </activity>
         <activity
-            android:name=".ProfileKeysAct"
-            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
+            android:name=".ProfileKeysAct" />
         <activity
-            android:name=".account.activities.ProfileEmailsAct"
-            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
+            android:name=".account.activities.ProfileEmailsAct" />
         <activity
-            android:name=".account.activities.ProfileStatusAct"
-            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
+            android:name=".account.activities.ProfileStatusAct" />
         <activity
-            android:name=".account.activities.ProfileTokenAct"
-            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
+            android:name=".account.activities.ProfileTokenAct" />
         <activity
-            android:name=".account.activities.ProfileGroupsAct"
-            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
+            android:name=".account.activities.ProfileGroupsAct"/>
         <activity
             android:name=".OthersProfileAct" />
         <activity
@@ -79,17 +73,13 @@
         <activity
             android:name=".projects.ReadMe" />
         <activity
-            android:name=".PinSomething"
-            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
+            android:name=".PinSomething" />
         <activity
-            android:name=".ProjectAct"
-            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
+            android:name=".ProjectAct" />
         <activity
-            android:name=".projects.Commits"
-            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
+            android:name=".projects.Commits" />
         <activity
-            android:name=".projects.FileViewer"
-            android:theme="@style/Theme.Labyrinth.LightStatusBar"/>
+            android:name=".projects.FileViewer" />
         <activity
             android:name=".projects.IndividualIssue" />
         <activity
@@ -123,8 +113,7 @@
         <activity
             android:name=".projects.IndividualCommit" />
         <activity
-            android:name=".MainAct"
-            android:theme="@style/Theme.Labyrinth.LightStatusBar">
+            android:name=".MainAct">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />

@@ -71,7 +71,7 @@
             android:paddingBottom="20dp"
             android:text="+1"
             android:textColor="?android:attr/textColorSecondary"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:drawableStartCompat="@drawable/ic_thumbsupdown"
             app:layout_constraintStart_toEndOf="@+id/time"
             app:layout_constraintTop_toBottomOf="@+id/description" />
@@ -86,7 +86,7 @@
             android:paddingBottom="20dp"
             android:text="Yesterday"
             android:textColor="?android:attr/textColorSecondary"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:drawableStartCompat="@drawable/ic_time"
             app:layout_constraintStart_toStartOf="@+id/description"
             app:layout_constraintTop_toBottomOf="@+id/description" />

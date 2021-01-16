@@ -22,7 +22,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -35,11 +35,11 @@
             android:layout_marginEnd="20dp"
             android:elevation="4dp"
             android:ellipsize="end"
-            android:fontFamily="@font/dm_sans_bold"
             android:maxLines="1"
             android:text="Project"
-            android:textColor="#fff"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="15dp" />
