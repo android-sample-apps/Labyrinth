@@ -71,17 +71,13 @@ class FileViewer : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back_white)
+        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         //Toolbar shadow animation
         //Animations().toolbarShadowScroll(binding.scroll, toolbar)
 
         //Turn on edge to edge
         Compatibility().edgeToEdge(window, View(this), toolbar, resources)
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            window.statusBarColor = getColor(R.color.colorPrimary)
-
-        }
 
         //Set title depending on folder
         binding.title.text = if (path == "") {
