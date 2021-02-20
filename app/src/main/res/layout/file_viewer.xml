@@ -25,6 +25,7 @@
         android:layout_height="56dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        android:stateListAnimator="@animator/toolbar_elevation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -59,14 +60,15 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_gravity="fill_horizontal"
-            android:clipToPadding="true">
+            android:clipToPadding="true"
+            android:overScrollMode="never">
 
             <org.bandev.labyrinth.widgets.NonScrollListView
                 android:id="@+id/listView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:dividerHeight="1px"
                 android:background="@drawable/toolbar_line"
+                android:dividerHeight="1px"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar" />

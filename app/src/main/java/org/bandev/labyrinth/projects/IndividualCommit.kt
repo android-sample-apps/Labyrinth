@@ -2,6 +2,7 @@ package org.bandev.labyrinth.projects
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.widget.*
 import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.CommitDiffAdapter
 import org.bandev.labyrinth.core.Animations
+import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.databinding.IndividualCommitBinding
 import org.json.JSONArray
 import org.json.JSONObject
@@ -55,7 +57,10 @@ class IndividualCommit : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
         binding.title.text = commitShortId
-        Animations().toolbarShadowScroll(binding.scroll, binding.toolbar  )
+        Animations().toolbarShadowScroll(binding.scroll, binding.toolbar)
+
+        // Edge to edge stuff
+        Compatibility().edgeToEdge(window, View(this), binding.toolbar, resources)
 
         //Setup pull to refresh on the activity
         binding.pullToRefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))

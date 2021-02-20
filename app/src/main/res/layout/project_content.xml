@@ -35,10 +35,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="16dp"
-            android:fontFamily="@font/new_font"
             android:text="Latest Commit"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,14 +93,14 @@
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
-        android:id="@+id/name_1"
+        android:id="@+id/project_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:fontFamily="@font/dm_sans_bold"
         android:text="Name"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/slug"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="@+id/avatar" />
@@ -111,15 +110,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/dm_sans_reg"
         android:text="Email"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/avatar"
-        app:layout_constraintTop_toBottomOf="@+id/name_1" />
+        app:layout_constraintTop_toBottomOf="@+id/project_name" />
 
     <TextView
         android:id="@+id/description"
@@ -143,12 +140,10 @@
         android:layout_marginTop="20dp"
         android:drawableStart="@drawable/ic_star_full"
         android:drawablePadding="5dp"
-        android:fontFamily="@font/dm_sans_reg"
         android:paddingBottom="20dp"
         android:text="0 Stars"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="16sp"
-        app:drawableStartCompat="@drawable/ic_star_full"
         app:layout_constraintStart_toStartOf="@+id/description"
         app:layout_constraintTop_toBottomOf="@+id/description" />
 
@@ -158,30 +153,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
 
+        android:layout_marginTop="20dp"
         android:drawablePadding="5dp"
-        android:fontFamily="@font/dm_sans_reg"
         android:paddingBottom="20dp"
         android:text="0 Forks"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="16sp"
         app:drawableStartCompat="@drawable/ic_forks"
         app:layout_constraintStart_toEndOf="@+id/stars"
-        app:layout_constraintTop_toTopOf="@+id/stars" />
-
-    <TextView
-        android:id="@+id/mainLang"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginStart="10dp"
-        android:drawablePadding="5dp"
-        android:fontFamily="@font/dm_sans_reg"
-        android:paddingBottom="20dp"
-        android:text="Kotlin"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/forks"
-        app:layout_constraintTop_toTopOf="@+id/stars" />
+        app:layout_constraintTop_toBottomOf="@+id/description" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

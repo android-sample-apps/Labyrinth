@@ -42,8 +42,7 @@ class BranchSelector : AppCompatActivity() {
 
     var profile: Profile = Profile()
     private var token: String = ""
-    private var repoLogoUrl: String = ""
-    private var repoId: String = ""
+    private var repoId: Int = 0
     private var branch: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,8 +61,7 @@ class BranchSelector : AppCompatActivity() {
         token = profile.getData("token")
 
         //Get data from bundle passed with intent
-        repoLogoUrl = (intent.extras?.getString("repoLogoUrl") ?: return)
-        repoId = (intent.extras?.getString("repoId") ?: return)
+        repoId = (intent.extras?.getInt("id") ?: return)
         branch = (intent.extras?.getString("branch") ?: return)
 
         //Configure Toolbar
@@ -112,7 +110,7 @@ class BranchSelector : AppCompatActivity() {
         AndroidNetworking
             .get("https://gitlab.com/api/v4/projects/{id}/repository/branches")
             .addQueryParameter("access_token", token)
-            .addPathParameter("id", repoId)
+            .addPathParameter("id", repoId.toString())
             .build()
             .getAsJSONArray(object : JSONArrayRequestListener {
                 override fun onResponse(result: JSONArray) {

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -12,12 +13,18 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.google.android.material.snackbar.Snackbar
+import org.bandev.labyrinth.Connection
+import org.bandev.labyrinth.Notify
+import org.bandev.labyrinth.Project
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.FileViewAdapter
 import org.bandev.labyrinth.core.Animations
 import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.databinding.FileViewerBinding
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -37,13 +44,10 @@ class FileViewer : AppCompatActivity() {
 
     lateinit var binding: FileViewerBinding
     lateinit var fileList: MutableList<String>
-
+    lateinit var rproject: Project
     var profile: Profile = Profile()
     private var path: String = ""
     private var token: String = ""
-    private var repoLogoUrl: String = ""
-    private var repoId: String = ""
-    private var branch: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,10 +65,7 @@ class FileViewer : AppCompatActivity() {
         token = profile.getData("token")
 
         //Get data from bundle passed with intent
-        repoLogoUrl = (intent.extras?.getString("repoLogoUrl") ?: return)
-        repoId = (intent.extras?.getString("repoId") ?: return)
-        path = (intent.extras?.getString("path") ?: return)
-        branch = (intent.extras?.getString("branch") ?: return)
+        path = intent.extras?.getString("path").toString()
 
         //Configure Toolbar
         val toolbar: Toolbar = binding.toolbar
@@ -74,7 +75,7 @@ class FileViewer : AppCompatActivity() {
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         //Toolbar shadow animation
-        //Animations().toolbarShadowScroll(binding.scroll, toolbar)
+        Animations().toolbarShadowScroll(binding.scroll, toolbar)
 
         //Turn on edge to edge
         Compatibility().edgeToEdge(window, View(this), toolbar, resources)
@@ -94,12 +95,22 @@ class FileViewer : AppCompatActivity() {
                 )
         )
         binding.pullToRefresh.setOnRefreshListener {
-            fillData()
+            newConn()
             binding.pullToRefresh.isRefreshing = false
         }
+        newConn()
+    }
 
-        //Fill the activity with some data
-        fillData()
+    private fun newConn() {
+        val connection = Connection(this)
+        connection.Project().get((intent.extras ?: return).getInt("id"))
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNotifyReceive(event: Notify) {
+        when (event) {
+            is Notify.ReturnProject -> fillData(event.project)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -108,10 +119,11 @@ class FileViewer : AppCompatActivity() {
         return true
     }
 
-    fun fillData() {
+    fun fillData(project: Project) {
+        rproject = project
         //Hide all the content and show spinner
         hideAll()
-
+        var repoId = project.id
         //Get JSONArray of files from GitLab
         AndroidNetworking
                 .get("https://gitlab.com/api/v4/projects/$repoId/repository/tree")
@@ -133,9 +145,9 @@ class FileViewer : AppCompatActivity() {
 
                         //Set on click listener for listview, route to function itemClick(parent, position)
                         binding.listView.onItemClickListener =
-                                AdapterView.OnItemClickListener { parent, _, position, _ ->
-                                    itemClick(parent, position)
-                                }
+                            AdapterView.OnItemClickListener { parent, _, position, _ ->
+                                itemClick(parent, position)
+                            }
 
                         //Show all the elements to user and remove spinner
                         showAll()
@@ -144,10 +156,10 @@ class FileViewer : AppCompatActivity() {
                     override fun onError(error: ANError) {
                         //Alert user that something went wrong, let them try again (fillData())
                         Snackbar.make(binding.root, R.string.project_fv_error, Snackbar.LENGTH_LONG)
-                                .setAction(R.string.project_fv_error_retry) {
-                                    fillData()
-                                }
-                                .show()
+                            .setAction(R.string.project_fv_error_retry) {
+                                newConn()
+                            }
+                            .show()
 
                         //Show empty elements but remove spinner
                         showAll()
@@ -164,10 +176,9 @@ class FileViewer : AppCompatActivity() {
         }
         val path = JSONObject(selectedItem).getString("path")
         val bundle = Bundle()
-        bundle.putString("repoLogoUrl", repoLogoUrl)
-        bundle.putString("repoId", repoId)
+        bundle.putInt("id", rproject.id)
         bundle.putString("path", path)
-        bundle.putString("branch", branch)
+        bundle.putString("branch", rproject.defaultBranch)
         intent.putExtras(bundle)
         startActivity(intent)
     }
@@ -184,4 +195,13 @@ class FileViewer : AppCompatActivity() {
         binding.spinner.isGone = true
     }
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
 }

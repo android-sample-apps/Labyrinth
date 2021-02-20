@@ -16,15 +16,15 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.IssueAdapter
+import org.bandev.labyrinth.core.Compatibility
 import org.json.JSONArray
 import org.json.JSONObject
 
 class IssuesList : AppCompatActivity() {
 
     var issueArryIn: JSONArray? = null
-    private var repoObjIn: JSONObject? = null
     var token: String = ""
-    private var projectId: String = ""
+    private var projectId: Int = 0
     var listView: ListView? = null
     var listView2: ListView? = null
     private var progressBar: ProgressBar? = null
@@ -42,8 +42,6 @@ class IssuesList : AppCompatActivity() {
         listView2 = findViewById(R.id.listView2)
         progressBar = findViewById(R.id.progressBar2)
 
-        repoObjIn = JSONObject(intent.getStringExtra("repo").toString())
-
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -54,9 +52,9 @@ class IssuesList : AppCompatActivity() {
         val title: TextView = findViewById(R.id.title)
         title.text = "Issues"
 
+        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
 
-
-        projectId = (repoObjIn ?: return).getString("id")
+        projectId = (intent.extras ?: return).getInt("id")
 
         fillData()
 

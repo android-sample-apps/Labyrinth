@@ -1,11 +1,32 @@
 <resources>
-    <string name="app_name">Labyrinth ALPHA</string>
+    <string name="app_name">Labyrinth</string>
+    <string name="version">v0.0.2</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+
+    <string name="about">About</string>
+    <string name="about_translators">Translators</string>
+
+    <string name="about_app_promise" id="21">App Promise</string>
+    <string name="about_no_trackers" id="22">No trackers</string>
+    <string name="about_complete_privacy" id="23">Complete privacy</string>
+    <string name="about_offline_app" id="24">Offline app</string>
+    <string name="about_free_and_open_source" id="25">Free and Open Source</string>
+    <string name="about_info" id="26">App Info</string>
+    <string name="about_info_paragraph" id="27">WHATS THE CHARGE??. EATING A MEAL!! EATING A SUCCULANT CHINESE MEAL!!??</string>
+    <string name="about_contributors" id="28">Contributors</string>
+    <string name="about_fennec" id="UNTRANSLATE" translatable="false">"@Fennec_exe"</string>
+    <string name="about_jack" id="UNTRANSLATE" translatable="false">"@jack.txt"</string>
+    <string name="about_izzysoft" id="UNTRANSLATE" translatable="false">"@IzzySoft"</string>
+    <string name="about_licaon" id="UNTRANSLATE" translatable="false">"@licaon-kter"</string>
+    <string name="about_poussinou" id="UNTRANSLATE" translatable="false">"@Poussinou"</string>
+    <string name="about_acknowledgements" id="29">Acknowledgements</string>
+    <string name="about_attribution" id="30">Launcher icon - Freepik via Flaticon</string>
+    <string name="tick" id="31">Tick</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
@@ -30,6 +51,7 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
+    <string name="about_no_ads" id="91">No ads</string>
 
     <!-- project.FileViewer & project.FolderViewer -->
     <string name="project_fv_error">Something went wrong</string>

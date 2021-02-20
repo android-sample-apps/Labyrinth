@@ -181,7 +181,7 @@ class ProfileAct : AppCompatActivity() {
                             startActivity(intent)
                         }
                         "About App" -> {
-                            val intent = Intent(applicationContext, About::class.java)
+                            val intent = Intent(applicationContext, org.bandev.labyrinth.About::class.java)
                             startActivity(intent)
                         }
                     }

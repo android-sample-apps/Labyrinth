@@ -25,9 +25,8 @@ import org.json.JSONObject
 class Commits : AppCompatActivity() {
 
     var issueArryIn: JSONArray? = null
-    private var repoObjIn: JSONObject? = null
     var token: String = ""
-    var projectId: String = ""
+    var projectId: Int = 0
     var listView: NonScrollListView? = null
     private var listView2: ListView? = null
     private var progressBar: ProgressBar? = null
@@ -42,7 +41,6 @@ class Commits : AppCompatActivity() {
         token = profile.getData("token")
         listView = findViewById(R.id.listView)
         progressBar = findViewById(R.id.progressBar2)
-        repoObjIn = JSONObject(intent.getStringExtra("repo").toString())
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -52,6 +50,8 @@ class Commits : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
+        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
+
         //Toolbar shadow animation
         val scroll = findViewById<ScrollView>(R.id.scroll)
         Animations().toolbarShadowScroll(scroll, toolbar)
@@ -59,7 +59,7 @@ class Commits : AppCompatActivity() {
         val title: TextView = findViewById(R.id.title)
         title.text = "Commits"
 
-        projectId = (repoObjIn ?: return).getString("id")
+        projectId = (intent.extras ?: return).getInt("id")
 
         fillData()
 

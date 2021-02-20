@@ -14,7 +14,6 @@
         android:layout_marginBottom="15dp"
         android:drawablePadding="5dp"
         android:ellipsize="end"
-        android:fontFamily="@font/jb"
         android:maxLines="1"
         android:text="Loading"
         android:textColor="?android:attr/textColorSecondary"

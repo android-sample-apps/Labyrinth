@@ -30,8 +30,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:fontFamily="@font/jb" />
+            android:layout_height="60dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -44,7 +43,6 @@
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/colorPrimary"
         android:elevation="0dp"
-        android:fontFamily="@font/jb_title"
         android:text="Go"
         android:textAlignment="viewStart"
         android:textAllCaps="true"
@@ -63,10 +61,10 @@
         android:layout_marginStart="33dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="33dp"
-        android:fontFamily="@font/jb_title"
         android:text="Welcome to Labyrinth!"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="35sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />

@@ -11,8 +11,12 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
+import com.maxkeppeler.sheets.options.DisplayMode
+import com.maxkeppeler.sheets.options.Option
+import com.maxkeppeler.sheets.options.OptionsSheet
 import org.bandev.labyrinth.PinSomething
 import org.bandev.labyrinth.ProjectAct
+import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
@@ -98,10 +102,17 @@ class HomeFragment : Fragment() {
             val selectedItem = parent.getItemAtPosition(position) as String
             val intent = Intent(context, ProjectAct::class.java)
             val bundle = Bundle()
-            bundle.putString("data", selectedItem)
+            bundle.putInt("id", JSONObject(selectedItem).getInt("id"))
             intent.putExtras(bundle)
             startActivity(intent)
         }
+
+        bottom.infoListView.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
+            val selectedItem = parent.getItemAtPosition(position) as String
+            showBottom(selectedItem)
+            true
+        }
+
 
     }
 
@@ -122,6 +133,22 @@ class HomeFragment : Fragment() {
             }
             // Other result codes
             else -> {
+            }
+        }
+    }
+
+    fun showBottom(data: String) {
+        val datajs = JSONObject(data)
+        OptionsSheet().show(requireContext()) {
+            title(datajs.getString("name"))
+            displayMode(DisplayMode.LIST)
+            with(
+                Option("Issues"),
+                Option("View Files"),
+                Option("Commits")
+            )
+            onPositive { index: Int, option: Option ->
+                // Handle selected option
             }
         }
     }

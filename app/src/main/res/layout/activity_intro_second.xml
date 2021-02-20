@@ -16,7 +16,6 @@
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/colorPrimary"
         android:elevation="0dp"
-        android:fontFamily="@font/jb_title"
         android:text="Yes"
         android:textAlignment="viewStart"
         android:textAllCaps="false"
@@ -37,7 +36,6 @@
         android:layout_marginBottom="10dp"
         android:backgroundTint="#0E4D8D"
         android:elevation="0dp"
-        android:fontFamily="@font/jb_title"
         android:text="No"
         android:textAlignment="viewStart"
         android:textAllCaps="false"
@@ -66,10 +64,11 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
-        android:fontFamily="@font/jb_title"
+        android:layout_marginTop="11dp"
         android:text="Username"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="26sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="@+id/avatar" />
 
@@ -81,8 +80,8 @@
         android:text="Email"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="21sp"
-        app:layout_constraintBottom_toBottomOf="@+id/avatar"
-        app:layout_constraintStart_toEndOf="@+id/avatar" />
+        app:layout_constraintStart_toEndOf="@+id/avatar"
+        app:layout_constraintTop_toBottomOf="@+id/usernmame" />
 
 
     <TextView
@@ -92,10 +91,10 @@
         android:layout_marginStart="33dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="33dp"
-        android:fontFamily="@font/jb_title"
         android:text="Hi username"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="35sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />

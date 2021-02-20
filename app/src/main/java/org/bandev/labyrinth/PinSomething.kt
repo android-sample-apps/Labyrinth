@@ -50,14 +50,10 @@ class PinSomething : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         Compatibility().edgeToEdge(window, View(this), toolbar, resources)
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            window.statusBarColor = getColor(R.color.colorPrimary)
-
-        }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back_white)
+        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         //Toolbar shadow animation
         val scroll = findViewById<ScrollView>(R.id.scroll)

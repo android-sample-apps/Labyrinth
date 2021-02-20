@@ -20,6 +20,7 @@ import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.IssueNotesAdapter
 import org.bandev.labyrinth.core.Animations
+import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.databinding.IndividualIssueBinding
 import org.json.JSONArray
 import org.json.JSONObject
@@ -83,6 +84,8 @@ class IndividualIssue : AppCompatActivity() {
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)

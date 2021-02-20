@@ -26,11 +26,7 @@ class SettingsAct : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         Compatibility().edgeToEdge(window, View(this), toolbar, resources)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back_white)
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            window.statusBarColor = getColor(R.color.colorPrimary)
-
-        }
+        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         if (savedInstanceState == null) {
             supportFragmentManager
@@ -62,7 +58,7 @@ class SettingsAct : AppCompatActivity() {
 
             val about = findPreference("about") as Preference?
             about?.setOnPreferenceClickListener { preference ->
-                val intent = Intent(context, About::class.java)
+                val intent = Intent(context, org.bandev.labyrinth.About::class.java)
                 startActivity(intent)
                 true
             }

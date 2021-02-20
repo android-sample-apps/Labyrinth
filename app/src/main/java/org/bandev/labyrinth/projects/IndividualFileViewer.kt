@@ -40,9 +40,8 @@ class IndividualFileViewer : AppCompatActivity() {
     var profile: Profile = Profile()
     private var path: String = ""
     private var token: String = ""
-    private var repoLogoUrl: String = ""
-    private var repoId: String = ""
     private var branch: String = ""
+    private var id: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,10 +59,9 @@ class IndividualFileViewer : AppCompatActivity() {
         token = profile.getData("token")
 
         //Get data from bundle passed with intent
-        repoLogoUrl = (intent.extras?.getString("repoLogoUrl") ?: return)
-        repoId = (intent.extras?.getString("repoId") ?: return)
-        path = (intent.extras?.getString("path") ?: return)
+        id = (intent.extras?.getInt("id") ?: return)
         branch = (intent.extras?.getString("branch") ?: return)
+        path = (intent.extras?.getString("path") ?: return)
 
         //Configure Toolbar
         val toolbar: Toolbar = binding.toolbar
@@ -80,10 +78,10 @@ class IndividualFileViewer : AppCompatActivity() {
 
         //Configure pull to refresh & make it run fillData()
         binding.pullToRefresh.setColorSchemeColors(
-            ContextCompat.getColor(
-                this,
-                R.color.colorPrimary
-            )
+                ContextCompat.getColor(
+                        this,
+                        R.color.colorPrimary
+                )
         )
         binding.pullToRefresh.setOnRefreshListener {
             fillData()
@@ -106,47 +104,47 @@ class IndividualFileViewer : AppCompatActivity() {
 
         //Get JSONArray of files from GitLab
         AndroidNetworking
-            .get("https://gitlab.com/api/v4/projects/$repoId/repository/files/{path}")
-            .addQueryParameter("access_token", token)
-            .addQueryParameter("ref", branch)
-            .addPathParameter("path", URLEncoder.encode(path, "utf-8"))
-            .build()
-            .getAsJSONObject(object : JSONObjectRequestListener {
-                override fun onResponse(result: JSONObject) {
-                    //Save response to fileInfo
-                    fileInfo = result
+                .get("https://gitlab.com/api/v4/projects/$id/repository/files/{path}")
+                .addQueryParameter("access_token", token)
+                .addQueryParameter("ref", branch)
+                .addPathParameter("path", URLEncoder.encode(path, "utf-8"))
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(result: JSONObject) {
+                        //Save response to fileInfo
+                        fileInfo = result
 
-                    //Convert base64 response to readble format
-                    val dataBase64 = fileInfo.getString("content")
-                    val code = String(Base64.decode(dataBase64, Base64.NO_WRAP))
+                        //Convert base64 response to readble format
+                        val dataBase64 = fileInfo.getString("content")
+                        val code = String(Base64.decode(dataBase64, Base64.NO_WRAP))
 
-                    println(code)
+                        println(code)
 
-                    //Show code in codeView element & show element
-                    binding.codeView
-                        .setTheme(Theme.ANDROIDSTUDIO)
-                        .setCode(code)
-                        .setWrapLine(true)
-                        .setFontSize(14F)
-                        .setLanguage(Language.AUTO)
-                        .setZoomEnabled(true)
-                        .apply()
+                        //Show code in codeView element & show element
+                        binding.codeView
+                                .setTheme(Theme.ANDROIDSTUDIO)
+                                .setCode(code)
+                                .setWrapLine(true)
+                                .setFontSize(14F)
+                                .setLanguage(Language.AUTO)
+                                .setZoomEnabled(true)
+                                .apply()
 
-                    showAll()
-                }
+                        showAll()
+                    }
 
-                override fun onError(error: ANError) {
-                    //Alert user that something went wrong, let them try again (fillData())
-                    Snackbar.make(binding.root, R.string.project_fv_error, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.project_fv_error_retry) {
-                            fillData()
-                        }
-                        .show()
+                    override fun onError(error: ANError) {
+                        //Alert user that something went wrong, let them try again (fillData())
+                        Snackbar.make(binding.root, R.string.project_fv_error, Snackbar.LENGTH_LONG)
+                                .setAction(R.string.project_fv_error_retry) {
+                                    fillData()
+                                }
+                                .show()
 
-                    //Show empty elements but remove spinner
-                    showAll()
-                }
-            })
+                        //Show empty elements but remove spinner
+                        showAll()
+                    }
+                })
     }
 
     private fun hideAll() {

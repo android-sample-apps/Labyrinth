@@ -50,8 +50,7 @@
                 android:resource="@xml/authenticator"/>
         </service>
         <activity
-            android:name=".SettingsAct"
-            android:theme="@style/Theme.Labyrinth.LightStatusBar">
+            android:name=".SettingsAct">
         </activity>
         <activity
             android:name=".ProfileAct">
@@ -146,6 +145,11 @@
             android:name=".BiometricFailAct"
             android:windowSoftInputMode="adjustResize">
         </activity>
+
+        <activity
+            android:name=".About">
+        </activity>
+
         <activity
             android:name=".NoInternetAct"
             android:windowSoftInputMode="adjustResize">

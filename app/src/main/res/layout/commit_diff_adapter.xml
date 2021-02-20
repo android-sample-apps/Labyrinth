@@ -30,15 +30,15 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
-            android:fontFamily="@font/jb"
             android:text="Issue Creator"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/contentView" />
 
-        <com.alorma.diff.lib.DiffTextView
+        <com.jackdevey.gitdifftextview.DiffTextView
             android:id="@+id/description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

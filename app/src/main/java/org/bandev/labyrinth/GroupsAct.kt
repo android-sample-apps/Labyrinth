@@ -205,24 +205,6 @@ class GroupsAct : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.open -> {
-                val url = profile.getData("webUrl")
-                val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
-                builder.setToolbarColor(Color.parseColor("#0067f4"))
-                val customTabsIntent: CustomTabsIntent = builder.build()
-                customTabsIntent.launchUrl(this, Uri.parse(url))
-                super.onOptionsItemSelected(item)
-            }
-            R.id.settings -> {
-                val i = Intent(this, SettingsAct::class.java)
-                startActivity(i)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 
     internal fun justifyListViewHeightBasedOnChildren(listView: ListView) {
         val adapter = listView.adapter ?: return
