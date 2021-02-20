@@ -29,6 +29,9 @@ import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.core.Pins
 import org.bandev.labyrinth.databinding.MainActBinding
+import org.bandev.labyrinth.projects.Commits
+import org.bandev.labyrinth.projects.FileViewer
+import org.bandev.labyrinth.projects.IssuesList
 import org.json.JSONObject
 import java.util.regex.Pattern
 
@@ -158,12 +161,25 @@ class MainAct : AppCompatActivity() {
             title(datajs.getString("name"))
             displayMode(DisplayMode.LIST)
             with(
-                    Option("Issues"),
-                    Option("View Files"),
-                    Option("Commits")
+                    Option(R.drawable.ic_issue, "Issues"),
+                    Option(R.drawable.ic_file,"View Files"),
+                    Option(R.drawable.ic_commit,"Commits"),
+                    Option(R.drawable.ic_open_in_browser,"Open")
             )
             onPositive { index: Int, option: Option ->
                 // Handle selected option
+                val act = when(index){
+                    0 -> IssuesList::class.java
+                    1 -> FileViewer::class.java
+                    2 -> Commits::class.java
+                    else -> ProjectAct::class.java
+                }
+
+                val intent = Intent(applicationContext, act)
+                intent.putExtra("id", datajs.getInt("id"))
+                intent.putExtra("branch", datajs.getString("default_branch"))
+                intent.putExtra("path", "")
+                startActivity(intent)
             }
         }
     }

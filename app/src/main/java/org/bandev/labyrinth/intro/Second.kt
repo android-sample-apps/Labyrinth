@@ -9,6 +9,8 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AppCompatActivity
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
@@ -67,7 +69,8 @@ class Second : AppCompatActivity() {
                     }
 
                     override fun onError(error: ANError?) {
-
+                        finish()
+                        Toast.makeText(applicationContext, "Wrong token", LENGTH_SHORT).show()
                     }
                 })
 
@@ -79,10 +82,6 @@ class Second : AppCompatActivity() {
             Account(username, "org.bandev.labyrinth.account").also { account ->
                 accountManager.addAccountExplicitly(account, token, userData)
             }
-
-            Api().getUserGroups(this, token)
-            Api().getUserProjects(this, token)
-            Api().getUserTodos(this, token)
 
             val intent = Intent(this, MainAct::class.java)
             this.startActivity(intent)

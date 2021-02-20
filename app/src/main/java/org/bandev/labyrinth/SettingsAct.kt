@@ -13,7 +13,6 @@ import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.core.Appearance
 import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.intro.First
-import org.bandev.labyrinth.widgets.About
 
 class SettingsAct : AppCompatActivity() {
 

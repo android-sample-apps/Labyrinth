@@ -1,40 +1,25 @@
 package org.bandev.labyrinth
 
 import android.content.Intent
-import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import coil.load
 import coil.transform.CircleCropTransformation
-import coil.transform.RoundedCornersTransformation
-import com.google.android.material.imageview.ShapeableImageView
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.account.activities.ProfileEmailsAct
 import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.account.activities.ProfileStatusAct
 import org.bandev.labyrinth.account.activities.ProfileTokenAct
-import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Api
 import org.bandev.labyrinth.core.Compatibility
-import org.bandev.labyrinth.projects.BranchSelector
-import org.bandev.labyrinth.projects.Commits
-import org.bandev.labyrinth.projects.FileViewer
-import org.bandev.labyrinth.projects.IssuesList
-import org.bandev.labyrinth.widgets.About
 import org.json.JSONObject
 
 

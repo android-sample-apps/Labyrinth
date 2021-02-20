@@ -27,6 +27,7 @@ import org.bandev.labyrinth.databinding.ProfileGroupsActBinding
 import org.bandev.labyrinth.databinding.ProfileKeysActBinding
 import org.bandev.labyrinth.databinding.ProfileTokenActBinding
 import org.json.JSONArray
+import org.json.JSONObject
 
 
 class ProfileGroupsAct : AppCompatActivity() {
@@ -107,7 +108,7 @@ class ProfileGroupsAct : AppCompatActivity() {
                             val selectedItem = parent.getItemAtPosition(position) as String
                             val intent = Intent(applicationContext, activity)
                             val bundle = Bundle()
-                            bundle.putString("data", selectedItem)
+                            bundle.putInt("id", JSONObject(selectedItem).getInt("id"))
                             intent.putExtras(bundle)
                             startActivity(intent)
                         }
