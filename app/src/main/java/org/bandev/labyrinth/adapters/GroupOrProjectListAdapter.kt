@@ -28,10 +28,17 @@ class GroupOrProjectListAdapter(private val context: Activity, private val text:
 
         binding.name.text = json.getString("name")
         binding.visibility.text = json.getString("description")
-        binding.avatarList.load(json.getString("avatar_url")){
-            transformations(RoundedCornersTransformation(20f))
-            crossfade(true)
-            placeholder(R.color.browser_actions_bg_grey)
+        if (json.getString("avatar_url") != "null") {
+            binding.avatarList.load(json.getString("avatar_url")) {
+                transformations(RoundedCornersTransformation(20f))
+                crossfade(true)
+                placeholder(R.color.browser_actions_bg_grey)
+            }
+        }else {
+            binding.avatarList.load(R.drawable.ic_issues) {
+                transformations(RoundedCornersTransformation(20f))
+                crossfade(true)
+            }
         }
         return binding.root
     }

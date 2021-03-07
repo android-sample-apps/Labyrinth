@@ -69,7 +69,7 @@ class BranchSelector : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_left)
 
         //Toolbar shadow animation
         Animations().toolbarShadowScroll(binding.scroll, toolbar)

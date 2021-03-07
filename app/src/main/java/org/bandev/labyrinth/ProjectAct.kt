@@ -150,7 +150,7 @@ class ProjectAct : AppCompatActivity() {
             with(
                 Option(R.drawable.ic_star_full, "Star"),
                 Option(R.drawable.ic_forks, "Fork"),
-                Option(R.drawable.ic_open_in_browser, "Open")
+                Option(R.drawable.ic_internet, "Open")
             )
             showButtons(false)
             onPositive { index: Int, _: Option ->
@@ -265,8 +265,8 @@ class ProjectAct : AppCompatActivity() {
         val issues = project.issues
         val branch = project.defaultBranch
         val infoList: MutableList<String> = mutableListOf()
-        infoList.add("{ 'left' : 'Issues', 'right' : '$issues', 'icon' : 'branch' }")
-        infoList.add("{ 'left' : 'Branch', 'right' : '$branch', 'icon' : 'security' }")
+        infoList.add("{ 'left' : 'Issues', 'right' : '$issues', 'icon' : 'issue' }")
+        infoList.add("{ 'left' : 'Branch', 'right' : '$branch', 'icon' : 'branch' }")
         infoList.add("{ 'left' : 'View Files', 'right' : '$repoSizeStr', 'icon' : 'file' }")
         infoList.add("{ 'left' : 'Commits', 'right' : '$commits', 'icon' : 'commit' }")
         val infoListAdapter = InfoListAdapter(this@ProjectAct, infoList.toTypedArray())
@@ -301,6 +301,7 @@ class ProjectAct : AppCompatActivity() {
                         val intent = Intent(applicationContext, BranchSelector::class.java)
                         val bundle = Bundle()
                         bundle.putInt("id", project.id)
+                        bundle.putString("branch", project.defaultBranch)
                         intent.putExtras(bundle)
                         startActivityForResult(intent, 0)
                     }

@@ -8,6 +8,7 @@ import android.text.SpannableStringBuilder
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
@@ -25,12 +26,18 @@ class StatusListAdapter(private val context: Activity, private val text: Array<S
         val rowView = inflater.inflate(R.layout.status_item, null)
         val title = rowView.findViewById(R.id.emoji) as TextView
         val title2 = rowView.findViewById(R.id.title) as TextView
-        val jsonObj = JSONObject(text[p0])
+        if(text[p0] == "") return rowView
+        val data = text[p0]?.split("!")
+
+        val emoji = data?.get(0)
+        val message = data?.get(1)
+        val status = data?.get(2)?.toInt()
+
 
         io.wax911.emojify.EmojiManager.initEmojiData(context)
 
-        title.text = EmojiParser.parseToUnicode(":"+jsonObj.getString("emoji")+":")
-        title2.text = jsonObj.getString("message")
+        title.text = EmojiParser.parseToUnicode(emoji.toString())
+        title2.text = message
 
         return rowView
 

@@ -36,13 +36,10 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:contentDescription="@string/home_bottom_add_desc"
-        android:textColor="?android:attr/textColorPrimary"
-        app:tint="?android:attr/textColorPrimary"
-        app:icon="@drawable/add_circle_outline_white_24dp"
         app:iconGravity="end"
         app:layout_constraintBottom_toBottomOf="@+id/title"
         app:layout_constraintEnd_toEndOf="@+id/title"
         app:layout_constraintTop_toTopOf="@+id/title"
-        app:srcCompat="@drawable/add_circle_outline_white_24dp" />
+        app:srcCompat="@drawable/ic_plus" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

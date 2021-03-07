@@ -31,6 +31,7 @@ import org.bandev.labyrinth.core.Pins
 import org.bandev.labyrinth.databinding.MainActBinding
 import org.bandev.labyrinth.projects.Commits
 import org.bandev.labyrinth.projects.FileViewer
+import org.bandev.labyrinth.projects.Issues
 import org.bandev.labyrinth.projects.IssuesList
 import org.json.JSONObject
 import java.util.regex.Pattern
@@ -161,15 +162,15 @@ class MainAct : AppCompatActivity() {
             title(datajs.getString("name"))
             displayMode(DisplayMode.LIST)
             with(
-                    Option(R.drawable.ic_issue, "Issues"),
+                    Option(R.drawable.ic_issues, "Issues"),
                     Option(R.drawable.ic_file,"View Files"),
                     Option(R.drawable.ic_commit,"Commits"),
-                    Option(R.drawable.ic_open_in_browser,"Open")
+                    Option(R.drawable.ic_internet,"Open")
             )
             onPositive { index: Int, option: Option ->
                 // Handle selected option
                 val act = when(index){
-                    0 -> IssuesList::class.java
+                    0 -> Issues::class.java
                     1 -> FileViewer::class.java
                     2 -> Commits::class.java
                     else -> ProjectAct::class.java

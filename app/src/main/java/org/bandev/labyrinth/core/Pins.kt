@@ -2,6 +2,7 @@ package org.bandev.labyrinth.core
 
 import android.content.Context
 import android.content.SharedPreferences
+import org.json.JSONObject
 
 class Pins(context: Context) {
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("Pins", 0)
@@ -40,7 +41,16 @@ class Pins(context: Context) {
         return sharedPreferences.getString("data", " null").toString()
     }
 
-    fun exists(info: String): Boolean{
-        return data.contains(info)
+    fun exists(info: String): Boolean {
+        val json = JSONObject(info)
+        val id = json.getInt("id")
+
+        for (project in data) {
+            val json2 = JSONObject(project)
+            if (json2.getInt("id") == id){
+                return true
+            }
+        }
+        return false
     }
 }

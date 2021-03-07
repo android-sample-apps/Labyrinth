@@ -57,7 +57,7 @@
         </activity>
         <activity android:name=".projects.Issues"></activity>
         <activity android:name=".projects.NewIssue"></activity>
-
+        <activity android:name=".account.activities.NewStatus"></activity>
         <activity
             android:name=".ProfileAct">
         </activity>
@@ -87,8 +87,6 @@
             android:name=".projects.FileViewer" />
         <activity
             android:name=".projects.IndividualIssue" />
-        <activity
-            android:name=".widgets.About" />
         <activity
             android:name=".projects.BranchSelector" >
         </activity>
@@ -124,8 +122,7 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <activity
-            android:name=".projects.IssuesList" />
+
         <activity
             android:name=".intro.First"
             android:windowSoftInputMode="adjustResize"
