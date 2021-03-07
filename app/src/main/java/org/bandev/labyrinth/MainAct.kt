@@ -17,11 +17,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import coil.load
+import coil.transform.CircleCropTransformation
+import coil.transform.RoundedCornersTransformation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.maxkeppeler.sheets.options.DisplayMode
 import com.maxkeppeler.sheets.options.Option
 import com.maxkeppeler.sheets.options.OptionsSheet
-import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
@@ -53,13 +55,12 @@ class MainAct : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
 
-        //Defines avatar, sets the image and handles a click
-        val avatar = findViewById<ImageView>(R.id.avatar)
-        Picasso.get().load(profile.getData("avatarUrl")).transform(CircleTransform())
-                .into(avatar)
-        avatar.setOnClickListener {
+        binding.avatar.load(profile.getData("avatarUrl")){
+            crossfade(true)
+            transformations(CircleCropTransformation())
+        }
+        binding.avatar.setOnClickListener {
             val intent = Intent(this, ProfileAct::class.java)
             this.startActivity(intent)
         }
@@ -128,7 +129,7 @@ class MainAct : AppCompatActivity() {
 
         bottom.infoListView.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
             val selectedItem = parent.getItemAtPosition(position) as String
-            showBottom(selectedItem)
+            showBottom(selectedItem, position)
             true
         }
 
@@ -156,7 +157,7 @@ class MainAct : AppCompatActivity() {
         }
     }
 
-    fun showBottom(data: String) {
+    fun showBottom(data: String, position: Int) {
         val datajs = JSONObject(data)
         OptionsSheet().show(this) {
             title(datajs.getString("name"))
@@ -165,26 +166,38 @@ class MainAct : AppCompatActivity() {
                     Option(R.drawable.ic_issues, "Issues"),
                     Option(R.drawable.ic_file,"View Files"),
                     Option(R.drawable.ic_commit,"Commits"),
-                    Option(R.drawable.ic_internet,"Open")
+                    Option(R.drawable.ic_internet,"Open"),
+                    Option(R.drawable.ic_delete,"Remove P in")
             )
             onPositive { index: Int, option: Option ->
                 // Handle selected option
-                val act = when(index){
+                var isIntent = true
+
+                if (index == 4) {
+                    val pins = Pins(requireContext())
+                    pins.remove(position + 1)
+                    pins.save()
+                    bottom()
+                    isIntent = false
+                }
+
+                val act = when (index) {
                     0 -> Issues::class.java
                     1 -> FileViewer::class.java
                     2 -> Commits::class.java
                     else -> ProjectAct::class.java
                 }
 
-                val intent = Intent(applicationContext, act)
-                intent.putExtra("id", datajs.getInt("id"))
-                intent.putExtra("branch", datajs.getString("default_branch"))
-                intent.putExtra("path", "")
-                startActivity(intent)
+                if (isIntent) {
+                    val intent = Intent(applicationContext, act)
+                    intent.putExtra("id", datajs.getInt("id"))
+                    intent.putExtra("branch", datajs.getString("default_branch"))
+                    intent.putExtra("path", "")
+                    startActivity(intent)
+                }
             }
         }
     }
-
 
 
 }

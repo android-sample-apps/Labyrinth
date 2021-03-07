@@ -52,7 +52,6 @@ class IssuesList : AppCompatActivity() {
         val title: TextView = findViewById(R.id.title)
         title.text = "Issues"
 
-        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
 
         projectId = (intent.extras ?: return).getInt("id")
 

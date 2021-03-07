@@ -50,7 +50,6 @@ class Commits : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
-        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
 
         //Toolbar shadow animation
         val scroll = findViewById<ScrollView>(R.id.scroll)

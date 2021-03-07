@@ -11,6 +11,7 @@ import android.view.Window
 import android.view.WindowInsetsController
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.marginTop
 import androidx.navigation.fragment.NavHostFragment
 import org.bandev.labyrinth.R
 
@@ -55,7 +56,7 @@ class Compatibility {
         }
     }
 
-    fun edgeToEdge(window: Window, view: View, toolbar: androidx.appcompat.widget.Toolbar, resources: Resources) {
+/*    fun edgeToEdge(window: Window, view: View, toolbar: androidx.appcompat.widget.Toolbar, resources: Resources) {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -70,10 +71,10 @@ class Compatibility {
         if (resourceId > 0) {
             statusBarHeight = resources.getDimensionPixelSize(resourceId)
         }
-        val param = toolbar.layoutParams as ViewGroup.MarginLayoutParams
-        param.setMargins(0, statusBarHeight, 0, 0)
+        val param = toolbar
+        toolbar.setMargins(0, statusBarHeight, 0, 0)
         toolbar.layoutParams = param
-    }
+    }*/
 
     fun edgeToEdge2(window: Window, view: View, toolbar: androidx.appcompat.widget.Toolbar, resources: Resources) {
 

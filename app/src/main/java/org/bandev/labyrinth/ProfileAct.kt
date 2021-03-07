@@ -37,11 +37,6 @@ class ProfileAct : AppCompatActivity() {
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        Compatibility().edgeToEdge2(window, View(this), toolbar, resources)
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            window.statusBarColor = getColor(android.R.color.transparent)
-
-        }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -52,9 +47,6 @@ class ProfileAct : AppCompatActivity() {
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         refresher.setOnRefreshListener {
-            val token = profile.getData("token")
-            Api().getUserGroups(this, token)
-            Api().getUserProjects(this, token)
             filldata()
             refresher.isRefreshing = false
         }

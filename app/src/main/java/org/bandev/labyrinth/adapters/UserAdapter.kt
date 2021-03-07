@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import com.squareup.picasso.Picasso
-import org.bandev.labyrinth.CircleTransform
+import coil.load
+import coil.transform.CircleCropTransformation
 import org.bandev.labyrinth.R
 import org.json.JSONObject
 
@@ -36,8 +36,11 @@ class UserAdapter(private val context: Activity, private val text: Array<String?
             else -> "No Access"
         }
         visibility.text = accessLevel
-        Picasso.get().load(jsonObj.getString("avatar_url")).transform(CircleTransform())
-                .into(avatar)
+
+        avatar.load(jsonObj.getString("avatar_url")){
+            crossfade(true)
+            transformations(CircleCropTransformation())
+        }
         return rowView
     }
 

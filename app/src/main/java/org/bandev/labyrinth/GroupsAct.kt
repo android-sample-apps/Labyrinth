@@ -14,10 +14,10 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import coil.load
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
-import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.adapters.UserAdapter
@@ -60,9 +60,6 @@ class GroupsAct : AppCompatActivity() {
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         refresher.setOnRefreshListener {
-            val token = profile.getData("token")
-            Api().getUserGroups(this, token)
-            Api().getUserProjects(this, token)
             filldata()
             refresher.isRefreshing = false
         }
@@ -75,9 +72,8 @@ class GroupsAct : AppCompatActivity() {
         val dataJson = JSONObject(data)
 
         val avatar = findViewById<ImageView>(R.id.avatar)
-        Picasso.get().load(dataJson.getString("avatar_url")).resize(400, 400)
-            .transform(RoundedTransform(90, 0))
-            .into(avatar)
+
+        avatar.load(dataJson.getString("avatar_url"))
 
         val usernameTextView: TextView = findViewById(R.id.usernmame)
         val emailTextView: TextView = findViewById(R.id.email)

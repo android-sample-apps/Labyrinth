@@ -76,8 +76,6 @@
         <activity
             android:name=".GroupsAct" />
         <activity
-            android:name=".projects.ReadMe" />
-        <activity
             android:name=".PinSomething" />
         <activity
             android:name=".ProjectAct" />

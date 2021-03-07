@@ -24,7 +24,6 @@ class SettingsAct : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         if (savedInstanceState == null) {

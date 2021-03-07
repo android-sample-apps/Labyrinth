@@ -12,13 +12,13 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AppCompatActivity
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
-import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.MainAct
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.RoundedTransform
 import org.bandev.labyrinth.core.Api
 import org.json.JSONObject
 
@@ -45,9 +45,10 @@ class Second : AppCompatActivity() {
 
                         val avatar = findViewById<ImageView>(R.id.avatar)
 
-                        Picasso.get().load((response ?: return).getString("avatar_url"))
-                                .transform(RoundedTransform(30, 0))
-                                .into(avatar)
+                        avatar.load((response ?: return).getString("avatar_url")){
+                            crossfade(true)
+                            transformations(CircleCropTransformation())
+                        }
 
                         val usernameTextView: TextView = findViewById(R.id.usernmame)
                         val emailTextView: TextView = findViewById(R.id.email)

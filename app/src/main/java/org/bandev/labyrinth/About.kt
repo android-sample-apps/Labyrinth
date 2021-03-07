@@ -43,7 +43,6 @@ class About : AppCompatActivity() {
         setContentView(binding.root)
 
         // Set theme, navigation bar and language
-        Compatibility().edgeToEdge(window, View(this), binding.toolbar, resources)
 
         // Setup toolbar
         setSupportActionBar(binding.toolbar)

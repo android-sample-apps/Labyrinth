@@ -106,11 +106,6 @@ class Profile {
                     ).also { account ->
                         accountManager.addAccountExplicitly(account, token, userData)
                     }
-
-                    Api().getUserGroups(context, token)
-                    Api().getUserProjects(context, token)
-                    Api().getUserTodos(context, token)
-
                 }
 
                 override fun onError(error: ANError?) {

@@ -11,8 +11,6 @@ import android.widget.Toast
 import coil.load
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.databinding.GroupListViewBinding
 import org.json.JSONObject

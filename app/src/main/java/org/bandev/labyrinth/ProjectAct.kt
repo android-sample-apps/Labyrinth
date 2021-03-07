@@ -72,7 +72,6 @@ class ProjectAct : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
-        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
 
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
@@ -152,7 +151,7 @@ class ProjectAct : AppCompatActivity() {
                 Option(R.drawable.ic_forks, "Fork"),
                 Option(R.drawable.ic_internet, "Open")
             )
-            showButtons(false)
+            displayButtons(false)
             onPositive { index: Int, _: Option ->
                 when (index) {
                     0 -> project.star()

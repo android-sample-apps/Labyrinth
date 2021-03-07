@@ -77,7 +77,6 @@ class FileViewer : AppCompatActivity() {
         Animations().toolbarShadowScroll(binding.scroll, toolbar)
 
         //Turn on edge to edge
-        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
 
         //Set title depending on folder
         binding.title.text = if (path == "") {

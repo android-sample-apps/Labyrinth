@@ -60,7 +60,6 @@ class IndividualCommit : AppCompatActivity() {
         Animations().toolbarShadowScroll(binding.scroll, binding.toolbar)
 
         // Edge to edge stuff
-        Compatibility().edgeToEdge(window, View(this), binding.toolbar, resources)
 
         //Setup pull to refresh on the activity
         binding.pullToRefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))

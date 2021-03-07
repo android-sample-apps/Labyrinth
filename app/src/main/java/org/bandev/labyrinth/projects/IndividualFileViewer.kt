@@ -71,7 +71,6 @@ class IndividualFileViewer : AppCompatActivity() {
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         //Turn on edge to edge
-        Compatibility().edgeToEdge(window, View(this), toolbar, resources)
 
         //Set title depending on file path
         binding.title.text = path

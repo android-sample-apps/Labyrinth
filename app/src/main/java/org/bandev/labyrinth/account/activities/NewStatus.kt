@@ -41,7 +41,6 @@ class NewStatus : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_left)
 
-        Compatibility().edgeToEdge(window, binding.root, binding.toolbar, resources)
 
 
         profile.login(this, 0)

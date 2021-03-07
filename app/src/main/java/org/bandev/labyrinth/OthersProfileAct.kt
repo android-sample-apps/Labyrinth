@@ -56,9 +56,6 @@ class OthersProfileAct : AppCompatActivity() {
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         refresher.setOnRefreshListener {
-            val token = profile.getData("token")
-            Api().getUserGroups(this, token)
-            Api().getUserProjects(this, token)
             filldata()
             refresher.isRefreshing = false
         }

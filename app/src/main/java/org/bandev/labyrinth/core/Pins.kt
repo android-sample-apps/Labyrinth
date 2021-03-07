@@ -33,8 +33,8 @@ class Pins(context: Context) {
         return dataP[id]
     }
 
-    fun remove(id: Int) {
-
+    fun remove(index: Int) {
+        dataP.removeAt(index)
     }
 
     fun debug_showAll(): String{
