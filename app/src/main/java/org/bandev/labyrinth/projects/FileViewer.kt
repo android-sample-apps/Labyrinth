@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -13,9 +12,9 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.google.android.material.snackbar.Snackbar
-import org.bandev.labyrinth.Connection
+import org.bandev.labyrinth.core.Connection
 import org.bandev.labyrinth.Notify
-import org.bandev.labyrinth.Project
+import org.bandev.labyrinth.core.obj.Project
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.FileViewAdapter

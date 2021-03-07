@@ -15,6 +15,7 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import io.noties.markwon.Markwon
+import org.bandev.labyrinth.OtherProfile
 import org.bandev.labyrinth.OthersProfileAct
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
@@ -175,8 +176,8 @@ class IndividualIssue : AppCompatActivity() {
     }
 
     private fun toPoster(){
-        val i = Intent(this, OthersProfileAct::class.java)
-        i.putExtra("data", issueData.getJSONObject("author").toString())
+        val i = Intent(this, OtherProfile::class.java)
+        i.putExtra("id", issueData.getJSONObject("author").getInt("id"))
         startActivity(i)
     }
 

@@ -53,6 +53,12 @@
             android:name=".SettingsAct">
         </activity>
         <activity
+            android:name=".OtherProfile">
+        </activity>
+        <activity android:name=".projects.Issues"></activity>
+        <activity android:name=".projects.NewIssue"></activity>
+
+        <activity
             android:name=".ProfileAct">
         </activity>
         <activity

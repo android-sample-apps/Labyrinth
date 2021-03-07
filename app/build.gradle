@@ -110,8 +110,11 @@ dependencies {
     implementation 'com.maxkeppeler.sheets:core:2.0.0'
     implementation 'com.maxkeppeler.sheets:info:2.0.0'
     implementation 'com.maxkeppeler.sheets:options:2.0.0'
+    implementation 'com.maxkeppeler.sheets:input:2.0.0'
+
 
     implementation 'moe.tlaster:kotlinpgp:1.0.20'
 
     implementation 'org.greenrobot:eventbus:3.2.0'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 }

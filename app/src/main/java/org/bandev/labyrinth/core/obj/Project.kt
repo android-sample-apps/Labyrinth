@@ -1,9 +1,10 @@
-package org.bandev.labyrinth
+package org.bandev.labyrinth.core.obj
 
 import android.content.Context
 import android.graphics.Color
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
+import org.bandev.labyrinth.core.Connection
 import org.json.JSONObject
 
 class Project(rawData: JSONObject, context: Context) {

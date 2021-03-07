@@ -205,7 +205,7 @@ class OthersProfileAct : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+        return when (item.itemId) { 
             R.id.settings -> {
                 val i = Intent(this, SettingsAct::class.java)
                 startActivity(i)

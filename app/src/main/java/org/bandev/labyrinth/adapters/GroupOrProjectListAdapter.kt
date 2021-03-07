@@ -7,44 +7,33 @@ import android.preference.PreferenceManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.Toast
 import coil.load
+import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
 import org.bandev.labyrinth.R
+import org.bandev.labyrinth.databinding.GroupListViewBinding
 import org.json.JSONObject
+import java.lang.Exception
 
 class GroupOrProjectListAdapter(private val context: Activity, private val text: Array<String?>) :
     BaseAdapter() {
+
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
-        val inflater = context.layoutInflater
+        val binding = GroupListViewBinding.inflate(context.layoutInflater, p2, false)
+        val json = JSONObject(text[p0])
 
-        val rowView = inflater.inflate(R.layout.group_list_view, null)
-        val name = rowView.findViewById(R.id.name) as TextView
-        val visibility = rowView.findViewById(R.id.visibility) as TextView
-        val avatar = rowView.findViewById(R.id.avatar_list) as ImageView
-
-        val jsonObj = JSONObject(text[p0])
-        name.text = jsonObj.getString("name")
-        avatar.load(jsonObj.getString("avatar_url")) {
+        binding.name.text = json.getString("name")
+        binding.visibility.text = json.getString("description")
+        binding.avatarList.load(json.getString("avatar_url")){
+            transformations(RoundedCornersTransformation(20f))
             crossfade(true)
-            transformations(
-                    RoundedCornersTransformation(
-                            20f,
-                            20f,
-                            20f,
-                            20f
-                    )
-            )
+            placeholder(R.color.browser_actions_bg_grey)
         }
-        visibility.text = jsonObj.getString("description")
-        if(jsonObj.getString("description") != ""){
-            visibility.text = jsonObj.getString("description")
-        }else{
-            visibility.text = "No description"
-        }
-        return rowView
+        return binding.root
     }
 
     override fun getItem(p0: Int): String? {

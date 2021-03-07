@@ -20,14 +20,14 @@ import com.maxkeppeler.sheets.options.Option
 import com.maxkeppeler.sheets.options.OptionsSheet
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.InfoListAdapter
-import org.bandev.labyrinth.core.Api
 import org.bandev.labyrinth.core.Compatibility
+import org.bandev.labyrinth.core.Connection
 import org.bandev.labyrinth.core.Helpful
+import org.bandev.labyrinth.core.obj.Commit
+import org.bandev.labyrinth.core.obj.Project
+import org.bandev.labyrinth.core.obj.ProjectStats
 import org.bandev.labyrinth.databinding.ProjectActBinding
-import org.bandev.labyrinth.projects.BranchSelector
-import org.bandev.labyrinth.projects.Commits
-import org.bandev.labyrinth.projects.FileViewer
-import org.bandev.labyrinth.projects.IssuesList
+import org.bandev.labyrinth.projects.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -58,6 +58,10 @@ class ProjectAct : AppCompatActivity() {
         infoBar = findViewById(R.id.contentView4)
 
         id = (intent.extras ?: return).getInt("id")
+
+        binding.content.avatar.load(R.color.browser_actions_bg_grey){
+            transformations(RoundedCornersTransformation(20f))
+        }
 
         profile.login(this, 0)
 
@@ -272,7 +276,7 @@ class ProjectAct : AppCompatActivity() {
                 val obj = JSONObject(selectedItem)
                 when (obj.getString("left")) {
                     "Issues" -> {
-                        val intent = Intent(applicationContext, IssuesList::class.java)
+                        val intent = Intent(applicationContext, Issues::class.java)
                         val bundle = Bundle()
                         bundle.putInt("id", project.id)
                         intent.putExtras(bundle)

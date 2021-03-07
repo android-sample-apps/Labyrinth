@@ -1,4 +1,4 @@
-package org.bandev.labyrinth
+package org.bandev.labyrinth.core.obj
 
 import org.json.JSONObject
 
