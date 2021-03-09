@@ -20,69 +20,72 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package org.bandev.labyrinth
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.core.Compatibility
-import org.bandev.labyrinth.databinding.ActivityAboutBinding
+import org.bandev.labyrinth.databinding.AboutActivityBinding
 
 class About : AppCompatActivity() {
 
     // Declare view binding variables
-    private lateinit var binding: ActivityAboutBinding
+    private lateinit var binding: AboutActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Setup view binding
-        binding = ActivityAboutBinding.inflate(layoutInflater)
+        binding = AboutActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Set theme, navigation bar and language
 
         // Setup toolbar
         setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
         binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
 
-        // Setup contributors array
-/*        val contributors = resources.getStringArray(R.array.contributors)
-        val contributorsAdapter = ArrayAdapter(this, R.layout.layout_list_item, contributors)
-        binding.contributorsList.adapter = contributorsAdapter
-        binding.contributorsList.divider = null
-        binding.contributorsList.isClickable = false
-        justifyListViewHeightBasedOnChildren(binding.contributorsList)
+        val contributors = resources.getStringArray(R.array.contributors)
+        val contributorsAdapter = ArrayAdapter(this, R.layout.contributors_list, contributors)
+        binding.contributors.adapter = contributorsAdapter
+        binding.contributors.divider = null
+        binding.contributors.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, position, _ ->
+                val ids = resources.getStringArray(R.array.contributors_id)
+                val userId = ids[position]
+                startActivity(
+                    Intent(this, OtherProfile::class.java)
+                        .putExtra("id", userId.toInt())
+                )
+            }
 
-        // Setup translators array
-        val translators = resources.getStringArray(R.array.translators)
-        val translatorsAdapter = ArrayAdapter(this, R.layout.layout_list_item, translators)
-        binding.translatorsList.adapter = translatorsAdapter
-        binding.translatorsList.divider = null
-        binding.translatorsList.isClickable = false
-        justifyListViewHeightBasedOnChildren(binding.translatorsList)*/
-    }
+        val promises = resources.getStringArray(R.array.promises)
+        val promisesAdapter = ArrayAdapter(this, R.layout.promises_list, promises)
+        binding.promise.adapter = promisesAdapter
+        binding.promise.divider = null
+        binding.promise.isClickable = false
 
-    private fun justifyListViewHeightBasedOnChildren(listView: ListView) {
-        val adapter = listView.adapter ?: return
-        val vg: ViewGroup = listView
-        var totalHeight = 0
-        for (i in 0 until adapter.count) {
-            val listItem: View = adapter.getView(i, null, vg)
-            listItem.measure(0, 0)
-            totalHeight += listItem.measuredHeight + 10
-        }
-        val par = listView.layoutParams
-        par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
-        listView.layoutParams = par
-        listView.requestLayout()
+        binding.madeWith.setOnClickListener { showGroup() }
+        binding.madeWith.setOnClickListener { showGroup() }
     }
 
     override fun onBackPressed() {
         finish()
+    }
+
+    private fun showGroup() {
+
     }
 }

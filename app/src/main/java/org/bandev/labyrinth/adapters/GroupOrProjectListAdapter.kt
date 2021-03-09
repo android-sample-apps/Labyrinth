@@ -25,14 +25,16 @@ class GroupOrProjectListAdapter(private val context: Activity, private val text:
         val json = JSONObject(text[p0])
 
         binding.name.text = json.getString("name")
-        binding.visibility.text = json.getString("description")
+        binding.visibility.text = (if (json.getString("description") == "") {
+            json.getString("description")
+        } else "No description").toString()
         if (json.getString("avatar_url") != "null") {
             binding.avatarList.load(json.getString("avatar_url")) {
                 transformations(RoundedCornersTransformation(20f))
                 crossfade(true)
                 placeholder(R.color.browser_actions_bg_grey)
             }
-        }else {
+        } else {
             binding.avatarList.load(R.drawable.ic_issues) {
                 transformations(RoundedCornersTransformation(20f))
                 crossfade(true)

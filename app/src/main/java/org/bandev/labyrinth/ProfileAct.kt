@@ -2,7 +2,6 @@ package org.bandev.labyrinth
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.ListView
@@ -18,8 +17,6 @@ import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.account.activities.ProfileStatusAct
 import org.bandev.labyrinth.account.activities.ProfileTokenAct
 import org.bandev.labyrinth.adapters.InfoListAdapter
-import org.bandev.labyrinth.core.Api
-import org.bandev.labyrinth.core.Compatibility
 import org.json.JSONObject
 
 
@@ -89,7 +86,7 @@ class ProfileAct : AppCompatActivity() {
 
         val infoListAdapter = InfoListAdapter(this@ProfileAct, optionsList.toTypedArray())
         infoListView.adapter = infoListAdapter
-
+        infoListView.divider = null
         infoListView.onItemClickListener =
                 AdapterView.OnItemClickListener { parent, view, position, id ->
                     val selectedItem = parent.getItemAtPosition(position) as String
@@ -118,9 +115,9 @@ class ProfileAct : AppCompatActivity() {
         extendedOptions.add("{ 'left' : 'Groups', 'right' : '>', 'icon' : 'groups' }")
         extendedOptions.add("{ 'left' : 'Projects', 'right' : '>', 'icon' : 'repo' }")
 
-        val extendedList = findViewById<ListView>(R.id.extendedList)
+        val extendedList = findViewById<ListView>(R.id.contributors)
         extendedList.adapter = InfoListAdapter(this@ProfileAct, extendedOptions.toTypedArray())
-
+        extendedList.divider = null
         extendedList.onItemClickListener =
                 AdapterView.OnItemClickListener { parent, view, position, id ->
                     val selectedItem = parent.getItemAtPosition(position) as String
@@ -130,11 +127,13 @@ class ProfileAct : AppCompatActivity() {
                         "Groups" -> {
                             val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
                             intent.putExtra("type", 0)
+                            intent.putExtra("id", profile.getData("id").toInt())
                             startActivity(intent)
                         }
                         "Projects" -> {
                             val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
                             intent.putExtra("type", 1)
+                            intent.putExtra("id", profile.getData("id").toInt())
                             startActivity(intent)
                         }
                     }
@@ -147,7 +146,7 @@ class ProfileAct : AppCompatActivity() {
 
         val settingsList = findViewById<ListView>(R.id.settingsList)
         settingsList.adapter = InfoListAdapter(this@ProfileAct, settingsOptions.toTypedArray())
-
+        settingsList.divider = null
         settingsList.onItemClickListener =
                 AdapterView.OnItemClickListener { parent, view, position, id ->
                     val selectedItem = parent.getItemAtPosition(position) as String

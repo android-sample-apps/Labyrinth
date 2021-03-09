@@ -48,38 +48,60 @@ class ProfileEmailsAct : AppCompatActivity() {
 
         filldata()
 
-        val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
-        refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
-        refresher.setOnRefreshListener {
+        binding.pull.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
+        binding.pull.setOnRefreshListener {
             filldata()
-            refresher.isRefreshing = false
+            binding.pull.isRefreshing = false
         }
     }
 
     private fun filldata() {
+        binding.error.visibility = View.GONE
         hideAll()
         val emailList: MutableList<String> = mutableListOf()
 
         AndroidNetworking
-                .get("https://gitlab.com/api/v4/user/emails")
-                .addQueryParameter("access_token", profile.getData("token"))
-                .build()
-                .getAsJSONArray(object : JSONArrayRequestListener {
-                    override fun onResponse(response: JSONArray) {
-                        var index = 0
-                        while (index != response.length()) {
-                            emailList.add(response[index].toString())
-                            index++
-                        }
-                        val infoListAdapter = EmailListAdapter(this@ProfileEmailsAct, emailList.toTypedArray())
-                        binding.content.infoList.adapter = infoListAdapter
-                        showAll()
+            .get("https://gitlab.com/api/v4/user/emails")
+            .addQueryParameter("access_token", profile.getData("token"))
+            .build()
+            .getAsJSONArray(object : JSONArrayRequestListener {
+                override fun onResponse(response: JSONArray) {
+                    var index = 0
+                    while (index != response.length()) {
+                        emailList.add(response[index].toString())
+                        index++
                     }
 
-                    override fun onError(error: ANError) {
-                        // handle error
-                    }
-                })
+                    if (index == 0) error(1)
+
+                    val infoListAdapter =
+                        EmailListAdapter(this@ProfileEmailsAct, emailList.toTypedArray())
+                    binding.infoList.adapter = infoListAdapter
+                    binding.infoList.divider = null
+                    showAll()
+                }
+
+                override fun onError(error: ANError) {
+                    error(0)
+                }
+            })
+    }
+
+    fun error(type: Int) {
+        binding.error.visibility = View.VISIBLE
+        binding.refresher.visibility = View.INVISIBLE
+        when (type) {
+            1 -> {
+                binding.icon.setImageResource(R.drawable.ic_email)
+                binding.title.text = "No emails"
+                binding.description.text = "You have no emails on your account"
+            }
+            else -> {
+                binding.icon.setImageResource(R.drawable.ic_error)
+                binding.title.text = "Something went wrong"
+                binding.description.text = "Try again or check your internet connection"
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -87,15 +109,13 @@ class ProfileEmailsAct : AppCompatActivity() {
         return true
     }
 
-    fun showAll(){
-        binding.content.refresher.isGone = true
-        binding.content.options.isGone = false
-        binding.content.constraintLayout.isGone = false
+    fun showAll() {
+        binding.refresher.isGone = true
+        binding.infoList.isGone = false
     }
 
-    fun hideAll(){
-        binding.content.refresher.isGone = false
-        binding.content.options.isGone = true
-        binding.content.constraintLayout.isGone = true
+    fun hideAll() {
+        binding.refresher.isGone = false
+        binding.infoList.isGone = true
     }
 }

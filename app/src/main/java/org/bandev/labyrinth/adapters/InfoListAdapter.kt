@@ -31,6 +31,7 @@ class InfoListAdapter(private val context: Activity, private val text: Array<Str
             "settings" -> R.drawable.ic_settings
             "about" -> R.drawable.ic_info
             "branch" -> R.drawable.ic_branch
+            "merge" -> R.drawable.ic_mr_16
             "issue" -> R.drawable.ic_issues
             "commit" -> R.drawable.ic_commit
             "file" -> R.drawable.ic_file

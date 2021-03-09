@@ -84,6 +84,10 @@
         <activity
             android:name=".projects.FileViewer" />
         <activity
+            android:name=".projects.MergeRequests" />
+        <activity
+            android:name=".projects.IndividualMR" />
+        <activity
             android:name=".projects.IndividualIssue" />
         <activity
             android:name=".projects.BranchSelector" >

@@ -22,6 +22,7 @@ import org.bandev.labyrinth.adapters.SshKeysItemAdapter
 import org.bandev.labyrinth.adapters.TokenListAdapter
 import org.bandev.labyrinth.core.Api
 import org.bandev.labyrinth.core.Compatibility
+import org.bandev.labyrinth.core.obj.AccessToken
 import org.bandev.labyrinth.databinding.ProfileEmailsActBinding
 import org.bandev.labyrinth.databinding.ProfileKeysActBinding
 import org.bandev.labyrinth.databinding.ProfileTokenActBinding
@@ -60,28 +61,29 @@ class ProfileTokenAct : AppCompatActivity() {
 
     private fun filldata() {
         hideAll()
-        val emailList: MutableList<String> = mutableListOf()
+        val tokens: MutableList<AccessToken> = mutableListOf()
 
         AndroidNetworking
-                .get("https://gitlab.com/api/v4/personal_access_tokens")
-                .addQueryParameter("access_token", profile.getData("token"))
-                .build()
-                .getAsJSONArray(object : JSONArrayRequestListener {
-                    override fun onResponse(response: JSONArray) {
-                        var index = 0
-                        while (index != response.length()) {
-                            emailList.add(response[index].toString())
-                            index++
+            .get("https://gitlab.com/api/v4/personal_access_tokens?per_page=100")
+            .addQueryParameter("access_token", profile.getData("token"))
+            .build()
+            .getAsJSONArray(object : JSONArrayRequestListener {
+                override fun onResponse(response: JSONArray) {
+                    for (i in 0 until response.length()) {
+                        val token = AccessToken(response.getJSONObject(i))
+                        if (!token.revoked) {
+                            tokens.add(token)
                         }
-                        val infoListAdapter = TokenListAdapter(this@ProfileTokenAct, emailList.toTypedArray())
-                        binding.content.tokens.adapter = infoListAdapter
-                        showAll()
                     }
+                    binding.content.tokens.adapter = TokenListAdapter(this@ProfileTokenAct, tokens)
+                    binding.content.tokens.divider = null
+                    showAll()
+                }
 
-                    override fun onError(error: ANError) {
-                        // handle error
-                    }
-                })
+                override fun onError(error: ANError) {
+                    // handle error
+                }
+            })
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -89,12 +91,12 @@ class ProfileTokenAct : AppCompatActivity() {
         return true
     }
 
-    fun showAll(){
+    fun showAll() {
         binding.content.refresher.isGone = true
         binding.content.tokens.isGone = false
     }
 
-    fun hideAll(){
+    fun hideAll() {
         binding.content.refresher.isGone = false
         binding.content.tokens.isGone = true
     }

@@ -92,7 +92,7 @@ class Profile {
                     userData.putString("email", response.getString("email"))
                     userData.putString("bio", response.getString("bio"))
                     userData.putString("location", response.getString("location"))
-                    userData.putInt("id", response.getInt("id"))
+                    userData.putString("id", response.getInt("id").toString())
                     userData.putString("avatarUrl", response.getString("avatar_url"))
                     userData.putString("webUrl", response.getString("web_url"))
 

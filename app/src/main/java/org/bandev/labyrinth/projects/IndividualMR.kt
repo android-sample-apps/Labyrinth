@@ -20,44 +20,40 @@ import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.IssueNotesAdapter
 import org.bandev.labyrinth.core.Animations
-import org.bandev.labyrinth.databinding.IndividualIssueBinding
+import org.bandev.labyrinth.core.obj.MergeRequest
+import org.bandev.labyrinth.databinding.IndividualMrBinding
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 
-class IndividualIssue : AppCompatActivity() {
+class IndividualMR : AppCompatActivity() {
 
-    private lateinit var binding: IndividualIssueBinding
-    private lateinit var issueData: JSONObject
+    private lateinit var binding: IndividualMrBinding
+    private lateinit var mr: MergeRequest
 
-    var token: String = ""
-    var projectId: String = ""
     var listView: ListView? = null
-    var listView2: ListView? = null
-    private var progressBar: ProgressBar? = null
 
     private var profile: Profile = Profile()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Setup view binding
-        binding = IndividualIssueBinding.inflate(layoutInflater)
+        binding = IndividualMrBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //Login user making profile.getData(key) active & set token variable
         profile.login(this, 0)
-        token = profile.getData("token")
 
-        //Set issueData JSON depending on the data passed in to the activity
-        issueData = JSONObject((intent.extras ?: return).getString("issueData").toString())
+        val data = JSONObject(intent.extras?.getString("mr").toString())
+        mr = MergeRequest(data)
 
         //Set title, avatar, username etc
-        binding.content.avatar.load(issueData.getJSONObject("author").getString("avatar_url")) {
+        binding.content.avatar.load(mr.author.avatarUrl) {
             crossfade(true)
             transformations(CircleCropTransformation())
         }
-        binding.content.creator.text = issueData.getJSONObject("author").getString("name")
-        binding.title.text = "Issue #" + issueData.getInt("iid").toString()
+        binding.content.creator.text = mr.author.name
+        binding.title.text = "Merge Request !" + mr.iid
 
         binding.content.creator.setOnClickListener {
             toPoster()
@@ -68,10 +64,10 @@ class IndividualIssue : AppCompatActivity() {
 
         //Set description in markdown renderor
         val markwon: Markwon = Markwon.create(this)
-        markwon.setMarkdown(binding.content.description, issueData.getString("description"))
+        markwon.setMarkdown(binding.content.description, mr.descripton)
 
         //Work out and set likes
-        val diff = issueData.getInt("upvotes") - issueData.getInt("downvotes")
+        val diff = mr.upVotes - mr.downVotes
         binding.content.likes.text = (if (diff >= 0) {
             "+$diff"
         } else {
@@ -79,22 +75,18 @@ class IndividualIssue : AppCompatActivity() {
         }).toString()
 
         //Work out time of publishing
-        binding.content.time.text = getDateTime(issueData.getString("created_at"))
+        binding.content.time.text = getDateTime(mr.createdAt)
 
-        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-
+        //Setup toolbar
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         //Toolbar shadow animation
-        Animations().toolbarShadowScroll(binding.scroll, toolbar)
-
+        Animations().toolbarShadowScroll(binding.scroll, binding.toolbar)
 
         fillData()
-
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         refresher.setOnRefreshListener {
@@ -112,12 +104,11 @@ class IndividualIssue : AppCompatActivity() {
     private fun fillData() {
         hideAll()
         val list: MutableList<String> = ArrayList()
-        //Get a list of issues from GitLab#
-        val projectId2 = issueData.getInt("project_id").toString()
-        val iid = issueData.getInt("iid").toString()
 
-        AndroidNetworking.get("https://gitlab.com/api/v4/projects/$projectId2/issues/$iid/notes?sort=asc")
-            .addQueryParameter("access_token", token)
+        AndroidNetworking.get("https://gitlab.com/api/v4/projects/{id}/merge_requests/{iid}/notes?sort=asc")
+            .addQueryParameter("access_token", profile.getData("token"))
+            .addPathParameter("id", mr.projectId.toString())
+            .addPathParameter("iid", mr.iid.toString())
             .build()
             .getAsJSONArray(object : JSONArrayRequestListener {
                 override fun onResponse(response: JSONArray) {
@@ -127,7 +118,7 @@ class IndividualIssue : AppCompatActivity() {
                         list.add(response.getJSONObject(i).toString())
                     }
 
-                    val adapter2 = IssueNotesAdapter(this@IndividualIssue, list.toTypedArray())
+                    val adapter2 = IssueNotesAdapter(this@IndividualMR, list.toTypedArray())
                     binding.content.listView.adapter = adapter2
                     binding.content.listView.divider = null
 
@@ -164,17 +155,17 @@ class IndividualIssue : AppCompatActivity() {
 
     private fun hideAll() {
         binding.content.listView.isGone = true
-        progressBar?.isGone = false
+        binding.progressBar.isGone = false
     }
 
     fun showAll() {
         binding.content.listView.isGone = false
-        progressBar?.isGone = true
+        binding.progressBar.isGone = true
     }
 
     private fun toPoster() {
         val i = Intent(this, OtherProfile::class.java)
-        i.putExtra("id", issueData.getJSONObject("author").getInt("id"))
+        i.putExtra("id", mr.author.id)
         startActivity(i)
     }
 

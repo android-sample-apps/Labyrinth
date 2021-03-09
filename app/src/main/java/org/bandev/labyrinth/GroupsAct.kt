@@ -137,7 +137,7 @@ class GroupsAct : AppCompatActivity() {
                                 startActivity(intent)
                             } else {
                                 val intent =
-                                    Intent(applicationContext, OthersProfileAct::class.java)
+                                    Intent(applicationContext, ProfileAct::class.java)
                                 val bundle = Bundle()
                                 bundle.putString("data", selectedItem)
                                 intent.putExtras(bundle)

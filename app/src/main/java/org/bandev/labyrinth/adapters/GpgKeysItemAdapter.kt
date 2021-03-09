@@ -21,12 +21,10 @@ class GpgKeysItemAdapter(private val context: Activity, private val text: Array<
 
         val rowView = inflater.inflate(R.layout.keys_item, null)
         val title = rowView.findViewById(R.id.title) as TextView
-        val date = rowView.findViewById(R.id.date) as TextView
 
         val jsonObj = JSONObject(text[p0])
 
         title.text = "#" + jsonObj.getString("id")
-        date.text = jsonObj.getString("created_at")
 
         return rowView
 

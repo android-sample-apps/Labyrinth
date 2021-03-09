@@ -83,21 +83,23 @@ class MainAct : AppCompatActivity() {
 
         //Cast infoList to Array and send to InfoListAdapter to generate element for each item.
         top.infoListView.adapter = InfoListAdapter(this, infoList.toTypedArray())
-
+        top.infoListView.divider = null
         //Handle clicks on infoList
         top.infoListView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             //Find where to send the user based off the position of the click
             when (position) {
                 0 -> {
                     //Send user to see their groups
-                    val intent = Intent(this, ProfileGroupsAct::class.java)
+                    val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
                     intent.putExtra("type", 0)
+                    intent.putExtra("id", profile.getData("id").toInt())
                     startActivity(intent)
                 }
                 1 -> {
                     //Send user to see their repos
                     val intent = Intent(this, ProfileGroupsAct::class.java)
                     intent.putExtra("type", 1)
+                    intent.putExtra("id", profile.getData("id").toInt())
                     startActivity(intent)
                 }
             }
@@ -117,7 +119,7 @@ class MainAct : AppCompatActivity() {
 
         val pins = Pins(this)
         bottom.infoListView.adapter = GroupOrProjectListAdapter(this, pins.data.toTypedArray())
-
+        bottom.infoListView.divider = null
         bottom.infoListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             val selectedItem = parent.getItemAtPosition(position) as String
             val intent = Intent(this, ProjectAct::class.java)
@@ -167,7 +169,7 @@ class MainAct : AppCompatActivity() {
                     Option(R.drawable.ic_file,"View Files"),
                     Option(R.drawable.ic_commit,"Commits"),
                     Option(R.drawable.ic_internet,"Open"),
-                    Option(R.drawable.ic_delete,"Remove P in")
+                    Option(R.drawable.ic_delete,"Remove Pin")
             )
             onPositive { index: Int, option: Option ->
                 // Handle selected option

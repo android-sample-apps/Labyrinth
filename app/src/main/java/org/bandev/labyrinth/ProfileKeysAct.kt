@@ -75,6 +75,7 @@ class ProfileKeysAct : AppCompatActivity() {
 
                         val infoListAdapter = SshKeysItemAdapter(this@ProfileKeysAct, sshList.toTypedArray())
                         sshListView.adapter = infoListAdapter
+                        sshListView.divider = null
 
                         AndroidNetworking
                                 .get("https://gitlab.com/api/v4/user/gpg_keys")
@@ -90,6 +91,7 @@ class ProfileKeysAct : AppCompatActivity() {
 
                                         val gpgAdapter = GpgKeysItemAdapter(this@ProfileKeysAct, gpgList.toTypedArray())
                                         gpgListView.adapter = gpgAdapter
+                                        gpgListView.divider = null
 
                                         showAll()
                                     }

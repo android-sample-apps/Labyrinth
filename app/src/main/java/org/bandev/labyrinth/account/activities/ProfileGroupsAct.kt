@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
@@ -46,7 +47,9 @@ class ProfileGroupsAct : AppCompatActivity() {
 
         type = (intent.extras ?: return).getInt("type")
 
-        binding.content.title.text = when(type){
+        val id = (intent.extras ?: return).getInt("id")
+
+        binding.content.title.text = when (type) {
             1 -> "Projects"
             else -> "Groups"
         }
@@ -58,45 +61,54 @@ class ProfileGroupsAct : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
-        filldata()
+        filldata(id)
 
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         refresher.setOnRefreshListener {
-            filldata()
+            filldata(id)
             refresher.isRefreshing = false
         }
     }
 
-    private fun filldata() {
+    private fun filldata(id: Int) {
         hideAll()
         val emailList: MutableList<String> = mutableListOf()
 
-        val url = when(type){
-            1 -> "https://gitlab.com/api/v4/projects"
-            else -> "https://gitlab.com/api/v4/groups"
+        var url = when (type) {
+            1 -> "https://gitlab.com/api/v4/users/$id/projects"
+            else -> "https://gitlab.com/api/v4/$id/groups"
         }
 
-        val activity = when(type){
+        if (id == profile.getData("id").toInt() && type == 1) {
+            url = "https://gitlab.com/api/v4/projects"
+        } else if (id == profile.getData("id").toInt() && type == 0) {
+            url = "https://gitlab.com/api/v4/groups"
+        }
+
+        val activity = when (type) {
             1 -> ProjectAct::class.java
             else -> GroupsAct::class.java
         }
 
         AndroidNetworking
-                .get(url)
-                .addQueryParameter("access_token", profile.getData("token"))
-                .addQueryParameter("membership", "true")
-                .build()
-                .getAsJSONArray(object : JSONArrayRequestListener {
-                    override fun onResponse(response: JSONArray) {
-                        var index = 0
-                        while (index != response.length()) {
-                            emailList.add(response[index].toString())
-                            index++
-                        }
-                        val infoListAdapter = GroupOrProjectListAdapter(this@ProfileGroupsAct, emailList.toTypedArray())
-                        binding.content.infoList.adapter = infoListAdapter
-                        binding.content.infoList.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            .get(url)
+            .addQueryParameter("access_token", profile.getData("token"))
+            .addQueryParameter("membership", "true")
+            .build()
+            .getAsJSONArray(object : JSONArrayRequestListener {
+                override fun onResponse(response: JSONArray) {
+                    var index = 0
+                    while (index != response.length()) {
+                        emailList.add(response[index].toString())
+                        index++
+                    }
+                    val infoListAdapter =
+                        GroupOrProjectListAdapter(this@ProfileGroupsAct, emailList.toTypedArray())
+                    binding.content.infoList.adapter = infoListAdapter
+                    binding.content.infoList.divider = null
+                    binding.content.infoList.onItemClickListener =
+                        AdapterView.OnItemClickListener { parent, view, position, id ->
                             val selectedItem = parent.getItemAtPosition(position) as String
                             val intent = Intent(applicationContext, activity)
                             val bundle = Bundle()
@@ -104,13 +116,13 @@ class ProfileGroupsAct : AppCompatActivity() {
                             intent.putExtras(bundle)
                             startActivity(intent)
                         }
-                        showAll()
-                    }
+                    showAll()
+                }
 
-                    override fun onError(error: ANError) {
-                        // handle error
-                    }
-                })
+                override fun onError(error: ANError) {
+                    // handle error
+                }
+            })
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -118,12 +130,12 @@ class ProfileGroupsAct : AppCompatActivity() {
         return true
     }
 
-    fun showAll(){
+    fun showAll() {
         binding.content.refresher.isGone = true
         binding.content.infoList.isGone = false
     }
 
-    fun hideAll(){
+    fun hideAll() {
         binding.content.refresher.isGone = false
         binding.content.infoList.isGone = true
     }

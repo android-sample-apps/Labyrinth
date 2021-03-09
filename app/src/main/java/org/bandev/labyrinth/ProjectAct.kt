@@ -262,14 +262,17 @@ class ProjectAct : AppCompatActivity() {
         val repoSize = projectStats.repositorySize
         val repoSizeStr = Helpful().humanReadableByteCountSI(repoSize.toLong()).toString()
         val issues = project.issues
+        val merges = ">"
         val branch = project.defaultBranch
         val infoList: MutableList<String> = mutableListOf()
         infoList.add("{ 'left' : 'Issues', 'right' : '$issues', 'icon' : 'issue' }")
+        infoList.add("{ 'left' : 'Merge Requests', 'right' : '$merges', 'icon' : 'merge' }")
         infoList.add("{ 'left' : 'Branch', 'right' : '$branch', 'icon' : 'branch' }")
         infoList.add("{ 'left' : 'View Files', 'right' : '$repoSizeStr', 'icon' : 'file' }")
         infoList.add("{ 'left' : 'Commits', 'right' : '$commits', 'icon' : 'commit' }")
         val infoListAdapter = InfoListAdapter(this@ProjectAct, infoList.toTypedArray())
         binding.content.infoList.adapter = infoListAdapter
+        binding.content.infoList.divider = null
         binding.content.infoList.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, id ->
                 val selectedItem = parent.getItemAtPosition(position) as String
                 val obj = JSONObject(selectedItem)
@@ -303,6 +306,13 @@ class ProjectAct : AppCompatActivity() {
                         bundle.putString("branch", project.defaultBranch)
                         intent.putExtras(bundle)
                         startActivityForResult(intent, 0)
+                    }
+                    "Merge Requests" -> {
+                        val intent = Intent(applicationContext, MergeRequests::class.java)
+                        val bundle = Bundle()
+                        bundle.putInt("id", project.id)
+                        intent.putExtras(bundle)
+                        startActivity(intent)
                     }
                 }
             }

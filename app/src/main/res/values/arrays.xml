@@ -11,4 +11,20 @@
             <item>dark</item>
             <item>sys</item>
         </string-array>
+
+        <string-array name="contributors">
+            <item>Jack Devey</item>
+            <item>Russell Banks</item>
+        </string-array>
+
+        <string-array name="contributors_id">
+            <item>6486483</item>
+            <item>6486495</item>
+        </string-array>
+
+        <string-array name="promises">
+            <item>No trackers</item>
+            <item>No ads</item>
+            <item>Free and Open Source</item>
+        </string-array>
 </resources>
