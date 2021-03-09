@@ -5,25 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.AdapterView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.common.Priority
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONObjectRequestListener
 import io.wax911.emojify.model.Emoji
 import io.wax911.emojify.parser.EmojiParser
-import org.bandev.labyrinth.Notify
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.databinding.AccountNewStatusBinding
-import org.bandev.labyrinth.databinding.ProjectsNewIssueBinding
-import org.greenrobot.eventbus.EventBus
-import org.json.JSONObject
 
 class NewStatus : AppCompatActivity() {
 
@@ -45,8 +33,12 @@ class NewStatus : AppCompatActivity() {
 
         profile.login(this, 0)
         binding.inTitle.performClick()
-        if (intent.extras?.getString("emoji") != ":null:"){
-            binding.inEmoji.setText(EmojiParser.parseToUnicode(intent.extras?.getString("emoji").toString()))
+        if (intent.extras?.getString("emoji") != ":null:") {
+            binding.inEmoji.setText(
+                EmojiParser.parseToUnicode(
+                    intent.extras?.getString("emoji").toString()
+                )
+            )
             binding.inTitle.setText(intent.extras?.getString("message"))
         }
 

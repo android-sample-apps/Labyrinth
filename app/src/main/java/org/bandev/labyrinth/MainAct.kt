@@ -2,25 +2,14 @@ package org.bandev.labyrinth
 
 
 import android.app.Activity
-import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import coil.load
 import coil.transform.CircleCropTransformation
-import coil.transform.RoundedCornersTransformation
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.maxkeppeler.sheets.options.DisplayMode
 import com.maxkeppeler.sheets.options.Option
 import com.maxkeppeler.sheets.options.OptionsSheet
@@ -28,15 +17,12 @@ import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.adapters.InfoListAdapter
-import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.core.Pins
 import org.bandev.labyrinth.databinding.MainActBinding
 import org.bandev.labyrinth.projects.Commits
 import org.bandev.labyrinth.projects.FileViewer
 import org.bandev.labyrinth.projects.Issues
-import org.bandev.labyrinth.projects.IssuesList
 import org.json.JSONObject
-import java.util.regex.Pattern
 
 class MainAct : AppCompatActivity() {
 
@@ -56,7 +42,7 @@ class MainAct : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        binding.avatar.load(profile.getData("avatarUrl")){
+        binding.avatar.load(profile.getData("avatarUrl")) {
             crossfade(true)
             transformations(CircleCropTransformation())
         }
@@ -85,25 +71,26 @@ class MainAct : AppCompatActivity() {
         top.infoListView.adapter = InfoListAdapter(this, infoList.toTypedArray())
         top.infoListView.divider = null
         //Handle clicks on infoList
-        top.infoListView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            //Find where to send the user based off the position of the click
-            when (position) {
-                0 -> {
-                    //Send user to see their groups
-                    val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
-                    intent.putExtra("type", 0)
-                    intent.putExtra("id", profile.getData("id").toInt())
-                    startActivity(intent)
-                }
-                1 -> {
-                    //Send user to see their repos
-                    val intent = Intent(this, ProfileGroupsAct::class.java)
-                    intent.putExtra("type", 1)
-                    intent.putExtra("id", profile.getData("id").toInt())
-                    startActivity(intent)
+        top.infoListView.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, position, _ ->
+                //Find where to send the user based off the position of the click
+                when (position) {
+                    0 -> {
+                        //Send user to see their groups
+                        val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
+                        intent.putExtra("type", 0)
+                        intent.putExtra("id", profile.getData("id").toInt())
+                        startActivity(intent)
+                    }
+                    1 -> {
+                        //Send user to see their repos
+                        val intent = Intent(this, ProfileGroupsAct::class.java)
+                        intent.putExtra("type", 1)
+                        intent.putExtra("id", profile.getData("id").toInt())
+                        startActivity(intent)
+                    }
                 }
             }
-        }
     }
 
     //All of the code that manages the 'bottom' part of the fragment
@@ -120,20 +107,22 @@ class MainAct : AppCompatActivity() {
         val pins = Pins(this)
         bottom.infoListView.adapter = GroupOrProjectListAdapter(this, pins.data.toTypedArray())
         bottom.infoListView.divider = null
-        bottom.infoListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            val selectedItem = parent.getItemAtPosition(position) as String
-            val intent = Intent(this, ProjectAct::class.java)
-            val bundle = Bundle()
-            bundle.putInt("id", JSONObject(selectedItem).getInt("id"))
-            intent.putExtras(bundle)
-            startActivity(intent)
-        }
+        bottom.infoListView.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
+                val intent = Intent(this, ProjectAct::class.java)
+                val bundle = Bundle()
+                bundle.putInt("id", JSONObject(selectedItem).getInt("id"))
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
 
-        bottom.infoListView.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
-            val selectedItem = parent.getItemAtPosition(position) as String
-            showBottom(selectedItem, position)
-            true
-        }
+        bottom.infoListView.onItemLongClickListener =
+            AdapterView.OnItemLongClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
+                showBottom(selectedItem, position)
+                true
+            }
 
 
     }
@@ -144,11 +133,11 @@ class MainAct : AppCompatActivity() {
         when (requestCode) {
             0 -> {
                 val pins2 = Pins(this)
-                if(!pins2.exists(data!!.getStringExtra("newPin").toString())){
-                    pins2.add(data!!.getStringExtra("newPin").toString())
+                if (!pins2.exists((data ?: return).getStringExtra("newPin").toString())) {
+                    pins2.add(data.getStringExtra("newPin").toString())
                     pins2.save()
                     bottom()
-                }else{
+                } else {
                     Toast.makeText(this, "Already is pinned", Toast.LENGTH_SHORT).show()
                 }
 
@@ -159,17 +148,17 @@ class MainAct : AppCompatActivity() {
         }
     }
 
-    fun showBottom(data: String, position: Int) {
+    private fun showBottom(data: String, position: Int) {
         val datajs = JSONObject(data)
         OptionsSheet().show(this) {
             title(datajs.getString("name"))
             displayMode(DisplayMode.LIST)
             with(
-                    Option(R.drawable.ic_issues, "Issues"),
-                    Option(R.drawable.ic_file,"View Files"),
-                    Option(R.drawable.ic_commit,"Commits"),
-                    Option(R.drawable.ic_internet,"Open"),
-                    Option(R.drawable.ic_delete,"Remove Pin")
+                Option(R.drawable.ic_issues, "Issues"),
+                Option(R.drawable.ic_file, "View Files"),
+                Option(R.drawable.ic_commit, "Commits"),
+                Option(R.drawable.ic_internet, "Open"),
+                Option(R.drawable.ic_delete, "Remove Pin")
             )
             onPositive { index: Int, option: Option ->
                 // Handle selected option
@@ -200,6 +189,4 @@ class MainAct : AppCompatActivity() {
             }
         }
     }
-
-
 }

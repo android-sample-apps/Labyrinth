@@ -19,7 +19,6 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import org.bandev.labyrinth.MainAct
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.core.Api
 import org.json.JSONObject
 
 class Second : AppCompatActivity() {
@@ -38,42 +37,42 @@ class Second : AppCompatActivity() {
 
         AndroidNetworking.initialize(this)
         AndroidNetworking.get("https://gitlab.com/api/v4/user?access_token=$token")
-                .build()
-                .getAsJSONObject(object : JSONObjectRequestListener {
-                    override fun onResponse(response: JSONObject?) {
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject?) {
 
 
-                        val avatar = findViewById<ImageView>(R.id.avatar)
+                    val avatar = findViewById<ImageView>(R.id.avatar)
 
-                        avatar.load((response ?: return).getString("avatar_url")){
-                            crossfade(true)
-                            transformations(CircleCropTransformation())
-                        }
-
-                        val usernameTextView: TextView = findViewById(R.id.usernmame)
-                        val emailTextView: TextView = findViewById(R.id.email)
-
-                        usernameTextView.text = response.getString("username")
-                        emailTextView.text = response.getString("email")
-
-                        title.text = "Hi " + response.getString("username")
-
-                        userData.putString("token", token)
-                        userData.putString("server", "https://gitlab.com")
-                        userData.putString("username", response.getString("username"))
-                        userData.putString("email", response.getString("email"))
-                        userData.putString("bio", response.getString("bio"))
-                        userData.putString("location", response.getString("location"))
-                        userData.putInt("id", response.getInt("id"))
-                        userData.putString("avatarUrl", response.getString("avatar_url"))
-                        userData.putString("webUrl", response.getString("web_url"))
+                    avatar.load((response ?: return).getString("avatar_url")) {
+                        crossfade(true)
+                        transformations(CircleCropTransformation())
                     }
 
-                    override fun onError(error: ANError?) {
-                        finish()
-                        Toast.makeText(applicationContext, "Wrong token", LENGTH_SHORT).show()
-                    }
-                })
+                    val usernameTextView: TextView = findViewById(R.id.usernmame)
+                    val emailTextView: TextView = findViewById(R.id.email)
+
+                    usernameTextView.text = response.getString("username")
+                    emailTextView.text = response.getString("email")
+
+                    title.text = "Hi " + response.getString("username")
+
+                    userData.putString("token", token)
+                    userData.putString("server", "https://gitlab.com")
+                    userData.putString("username", response.getString("username"))
+                    userData.putString("email", response.getString("email"))
+                    userData.putString("bio", response.getString("bio"))
+                    userData.putString("location", response.getString("location"))
+                    userData.putInt("id", response.getInt("id"))
+                    userData.putString("avatarUrl", response.getString("avatar_url"))
+                    userData.putString("webUrl", response.getString("web_url"))
+                }
+
+                override fun onError(error: ANError?) {
+                    finish()
+                    Toast.makeText(applicationContext, "Wrong token", LENGTH_SHORT).show()
+                }
+            })
 
         button.setOnClickListener {
 

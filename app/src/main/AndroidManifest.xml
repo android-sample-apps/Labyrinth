@@ -55,9 +55,9 @@
         <activity
             android:name=".OtherProfile">
         </activity>
-        <activity android:name=".projects.Issues"></activity>
-        <activity android:name=".projects.NewIssue"></activity>
-        <activity android:name=".account.activities.NewStatus"></activity>
+        <activity android:name=".projects.Issues" />
+        <activity android:name=".projects.NewIssue" />
+        <activity android:name=".account.activities.NewStatus" />
         <activity
             android:name=".ProfileAct">
         </activity>

@@ -7,7 +7,6 @@ import android.preference.PreferenceManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ImageView
 import android.widget.TextView
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
@@ -47,7 +46,7 @@ class CommitAdapterVague(private val context: Activity, private val text: Array<
         return rowView
     }
 
-    fun getAvatar(email: String){
+    fun getAvatar(email: String) {
         val value = GlobalScope.async {
             AndroidNetworking.initialize(context)
             AndroidNetworking.get("https://gitlab.com/api/v4/avatar?email=$email")

@@ -10,7 +10,7 @@ class Provider : ContentProvider() {
      * Always return true, indicating that the
      * provider loaded correctly.
      */
-    override fun onCreate(): Boolean  = true
+    override fun onCreate(): Boolean = true
 
     override fun query(
         uri: Uri,
@@ -25,7 +25,7 @@ class Provider : ContentProvider() {
     /*
      * Return no type for MIME type
      */
-    override fun getType(uri: Uri): String?  = null
+    override fun getType(uri: Uri): String? = null
 
     /*
      * query() always returns no results

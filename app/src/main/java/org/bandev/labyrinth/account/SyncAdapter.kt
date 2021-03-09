@@ -34,7 +34,6 @@ class SyncAdapter @JvmOverloads constructor(
         profile.sync(context)
 
 
-
     }
 
 }

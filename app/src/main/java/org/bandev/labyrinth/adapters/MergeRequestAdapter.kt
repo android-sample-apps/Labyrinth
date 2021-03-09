@@ -14,14 +14,14 @@ class MergeRequestAdapter(
     private val list: MutableList<MergeRequest>
 ) : BaseAdapter() {
 
-    override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
+    override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
 
         val binding = MergesItemBinding.inflate(context.layoutInflater)
         val mr = list[p0]
         binding.title.text = mr.title
         binding.subheading.text = mr.author.username
 
-        binding.avatar.load(mr.author.avatarUrl){
+        binding.avatar.load(mr.author.avatarUrl) {
             crossfade(true)
             transformations(CircleCropTransformation())
         }

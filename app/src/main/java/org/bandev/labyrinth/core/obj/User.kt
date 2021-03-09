@@ -8,16 +8,16 @@ class User(rawData: JSONObject) {
     var name: String = ""
     var username: String = ""
     var avatar: String = ""
-    var url: String = ""
+    private var url: String = ""
     var bio: String = ""
     var location: String = ""
     var email: String = ""
-    var skype: String = ""
-    var linkedin: String = ""
-    var twitter: String = ""
-    var website: String = ""
-    var organization: String = ""
-    var job: String = ""
+    private var skype: String = ""
+    private var linkedin: String = ""
+    private var twitter: String = ""
+    private var website: String = ""
+    private var organization: String = ""
+    private var job: String = ""
 
     init {
         id = rawData.getInt("id")

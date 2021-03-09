@@ -11,7 +11,8 @@ import android.widget.TextView
 import org.bandev.labyrinth.R
 import org.json.JSONObject
 
-class EmailListAdapter(private val context: Activity, private val text: Array<String?>) : BaseAdapter() {
+class EmailListAdapter(private val context: Activity, private val text: Array<String?>) :
+    BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater

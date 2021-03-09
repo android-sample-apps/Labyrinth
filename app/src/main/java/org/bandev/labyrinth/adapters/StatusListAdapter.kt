@@ -4,21 +4,16 @@ import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import android.text.SpannableStringBuilder
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import io.wax911.emojify.parser.EmojiParser
 import org.bandev.labyrinth.R
-import org.json.JSONObject
-import java.io.IOException
 
 
-class StatusListAdapter(private val context: Activity, private val text: Array<String?>) : BaseAdapter() {
+class StatusListAdapter(private val context: Activity, private val text: Array<String?>) :
+    BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater
@@ -26,7 +21,7 @@ class StatusListAdapter(private val context: Activity, private val text: Array<S
         val rowView = inflater.inflate(R.layout.status_item, null)
         val title = rowView.findViewById(R.id.emoji) as TextView
         val title2 = rowView.findViewById(R.id.title) as TextView
-        if(text[p0] == "") return rowView
+        if (text[p0] == "") return rowView
         val data = text[p0]?.split("!")
 
         val emoji = data?.get(0)

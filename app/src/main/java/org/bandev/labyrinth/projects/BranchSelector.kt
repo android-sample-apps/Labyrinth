@@ -3,7 +3,6 @@ package org.bandev.labyrinth.projects
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -17,7 +16,6 @@ import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.BranchSelectorAdapter
 import org.bandev.labyrinth.core.Animations
-import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.databinding.BranchSelectorBinding
 import org.json.JSONArray
 import org.json.JSONObject

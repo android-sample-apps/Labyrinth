@@ -57,41 +57,42 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
     implementation 'androidx.preference:preference-ktx:1.1.1'
 
-    //Coil-kt - https://github.com/coil-kt/coil
-    implementation 'io.coil-kt:coil:1.1.0'
+    // Coil-kt - https://github.com/coil-kt/coil
+    implementation 'io.coil-kt:coil:1.1.1'
 
-    //Junit - https://junit.org
+    // Junit - https://junit.org
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3-alpha04'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0-alpha04'
 
-    //Code Viewer - https://github.com/tiagohm/CodeView
+    // Code Viewer - https://github.com/tiagohm/CodeView
     implementation 'com.github.tiagohm:CodeView:0.4.0'
 
-    //NEW markdown renderor //OLD IS STILL IN USE FOR NOW
+    // NEW markdown renderor //OLD IS STILL IN USE FOR NOW
     implementation "io.noties.markwon:core:4.6.0"
 
-    //GitDiffTextView - https://github.com/jackdevey/GitDiffTextView
+    // GitDiffTextView - https://github.com/jackdevey/GitDiffTextView
     implementation 'com.github.jackdevey:GitDiffTextView:1.0.0'
 
-    //NonScrollListView - https://github.com/bandev/NonScrollListView
+    // NonScrollListView - https://github.com/bandev/NonScrollListView
     implementation 'com.github.BanDev:NonScrollListView:1.0.0'
 
-    //Materal Design - https://github.com/material-components/material-components-android
+    // Materal Design - https://github.com/material-components/material-components-android
     implementation "com.google.android.material:material:1.3.0"
 
-    //Emojify - https://github.com/AniTrend/android-emojify
+    // Emojify - https://github.com/AniTrend/android-emojify
     implementation 'com.github.wax911:android-emojify:1.5.3'
 
-    //Sheets - https://github.com/maxkeppeler/sheets
-    implementation 'com.maxkeppeler.sheets:core:2.1.3'
-    implementation 'com.maxkeppeler.sheets:info:2.1.3'
-    implementation 'com.maxkeppeler.sheets:options:2.1.3'
-    implementation 'com.maxkeppeler.sheets:input:2.1.3'
+    // Sheets - https://github.com/maxkeppeler/sheets
+    def sheets_version = "2.1.3"
+    implementation "com.maxkeppeler.sheets:core:$sheets_version"
+    implementation "com.maxkeppeler.sheets:info:$sheets_version"
+    implementation "com.maxkeppeler.sheets:options:$sheets_version"
+    implementation "com.maxkeppeler.sheets:input:$sheets_version"
 
-    //EventBus - https://github.com/greenrobot/EventBus
+    // EventBus - https://github.com/greenrobot/EventBus
     implementation 'org.greenrobot:eventbus:3.2.0'
 
-    //Fast Android Networking - https://github.com/amitshekhariitbhu/Fast-Android-Networking
+    // Fast Android Networking - https://github.com/amitshekhariitbhu/Fast-Android-Networking
     implementation 'com.github.amitshekhariitbhu.Fast-Android-Networking:android-networking:v1.0.2'
 }

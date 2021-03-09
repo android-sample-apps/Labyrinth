@@ -13,7 +13,7 @@ import org.bandev.labyrinth.account.Profile
 import org.json.JSONObject
 
 class TodoAdapter(private val context: Activity, private val text: Array<String?>) :
-        BaseAdapter() {
+    BaseAdapter() {
 
     var profile: Profile = Profile()
 
@@ -33,13 +33,13 @@ class TodoAdapter(private val context: Activity, private val text: Array<String?
 
         if (jsonObj.getString("target_type") == "Issue") {
             if (jsonObj.getJSONObject("target").getJSONObject("assignee")
-                            .getString("username") == profile.getData("username")
+                    .getString("username") == profile.getData("username")
             ) {
                 visibility.text = "Assigned by you"
             } else {
                 visibility.text =
-                        "Assigned by " + jsonObj.getJSONObject("target").getJSONObject("assignee")
-                                .getString("name")
+                    "Assigned by " + jsonObj.getJSONObject("target").getJSONObject("assignee")
+                        .getString("name")
             }
         }
 

@@ -55,7 +55,7 @@ class ProfileAct : AppCompatActivity() {
         avatar.load(profile.getData("avatarUrl")) {
             crossfade(true)
             transformations(
-                    CircleCropTransformation()
+                CircleCropTransformation()
             )
         }
 
@@ -88,28 +88,28 @@ class ProfileAct : AppCompatActivity() {
         infoListView.adapter = infoListAdapter
         infoListView.divider = null
         infoListView.onItemClickListener =
-                AdapterView.OnItemClickListener { parent, view, position, id ->
-                    val selectedItem = parent.getItemAtPosition(position) as String
-                    val obj = JSONObject(selectedItem)
-                    when {
-                        obj.getString("left") == "Keys" -> {
-                            val intent = Intent(applicationContext, ProfileKeysAct::class.java)
-                            startActivity(intent)
-                        }
-                        obj.getString("left") == "Emails" -> {
-                            val intent = Intent(applicationContext, ProfileEmailsAct::class.java)
-                            startActivity(intent)
-                        }
-                        obj.getString("left") == "Status" -> {
-                            val intent = Intent(applicationContext, ProfileStatusAct::class.java)
-                            startActivity(intent)
-                        }
-                        obj.getString("left") == "Access Tokens" -> {
-                            val intent = Intent(applicationContext, ProfileTokenAct::class.java)
-                            startActivity(intent)
-                        }
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
+                val obj = JSONObject(selectedItem)
+                when {
+                    obj.getString("left") == "Keys" -> {
+                        val intent = Intent(applicationContext, ProfileKeysAct::class.java)
+                        startActivity(intent)
+                    }
+                    obj.getString("left") == "Emails" -> {
+                        val intent = Intent(applicationContext, ProfileEmailsAct::class.java)
+                        startActivity(intent)
+                    }
+                    obj.getString("left") == "Status" -> {
+                        val intent = Intent(applicationContext, ProfileStatusAct::class.java)
+                        startActivity(intent)
+                    }
+                    obj.getString("left") == "Access Tokens" -> {
+                        val intent = Intent(applicationContext, ProfileTokenAct::class.java)
+                        startActivity(intent)
                     }
                 }
+            }
 
         val extendedOptions: MutableList<String> = mutableListOf()
         extendedOptions.add("{ 'left' : 'Groups', 'right' : '>', 'icon' : 'groups' }")
@@ -119,25 +119,24 @@ class ProfileAct : AppCompatActivity() {
         extendedList.adapter = InfoListAdapter(this@ProfileAct, extendedOptions.toTypedArray())
         extendedList.divider = null
         extendedList.onItemClickListener =
-                AdapterView.OnItemClickListener { parent, view, position, id ->
-                    val selectedItem = parent.getItemAtPosition(position) as String
-                    val obj = JSONObject(selectedItem)
-                    val left = obj.getString("left")
-                    when (left) {
-                        "Groups" -> {
-                            val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
-                            intent.putExtra("type", 0)
-                            intent.putExtra("id", profile.getData("id").toInt())
-                            startActivity(intent)
-                        }
-                        "Projects" -> {
-                            val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
-                            intent.putExtra("type", 1)
-                            intent.putExtra("id", profile.getData("id").toInt())
-                            startActivity(intent)
-                        }
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
+                val obj = JSONObject(selectedItem)
+                when (obj.getString("left")) {
+                    "Groups" -> {
+                        val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
+                        intent.putExtra("type", 0)
+                        intent.putExtra("id", profile.getData("id").toInt())
+                        startActivity(intent)
+                    }
+                    "Projects" -> {
+                        val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
+                        intent.putExtra("type", 1)
+                        intent.putExtra("id", profile.getData("id").toInt())
+                        startActivity(intent)
                     }
                 }
+            }
 
 
         val settingsOptions: MutableList<String> = mutableListOf()
@@ -148,20 +147,21 @@ class ProfileAct : AppCompatActivity() {
         settingsList.adapter = InfoListAdapter(this@ProfileAct, settingsOptions.toTypedArray())
         settingsList.divider = null
         settingsList.onItemClickListener =
-                AdapterView.OnItemClickListener { parent, view, position, id ->
-                    val selectedItem = parent.getItemAtPosition(position) as String
-                    val obj = JSONObject(selectedItem)
-                    when (obj.getString("left")) {
-                        "Settings" -> {
-                            val intent = Intent(applicationContext, SettingsAct::class.java)
-                            startActivity(intent)
-                        }
-                        "About App" -> {
-                            val intent = Intent(applicationContext, org.bandev.labyrinth.About::class.java)
-                            startActivity(intent)
-                        }
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position) as String
+                val obj = JSONObject(selectedItem)
+                when (obj.getString("left")) {
+                    "Settings" -> {
+                        val intent = Intent(applicationContext, SettingsAct::class.java)
+                        startActivity(intent)
+                    }
+                    "About App" -> {
+                        val intent =
+                            Intent(applicationContext, About::class.java)
+                        startActivity(intent)
                     }
                 }
+            }
 
 
         /* val userGroups = getSharedPreferences("User-Groups", 0)

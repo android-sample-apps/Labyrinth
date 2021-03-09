@@ -11,7 +11,11 @@ import org.bandev.labyrinth.R
 import org.json.JSONObject
 
 
-class BranchSelectorAdapter(private val context: Activity, private val text: Array<String?>, private val currentBranch: String) :
+class BranchSelectorAdapter(
+    private val context: Activity,
+    private val text: Array<String?>,
+    private val currentBranch: String
+) :
     BaseAdapter() {
 
 

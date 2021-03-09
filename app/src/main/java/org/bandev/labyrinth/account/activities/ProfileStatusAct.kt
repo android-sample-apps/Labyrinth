@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import com.androidnetworking.AndroidNetworking
@@ -16,18 +14,11 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.androidnetworking.interfaces.StringRequestListener
 import com.google.android.material.snackbar.Snackbar
-import io.wax911.emojify.model.Emoji
 import io.wax911.emojify.parser.EmojiParser
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.StatusListAdapter
-import org.bandev.labyrinth.core.Api
-import org.bandev.labyrinth.core.Compatibility
-import org.bandev.labyrinth.core.Pins
-import org.bandev.labyrinth.databinding.ProfileEmailsActBinding
-import org.bandev.labyrinth.databinding.ProfileKeysActBinding
 import org.bandev.labyrinth.databinding.ProfileStatusActBinding
-import org.json.JSONArray
 import org.json.JSONObject
 
 
@@ -54,10 +45,10 @@ class ProfileStatusAct : AppCompatActivity() {
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
 
         binding.pull.setColorSchemeColors(
-                ContextCompat.getColor(
-                        this,
-                        R.color.colorPrimary
-                )
+            ContextCompat.getColor(
+                this,
+                R.color.colorPrimary
+            )
         )
         binding.pull.setOnRefreshListener {
             updateList()
@@ -82,9 +73,11 @@ class ProfileStatusAct : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.add ->
-                startActivityForResult(Intent(this, NewStatus::class.java)
+                startActivityForResult(
+                    Intent(this, NewStatus::class.java)
                         .putExtra("emoji", ":$emoji:")
-                        .putExtra("message", message), 0)
+                        .putExtra("message", message), 0
+                )
         }
         return super.onOptionsItemSelected(item)
     }
@@ -95,7 +88,7 @@ class ProfileStatusAct : AppCompatActivity() {
         when (requestCode) {
             0 -> {
                 val emoji = (data ?: return).getStringExtra("emoji")
-                val title = (data ?: return).getStringExtra("title")
+                val title = data.getStringExtra("title")
                 var glEmoji = EmojiParser.parseToAliases(emoji.toString())
                 glEmoji = glEmoji.removePrefix(":").removeSuffix(":")
                 /*val sharedPreferences = getSharedPreferences("emoji", 0)
@@ -109,21 +102,22 @@ class ProfileStatusAct : AppCompatActivity() {
                 json.put("message", title)
 
                 AndroidNetworking
-                        .put("https://gitlab.com/api/v4/user/status")
-                        .addHeaders("PRIVATE-TOKEN", profile.getData("token"))
-                        .addHeaders("Content-Type", "application/json")
-                        .addJSONObjectBody(json)
-                        .build()
-                        .getAsString(object : StringRequestListener {
-                            override fun onResponse(response: String) {
-                                Snackbar.make(binding.root, "Status updated", Snackbar.LENGTH_SHORT).show()
-                                updateList()
-                            }
+                    .put("https://gitlab.com/api/v4/user/status")
+                    .addHeaders("PRIVATE-TOKEN", profile.getData("token"))
+                    .addHeaders("Content-Type", "application/json")
+                    .addJSONObjectBody(json)
+                    .build()
+                    .getAsString(object : StringRequestListener {
+                        override fun onResponse(response: String) {
+                            Snackbar.make(binding.root, "Status updated", Snackbar.LENGTH_SHORT)
+                                .show()
+                            updateList()
+                        }
 
-                            override fun onError(error: ANError) {
-                                // handle error
-                            }
-                        })
+                        override fun onError(error: ANError) {
+                            // handle error
+                        }
+                    })
 
             }
             // Other result codes
@@ -132,46 +126,48 @@ class ProfileStatusAct : AppCompatActivity() {
         }
     }
 
-    private fun updateList() {
+    internal fun updateList() {
         binding.error.visibility = View.GONE
         hideAll()
         AndroidNetworking
-                .get("https://gitlab.com/api/v4/user/status")
-                .addQueryParameter("access_token", profile.getData("token"))
-                .build()
-                .getAsJSONObject(object : JSONObjectRequestListener {
-                    override fun onResponse(response: JSONObject) {
+            .get("https://gitlab.com/api/v4/user/status")
+            .addQueryParameter("access_token", profile.getData("token"))
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject) {
 
 
-                        val sharedPreferences = getSharedPreferences("emoji", 0)
+                    val sharedPreferences = getSharedPreferences("emoji", 0)
 
-                        val emojis = sharedPreferences.getString("main", "@|")?.replace(
-                                "@",
-                                ":" + response.getString("emoji") + ":!" + response.getString("message") + "!1|"
-                        )
+                    val emojis = sharedPreferences.getString("main", "@|")?.replace(
+                        "@",
+                        ":" + response.getString("emoji") + ":!" + response.getString("message") + "!1|"
+                    )
 
-                        emoji = response.getString("emoji")
-                        message = response.getString("message")
+                    emoji = response.getString("emoji")
+                    message = response.getString("message")
 
-                        if (emoji == "null"){
-                            error(1)
-                        }
-
-                        val emojiList = emojis?.split("|")?.toMutableList()
-                        emojiList?.removeAll(listOf(""))
-                        val list = mutableListOf<String>()
-                        list.add(emojiList?.get(0).toString())
-                        val infoListAdapter = StatusListAdapter(this@ProfileStatusAct,
-                                list.toTypedArray())
-                        binding.currentStatus.adapter = infoListAdapter
-                        showAll()
+                    if (emoji == "null") {
+                        error(1)
                     }
 
-                    override fun onError(error: ANError) {
-                        // handle error
-                        error(0)
-                    }
-                })
+                    val emojiList = emojis?.split("|")?.toMutableList()
+                    emojiList?.removeAll(listOf(""))
+                    val list = mutableListOf<String>()
+                    list.add(emojiList?.get(0).toString())
+                    val infoListAdapter = StatusListAdapter(
+                        this@ProfileStatusAct,
+                        list.toTypedArray()
+                    )
+                    binding.currentStatus.adapter = infoListAdapter
+                    showAll()
+                }
+
+                override fun onError(error: ANError) {
+                    // handle error
+                    error(0)
+                }
+            })
 
     }
 

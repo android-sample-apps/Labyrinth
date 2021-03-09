@@ -22,16 +22,10 @@ package org.bandev.labyrinth
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import org.bandev.labyrinth.R
-import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.databinding.AboutActivityBinding
 
 class About : AppCompatActivity() {

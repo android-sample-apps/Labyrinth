@@ -1,12 +1,6 @@
 package org.bandev.labyrinth.account.activities
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
@@ -16,15 +10,8 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.adapters.EmailListAdapter
-import org.bandev.labyrinth.adapters.GpgKeysItemAdapter
-import org.bandev.labyrinth.adapters.SshKeysItemAdapter
 import org.bandev.labyrinth.adapters.TokenListAdapter
-import org.bandev.labyrinth.core.Api
-import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.core.obj.AccessToken
-import org.bandev.labyrinth.databinding.ProfileEmailsActBinding
-import org.bandev.labyrinth.databinding.ProfileKeysActBinding
 import org.bandev.labyrinth.databinding.ProfileTokenActBinding
 import org.json.JSONArray
 

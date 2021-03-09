@@ -14,7 +14,7 @@ class Project(rawData: JSONObject, context: Context) {
     var avatar: String = ""
     var namespace: String = ""
     var description: String = ""
-    var url: String = ""
+    private var url: String = ""
     var defaultBranch: String = ""
     var stars: Int = 0
     var forks: Int = 0

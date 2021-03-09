@@ -1,6 +1,6 @@
 package org.bandev.labyrinth.core
 
 object Type {
-    val PROJECT = 0
-    val GROUP = 1
+    const val PROJECT: Int = 0
+    const val GROUP: Int = 1
 }

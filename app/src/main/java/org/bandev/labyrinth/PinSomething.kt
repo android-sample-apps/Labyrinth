@@ -14,13 +14,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
-import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.adapters.CommitAdapterVague
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.core.Animations
-import org.bandev.labyrinth.core.Compatibility
-import org.bandev.labyrinth.projects.IndividualCommit
 import org.bandev.labyrinth.widgets.NonScrollListView
 import org.json.JSONArray
 import org.json.JSONObject
@@ -86,31 +82,31 @@ class PinSomething : AppCompatActivity() {
         val context = this
         AndroidNetworking.initialize(applicationContext)
         AndroidNetworking
-                .get("https://gitlab.com/api/v4/projects/?access_token=$token&membership=true")
-                .build()
-                .getAsJSONArray(object : JSONArrayRequestListener {
-                    override fun onResponse(response: JSONArray?) {
-                        for (i in 0 until (response ?: return).length()) {
-                            list.add(response.getJSONObject(i).toString())
+            .get("https://gitlab.com/api/v4/projects/?access_token=$token&membership=true")
+            .build()
+            .getAsJSONArray(object : JSONArrayRequestListener {
+                override fun onResponse(response: JSONArray?) {
+                    for (i in 0 until (response ?: return).length()) {
+                        list.add(response.getJSONObject(i).toString())
+                    }
+
+                    val adapter = GroupOrProjectListAdapter(context, list.toTypedArray())
+                    (listView ?: return).adapter = adapter
+
+
+                    (listView ?: return).onItemClickListener =
+                        AdapterView.OnItemClickListener { parent, view, position, id ->
+                            itemClick(parent, position)
                         }
+                    done = true
 
-                        val adapter = GroupOrProjectListAdapter(context, list.toTypedArray())
-                        (listView ?: return).adapter = adapter
+                    showAll()
+                }
 
-
-                        (listView ?: return).onItemClickListener =
-                                AdapterView.OnItemClickListener { parent, view, position, id ->
-                                    itemClick(parent, position)
-                                }
-                        done = true
-
-                        showAll()
-                    }
-
-                    override fun onError(anError: ANError?) {
-                        Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
-                    }
-                })
+                override fun onError(anError: ANError?) {
+                    Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
+                }
+            })
     }
 
     override fun onSupportNavigateUp(): Boolean {

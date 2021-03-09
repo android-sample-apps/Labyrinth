@@ -43,7 +43,6 @@ class IssueAdapter(private val context: Activity, private val text: Array<String
     }
 
 
-
     override fun getItem(p0: Int): String? {
         return text[p0]
     }

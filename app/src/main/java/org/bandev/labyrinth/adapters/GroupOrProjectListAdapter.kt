@@ -7,19 +7,16 @@ import android.preference.PreferenceManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.Toast
 import coil.load
-import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.databinding.GroupListViewBinding
 import org.json.JSONObject
-import java.lang.Exception
 
 class GroupOrProjectListAdapter(private val context: Activity, private val text: Array<String?>) :
     BaseAdapter() {
 
-    override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
+    override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
 
         val binding = GroupListViewBinding.inflate(context.layoutInflater, p2, false)
         val json = JSONObject(text[p0])

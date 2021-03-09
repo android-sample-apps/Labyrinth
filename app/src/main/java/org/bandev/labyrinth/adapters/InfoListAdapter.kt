@@ -27,7 +27,7 @@ class InfoListAdapter(private val context: Activity, private val text: Array<Str
         left.text = jsonObj.getString("left")
         right.text = jsonObj.getString("right")
 
-        val image = when(jsonObj.getString("icon")){
+        val image = when (jsonObj.getString("icon")) {
             "settings" -> R.drawable.ic_settings
             "about" -> R.drawable.ic_info
             "branch" -> R.drawable.ic_branch

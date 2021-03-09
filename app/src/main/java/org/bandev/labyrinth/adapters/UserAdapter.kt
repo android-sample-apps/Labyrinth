@@ -15,7 +15,7 @@ import org.bandev.labyrinth.R
 import org.json.JSONObject
 
 class UserAdapter(private val context: Activity, private val text: Array<String?>) :
-        BaseAdapter() {
+    BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
         val inflater = context.layoutInflater
@@ -37,7 +37,7 @@ class UserAdapter(private val context: Activity, private val text: Array<String?
         }
         visibility.text = accessLevel
 
-        avatar.load(jsonObj.getString("avatar_url")){
+        avatar.load(jsonObj.getString("avatar_url")) {
             crossfade(true)
             transformations(CircleCropTransformation())
         }

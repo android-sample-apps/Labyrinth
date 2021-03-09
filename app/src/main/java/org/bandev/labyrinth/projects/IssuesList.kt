@@ -16,9 +16,7 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.IssueAdapter
-import org.bandev.labyrinth.core.Compatibility
 import org.json.JSONArray
-import org.json.JSONObject
 
 class IssuesList : AppCompatActivity() {
 

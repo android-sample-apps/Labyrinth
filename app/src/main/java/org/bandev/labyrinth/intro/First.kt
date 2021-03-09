@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import org.bandev.labyrinth.R
-import org.bandev.labyrinth.core.Api
 
 class First : AppCompatActivity() {
 

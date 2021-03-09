@@ -13,7 +13,8 @@ import androidx.annotation.RequiresApi
 import org.bandev.labyrinth.R
 import org.json.JSONObject
 
-class GpgKeysItemAdapter(private val context: Activity, private val text: Array<String?>) : BaseAdapter() {
+class GpgKeysItemAdapter(private val context: Activity, private val text: Array<String?>) :
+    BaseAdapter() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 

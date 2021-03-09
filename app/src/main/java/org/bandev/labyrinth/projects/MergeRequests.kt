@@ -2,7 +2,9 @@ package org.bandev.labyrinth.projects
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -16,7 +18,6 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.google.android.material.tabs.TabLayoutMediator
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.adapters.IssueAdapter
 import org.bandev.labyrinth.adapters.MergeRequestAdapter
 import org.bandev.labyrinth.core.obj.MergeRequest
 import org.bandev.labyrinth.databinding.ProjectsIssuesFragmentBinding

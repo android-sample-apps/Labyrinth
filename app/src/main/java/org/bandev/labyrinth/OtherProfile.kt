@@ -2,18 +2,13 @@ package org.bandev.labyrinth
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import coil.load
 import coil.transform.CircleCropTransformation
-import coil.transform.RoundedCornersTransformation
-import org.bandev.labyrinth.account.activities.ProfileEmailsAct
 import org.bandev.labyrinth.account.activities.ProfileGroupsAct
-import org.bandev.labyrinth.account.activities.ProfileStatusAct
-import org.bandev.labyrinth.account.activities.ProfileTokenAct
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Connection
 import org.bandev.labyrinth.core.obj.User
@@ -42,7 +37,12 @@ class OtherProfile : AppCompatActivity() {
 
         connection.get(id)
 
-        binding.pullToRefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
+        binding.pullToRefresh.setColorSchemeColors(
+            ContextCompat.getColor(
+                this,
+                R.color.colorPrimary
+            )
+        )
         binding.pullToRefresh.setOnRefreshListener {
             connection.get(id)
             binding.pullToRefresh.isRefreshing = false
@@ -60,12 +60,12 @@ class OtherProfile : AppCompatActivity() {
         binding.content.projectName.text = user.name
         binding.content.slug.text = user.username
 
-        if(user.bio != "")
+        if (user.bio != "")
             binding.content.description.text = user.bio
         else
             binding.content.description.text = "No description"
 
-        if(user.location != "")
+        if (user.location != "")
             binding.content.location.text = user.location
         else
             binding.content.location.visibility = View.GONE

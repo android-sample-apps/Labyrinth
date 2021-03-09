@@ -9,7 +9,7 @@ class Pins(context: Context) {
     private val editor = sharedPreferences.edit()
     var data: MutableList<String> = mutableListOf()
     private var dataP: MutableList<String> = mutableListOf()
-    var itemCount: Int = 0
+    private var itemCount: Int = 0
 
     init {
         val arrTmp = sharedPreferences.getString("data", " null").toString().split("/#@#/")
@@ -37,7 +37,7 @@ class Pins(context: Context) {
         dataP.removeAt(index)
     }
 
-    fun debug_showAll(): String{
+    fun debugShowall(): String {
         return sharedPreferences.getString("data", " null").toString()
     }
 
@@ -47,7 +47,7 @@ class Pins(context: Context) {
 
         for (project in data) {
             val json2 = JSONObject(project)
-            if (json2.getInt("id") == id){
+            if (json2.getInt("id") == id) {
                 return true
             }
         }

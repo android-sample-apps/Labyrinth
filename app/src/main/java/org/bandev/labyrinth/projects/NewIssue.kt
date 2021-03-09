@@ -7,14 +7,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
-import org.bandev.labyrinth.Notify
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.databinding.ProjectsNewIssueBinding
-import org.greenrobot.eventbus.EventBus
 import org.json.JSONObject
 
 class NewIssue : AppCompatActivity() {
@@ -61,7 +58,8 @@ class NewIssue : AppCompatActivity() {
                     }
 
                     override fun onError(error: ANError) {
-                        Toast.makeText(applicationContext, error.toString(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, error.toString(), Toast.LENGTH_SHORT)
+                            .show()
                     }
                 })
 

@@ -12,7 +12,7 @@ class TokenListAdapter(
     private val tokens: MutableList<AccessToken>
 ) : BaseAdapter() {
 
-    override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
+    override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
 
         val binding = TokensItemBinding.inflate(context.layoutInflater)
         val token = tokens[p0]

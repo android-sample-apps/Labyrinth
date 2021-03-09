@@ -1,11 +1,6 @@
 package org.bandev.labyrinth
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -17,8 +12,6 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.GpgKeysItemAdapter
 import org.bandev.labyrinth.adapters.SshKeysItemAdapter
-import org.bandev.labyrinth.core.Api
-import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.databinding.ProfileKeysActBinding
 import org.json.JSONArray
 
@@ -62,50 +55,52 @@ class ProfileKeysAct : AppCompatActivity() {
         val gpgList: MutableList<String> = mutableListOf()
 
         AndroidNetworking
-                .get("https://gitlab.com/api/v4/user/keys")
-                .addQueryParameter("access_token", profile.getData("token"))
-                .build()
-                .getAsJSONArray(object : JSONArrayRequestListener {
-                    override fun onResponse(response: JSONArray) {
-                        var index = 0
-                        while (index != response.length()) {
-                            sshList.add(response[index].toString())
-                            index++
-                        }
-
-                        val infoListAdapter = SshKeysItemAdapter(this@ProfileKeysAct, sshList.toTypedArray())
-                        sshListView.adapter = infoListAdapter
-                        sshListView.divider = null
-
-                        AndroidNetworking
-                                .get("https://gitlab.com/api/v4/user/gpg_keys")
-                                .addQueryParameter("access_token", profile.getData("token"))
-                                .build()
-                                .getAsJSONArray(object : JSONArrayRequestListener {
-                                    override fun onResponse(response: JSONArray) {
-                                        var index = 0
-                                        while (index != response.length()) {
-                                            gpgList.add(response[index].toString())
-                                            index++
-                                        }
-
-                                        val gpgAdapter = GpgKeysItemAdapter(this@ProfileKeysAct, gpgList.toTypedArray())
-                                        gpgListView.adapter = gpgAdapter
-                                        gpgListView.divider = null
-
-                                        showAll()
-                                    }
-
-                                    override fun onError(error: ANError) {
-                                        // handle error
-                                    }
-                                })
+            .get("https://gitlab.com/api/v4/user/keys")
+            .addQueryParameter("access_token", profile.getData("token"))
+            .build()
+            .getAsJSONArray(object : JSONArrayRequestListener {
+                override fun onResponse(response: JSONArray) {
+                    var index = 0
+                    while (index != response.length()) {
+                        sshList.add(response[index].toString())
+                        index++
                     }
 
-                    override fun onError(error: ANError) {
-                        // handle error
-                    }
-                })
+                    val infoListAdapter =
+                        SshKeysItemAdapter(this@ProfileKeysAct, sshList.toTypedArray())
+                    sshListView.adapter = infoListAdapter
+                    sshListView.divider = null
+
+                    AndroidNetworking
+                        .get("https://gitlab.com/api/v4/user/gpg_keys")
+                        .addQueryParameter("access_token", profile.getData("token"))
+                        .build()
+                        .getAsJSONArray(object : JSONArrayRequestListener {
+                            override fun onResponse(response: JSONArray) {
+                                var index = 0
+                                while (index != response.length()) {
+                                    gpgList.add(response[index].toString())
+                                    index++
+                                }
+
+                                val gpgAdapter =
+                                    GpgKeysItemAdapter(this@ProfileKeysAct, gpgList.toTypedArray())
+                                gpgListView.adapter = gpgAdapter
+                                gpgListView.divider = null
+
+                                showAll()
+                            }
+
+                            override fun onError(error: ANError) {
+                                // handle error
+                            }
+                        })
+                }
+
+                override fun onError(error: ANError) {
+                    // handle error
+                }
+            })
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -113,7 +108,7 @@ class ProfileKeysAct : AppCompatActivity() {
         return true
     }
 
-    fun showAll(){
+    fun showAll() {
         binding.content.refresher.isGone = true
         binding.content.options.isGone = false
         binding.content.options2.isGone = false
@@ -121,7 +116,7 @@ class ProfileKeysAct : AppCompatActivity() {
         binding.content.constraintLayout.isGone = false
     }
 
-    fun hideAll(){
+    fun hideAll() {
         binding.content.refresher.isGone = false
         binding.content.options.isGone = true
         binding.content.options2.isGone = true

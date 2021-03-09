@@ -6,13 +6,10 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.os.Build
 import android.view.View
-import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowInsetsController
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
-import androidx.core.view.marginTop
-import androidx.navigation.fragment.NavHostFragment
 import org.bandev.labyrinth.R
 
 class Compatibility {
@@ -34,20 +31,24 @@ class Compatibility {
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     @Suppress("DEPRECATION")
                     window.decorView.systemUiVisibility =
-                            View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                        View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     window.navigationBarColor = Color.TRANSPARENT
                 } else {
                     window.navigationBarColor =
-                            ResourcesCompat.getColor(resources, R.color.design_default_color_primary_dark, null)
+                        ResourcesCompat.getColor(
+                            resources,
+                            R.color.design_default_color_primary_dark,
+                            null
+                        )
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     @Suppress("DEPRECATION")
                     window.decorView.systemUiVisibility =
-                            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                        View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 }
             }
             Configuration.UI_MODE_NIGHT_YES -> {
@@ -76,7 +77,12 @@ class Compatibility {
         toolbar.layoutParams = param
     }*/
 
-    fun edgeToEdge2(window: Window, view: View, toolbar: androidx.appcompat.widget.Toolbar, resources: Resources) {
+    fun edgeToEdge2(
+        window: Window,
+        view: View,
+        toolbar: androidx.appcompat.widget.Toolbar,
+        resources: Resources
+    ) {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -86,8 +92,10 @@ class Compatibility {
         }
 
         var statusBarHeight = 0
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen",
-            "android")
+        val resourceId = resources.getIdentifier(
+            "status_bar_height", "dimen",
+            "android"
+        )
         if (resourceId > 0) {
             statusBarHeight = resources.getDimensionPixelSize(resourceId)
         }

@@ -7,13 +7,13 @@ class Commit(rawData: JSONObject) {
     var id: String = ""
     var shortID: String = ""
     var title: String = ""
-    var message: String = ""
-    var authorName: String = ""
+    private var message: String = ""
+    private var authorName: String = ""
     var authorEmail: String = ""
-    var authoredDate: String = ""
-    var url: String = ""
-    var additions: Int = 0
-    var deletions: Int = 0
+    private var authoredDate: String = ""
+    private var url: String = ""
+    private var additions: Int = 0
+    private var deletions: Int = 0
     var status: String = ""
 
     init {

@@ -20,7 +20,6 @@ import com.maxkeppeler.sheets.options.Option
 import com.maxkeppeler.sheets.options.OptionsSheet
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.InfoListAdapter
-import org.bandev.labyrinth.core.Compatibility
 import org.bandev.labyrinth.core.Connection
 import org.bandev.labyrinth.core.Helpful
 import org.bandev.labyrinth.core.obj.Commit
@@ -59,7 +58,7 @@ class ProjectAct : AppCompatActivity() {
 
         id = (intent.extras ?: return).getInt("id")
 
-        binding.content.avatar.load(R.color.browser_actions_bg_grey){
+        binding.content.avatar.load(R.color.browser_actions_bg_grey) {
             transformations(RoundedCornersTransformation(20f))
         }
 
@@ -114,7 +113,7 @@ class ProjectAct : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.more){
+        if (item.itemId == R.id.more) {
             showOptions()
         }
         return super.onOptionsItemSelected(item)
@@ -273,7 +272,8 @@ class ProjectAct : AppCompatActivity() {
         val infoListAdapter = InfoListAdapter(this@ProjectAct, infoList.toTypedArray())
         binding.content.infoList.adapter = infoListAdapter
         binding.content.infoList.divider = null
-        binding.content.infoList.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, id ->
+        binding.content.infoList.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, _, position, id ->
                 val selectedItem = parent.getItemAtPosition(position) as String
                 val obj = JSONObject(selectedItem)
                 when (obj.getString("left")) {

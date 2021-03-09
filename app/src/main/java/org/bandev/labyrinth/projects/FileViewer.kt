@@ -2,7 +2,6 @@ package org.bandev.labyrinth.projects
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -12,14 +11,13 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.google.android.material.snackbar.Snackbar
-import org.bandev.labyrinth.core.Connection
 import org.bandev.labyrinth.Notify
-import org.bandev.labyrinth.core.obj.Project
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.FileViewAdapter
 import org.bandev.labyrinth.core.Animations
-import org.bandev.labyrinth.core.Compatibility
+import org.bandev.labyrinth.core.Connection
+import org.bandev.labyrinth.core.obj.Project
 import org.bandev.labyrinth.databinding.FileViewerBinding
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -43,7 +41,7 @@ class FileViewer : AppCompatActivity() {
 
     lateinit var binding: FileViewerBinding
     lateinit var fileList: MutableList<String>
-    lateinit var rproject: Project
+    private lateinit var rproject: Project
     var profile: Profile = Profile()
     private var path: String = ""
     private var token: String = ""
@@ -87,10 +85,10 @@ class FileViewer : AppCompatActivity() {
 
         //Configure pull to refresh & make it run fillData()
         binding.pullToRefresh.setColorSchemeColors(
-                ContextCompat.getColor(
-                        this,
-                        R.color.colorPrimary
-                )
+            ContextCompat.getColor(
+                this,
+                R.color.colorPrimary
+            )
         )
         binding.pullToRefresh.setOnRefreshListener {
             newConn()
@@ -99,7 +97,7 @@ class FileViewer : AppCompatActivity() {
         newConn()
     }
 
-    private fun newConn() {
+    internal fun newConn() {
         val connection = Connection(this)
         connection.Project().get((intent.extras ?: return).getInt("id"))
     }
@@ -121,48 +119,48 @@ class FileViewer : AppCompatActivity() {
         rproject = project
         //Hide all the content and show spinner
         hideAll()
-        var repoId = project.id
+        val repoId = project.id
         //Get JSONArray of files from GitLab
         AndroidNetworking
-                .get("https://gitlab.com/api/v4/projects/$repoId/repository/tree")
-                .addQueryParameter("access_token", token)
-                .addQueryParameter("path", path)
-                .build()
-                .getAsJSONArray(object : JSONArrayRequestListener {
-                    override fun onResponse(result: JSONArray) {
-                        //Convert response to list
-                        fileList = ArrayList()
-                        for (i in 0 until result.length()) {
-                            fileList.add(result.getJSONObject(i).toString())
+            .get("https://gitlab.com/api/v4/projects/$repoId/repository/tree")
+            .addQueryParameter("access_token", token)
+            .addQueryParameter("path", path)
+            .build()
+            .getAsJSONArray(object : JSONArrayRequestListener {
+                override fun onResponse(result: JSONArray) {
+                    //Convert response to list
+                    fileList = ArrayList()
+                    for (i in 0 until result.length()) {
+                        fileList.add(result.getJSONObject(i).toString())
+                    }
+
+                    //Create adapter, and configure listview
+                    val adapter = FileViewAdapter(this@FileViewer, fileList.toTypedArray())
+                    binding.listView.adapter = adapter
+                    //Helpful().justifyListViewHeightBasedOnChildren(binding.listView)
+
+                    //Set on click listener for listview, route to function itemClick(parent, position)
+                    binding.listView.onItemClickListener =
+                        AdapterView.OnItemClickListener { parent, _, position, _ ->
+                            itemClick(parent, position)
                         }
 
-                        //Create adapter, and configure listview
-                        val adapter = FileViewAdapter(this@FileViewer, fileList.toTypedArray())
-                        binding.listView.adapter = adapter
-                        //Helpful().justifyListViewHeightBasedOnChildren(binding.listView)
+                    //Show all the elements to user and remove spinner
+                    showAll()
+                }
 
-                        //Set on click listener for listview, route to function itemClick(parent, position)
-                        binding.listView.onItemClickListener =
-                            AdapterView.OnItemClickListener { parent, _, position, _ ->
-                                itemClick(parent, position)
-                            }
+                override fun onError(error: ANError) {
+                    //Alert user that something went wrong, let them try again (fillData())
+                    Snackbar.make(binding.root, R.string.project_fv_error, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.project_fv_error_retry) {
+                            newConn()
+                        }
+                        .show()
 
-                        //Show all the elements to user and remove spinner
-                        showAll()
-                    }
-
-                    override fun onError(error: ANError) {
-                        //Alert user that something went wrong, let them try again (fillData())
-                        Snackbar.make(binding.root, R.string.project_fv_error, Snackbar.LENGTH_LONG)
-                            .setAction(R.string.project_fv_error_retry) {
-                                newConn()
-                            }
-                            .show()
-
-                        //Show empty elements but remove spinner
-                        showAll()
-                    }
-                })
+                    //Show empty elements but remove spinner
+                    showAll()
+                }
+            })
     }
 
     fun itemClick(parent: AdapterView<*>, position: Int) {
