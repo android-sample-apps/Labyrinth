@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="colorPrimary">#0067f4</color>
     <color name="colorAccent">#0067f4</color>
+    <color name="textColorPrimary">@android:color/black</color>
 
     <color name="white">#FFFFFFFF</color>
     <color name="background">#f0f0f0</color>
@@ -15,7 +16,7 @@
 
     <color name="bandev">#5E17EB</color>
 
-
     <color name="open">#228B22</color>
     <color name="closed">#2B71CA</color>
+    <color name="failed">#C41212</color>
 </resources>

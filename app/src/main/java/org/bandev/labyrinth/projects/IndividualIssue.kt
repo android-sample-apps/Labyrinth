@@ -14,6 +14,10 @@ import coil.transform.CircleCropTransformation
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import io.noties.markwon.Markwon
 import org.bandev.labyrinth.OtherProfile
 import org.bandev.labyrinth.R
@@ -82,12 +86,14 @@ class IndividualIssue : AppCompatActivity() {
         binding.content.time.text = getDateTime(issueData.getString("created_at"))
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+        val backDrawable = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+            colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+            sizeDp = 16
+        }
         setSupportActionBar(toolbar)
-
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        toolbar.navigationIcon = backDrawable
 
         //Toolbar shadow animation
         Animations().toolbarShadowScroll(binding.scroll, toolbar)

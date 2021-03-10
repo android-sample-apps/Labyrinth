@@ -3,6 +3,7 @@ package org.bandev.labyrinth
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -18,6 +19,10 @@ import coil.transform.RoundedCornersTransformation
 import com.google.android.material.snackbar.Snackbar
 import com.maxkeppeler.sheets.options.Option
 import com.maxkeppeler.sheets.options.OptionsSheet
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Connection
@@ -65,11 +70,14 @@ class ProjectAct : AppCompatActivity() {
         profile.login(this, 0)
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+        val backDrawable = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+            colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+            sizeDp = 16
+        }
         setSupportActionBar(toolbar)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        toolbar.navigationIcon = backDrawable
 
 
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
@@ -143,11 +151,13 @@ class ProjectAct : AppCompatActivity() {
      */
 
     private fun showOptions() {
+        val starDrawable = IconicsDrawable(this, Octicons.Icon.oct_star_fill).apply { sizeDp = 24 }
+        val forkDrawable = IconicsDrawable(this, Octicons.Icon.oct_git_fork).apply { sizeDp = 24 }
         OptionsSheet().show(this) {
             title("Project Options")
             with(
-                Option(R.drawable.ic_star_full, "Star"),
-                Option(R.drawable.ic_forks, "Fork"),
+                Option(starDrawable, "Star"),
+                Option(forkDrawable, "Fork"),
                 Option(R.drawable.ic_internet, "Open")
             )
             displayButtons(false)
@@ -221,18 +231,29 @@ class ProjectAct : AppCompatActivity() {
     private fun showLatestCommit(commit: Commit) {
         binding.content.latestCommit.name.text = commit.title
         binding.content.latestCommit.visibility.text = commit.shortID
-        val icon = when (commit.status) {
-            "success" -> R.drawable.ic_success
-            "failed" -> R.drawable.ic_failed
-            "running" -> R.drawable.ic_running
-            else -> R.drawable.ic_canceled
+        val successDrawable = IconicsDrawable(this, Octicons.Icon.oct_check_circle).apply {
+            colorInt = ContextCompat.getColor(applicationContext, R.color.open)
+            sizeDp = 24
         }
-        binding.content.latestCommit.pipeline.setImageDrawable(
-            ContextCompat.getDrawable(
-                this,
-                icon
-            )
-        )
+        val failedDrawable = IconicsDrawable(this, Octicons.Icon.oct_issue_opened).apply {
+            colorInt = ContextCompat.getColor(applicationContext, R.color.failed)
+            sizeDp = 24
+        }
+        val runningDrawable = IconicsDrawable(this, Octicons.Icon.oct_sync).apply {
+            colorInt = ContextCompat.getColor(applicationContext, R.color.closed)
+            sizeDp = 24
+        }
+        val cancelledDrawable = IconicsDrawable(this, Octicons.Icon.oct_circle_slash).apply {
+            colorInt = Color.BLACK
+            sizeDp = 24
+        }
+        val icon = when (commit.status) {
+            "success" -> successDrawable
+            "failed" -> failedDrawable
+            "running" -> runningDrawable
+            else -> cancelledDrawable
+        }
+        binding.content.latestCommit.pipeline.setImageDrawable(icon)
         Connection(this).Users().getAvatar(commit.authorEmail)
         Connection(this).Project().getStats(project.id)
     }

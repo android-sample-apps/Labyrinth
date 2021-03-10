@@ -8,6 +8,10 @@ import androidx.core.view.isGone
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.EmailListAdapter
@@ -29,11 +33,14 @@ class ProfileEmailsAct : AppCompatActivity() {
         setContentView(binding.root)
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+        val backDrawable = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+            colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+            sizeDp = 16
+        }
         setSupportActionBar(toolbar)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        toolbar.navigationIcon = backDrawable
 
         filldata()
 
@@ -79,14 +86,17 @@ class ProfileEmailsAct : AppCompatActivity() {
     fun error(type: Int) {
         binding.error.visibility = View.VISIBLE
         binding.refresher.visibility = View.INVISIBLE
+        val emailDrawable = IconicsDrawable(this, Octicons.Icon.oct_mail).apply { sizeDp = 24 }
+        val errorDrawable =
+            IconicsDrawable(this, Octicons.Icon.oct_x_circle_fill).apply { sizeDp = 24 }
         when (type) {
             1 -> {
-                binding.icon.setImageResource(R.drawable.ic_email)
+                binding.icon.setImageDrawable(emailDrawable)
                 binding.title.text = "No emails"
                 binding.description.text = "You have no emails on your account"
             }
             else -> {
-                binding.icon.setImageResource(R.drawable.ic_error)
+                binding.icon.setImageDrawable(errorDrawable)
                 binding.title.text = "Something went wrong"
                 binding.description.text = "Try again or check your internet connection"
             }

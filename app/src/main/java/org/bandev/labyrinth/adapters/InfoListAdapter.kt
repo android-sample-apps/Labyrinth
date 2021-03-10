@@ -9,6 +9,10 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.sizeDp
+import kotlinx.coroutines.flow.merge
 import org.bandev.labyrinth.R
 import org.json.JSONObject
 
@@ -27,25 +31,45 @@ class InfoListAdapter(private val context: Activity, private val text: Array<Str
         left.text = jsonObj.getString("left")
         right.text = jsonObj.getString("right")
 
-        val image = when (jsonObj.getString("icon")) {
-            "settings" -> R.drawable.ic_settings
-            "about" -> R.drawable.ic_info
-            "branch" -> R.drawable.ic_branch
-            "merge" -> R.drawable.ic_mr_16
-            "issue" -> R.drawable.ic_issues
-            "commit" -> R.drawable.ic_commit
-            "file" -> R.drawable.ic_file
-            "repo" -> R.drawable.ic_repo
-            "groups" -> R.drawable.ic_groups
-            "status" -> R.drawable.ic_status
-            "secure" -> R.drawable.ic_secure
-            "email" -> R.drawable.ic_email
-            else -> R.drawable.ic_key
+        val settingsDrawable =
+            IconicsDrawable(context, Octicons.Icon.oct_gear).apply { sizeDp = 16 }
+        val infoDrawable = IconicsDrawable(context, Octicons.Icon.oct_info).apply { sizeDp = 16 }
+        val branchDrawable =
+            IconicsDrawable(context, Octicons.Icon.oct_git_branch).apply { sizeDp = 16 }
+        val mergeDrawable =
+            IconicsDrawable(context, Octicons.Icon.oct_git_pull_request).apply { sizeDp = 16 }
+        val issueDrawable =
+            IconicsDrawable(context, Octicons.Icon.oct_issue_opened).apply { sizeDp = 16 }
+        val commitDrawable =
+            IconicsDrawable(context, Octicons.Icon.oct_git_commit).apply { sizeDp = 16 }
+        val fileDrawable =
+            IconicsDrawable(context, Octicons.Icon.oct_file_directory_fill).apply { sizeDp = 16 }
+        val repoDrawable =
+            IconicsDrawable(context, Octicons.Icon.oct_file_submodule).apply { sizeDp = 16 }
+        val groupsDrawable =
+            IconicsDrawable(context, Octicons.Icon.oct_people).apply { sizeDp = 16 }
+        val statusDrawable = IconicsDrawable(context, Octicons.Icon.oct_hubot).apply { sizeDp = 16 }
+        val secureDrawable = IconicsDrawable(context, Octicons.Icon.oct_lock).apply { sizeDp = 16 }
+        val emailDrawable = IconicsDrawable(context, Octicons.Icon.oct_mail).apply { sizeDp = 16 }
+        val keyDrawable = IconicsDrawable(context, Octicons.Icon.oct_key).apply { sizeDp = 16 }
+
+        val drawable = when (jsonObj.getString("icon")) {
+            "settings" -> settingsDrawable
+            "about" -> infoDrawable
+            "branch" -> branchDrawable
+            "merge" -> mergeDrawable
+            "issue" -> issueDrawable
+            "commit" -> commitDrawable
+            "file" -> fileDrawable
+            "repo" -> repoDrawable
+            "groups" -> groupsDrawable
+            "status" -> statusDrawable
+            "secure" -> secureDrawable
+            "email" -> emailDrawable
+            else -> keyDrawable
         }
 
-        icon.setImageResource(image)
-
-
+        icon.setImageDrawable(drawable)
 
         return rowView
 

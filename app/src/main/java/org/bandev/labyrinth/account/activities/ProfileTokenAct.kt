@@ -8,6 +8,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.TokenListAdapter
@@ -30,11 +34,14 @@ class ProfileTokenAct : AppCompatActivity() {
         setContentView(binding.root)
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+        val backDrawable = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+            colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+            sizeDp = 16
+        }
         setSupportActionBar(toolbar)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        toolbar.navigationIcon = backDrawable
 
         filldata()
 

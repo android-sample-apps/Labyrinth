@@ -8,6 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.preference.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.core.Appearance
 import org.bandev.labyrinth.intro.First
@@ -19,10 +23,14 @@ class SettingsAct : AppCompatActivity() {
         setContentView(R.layout.settings_activity)
 
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        val backDrawable = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+            colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+            sizeDp = 16
+        }
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        toolbar.navigationIcon = backDrawable
 
         if (savedInstanceState == null) {
             supportFragmentManager

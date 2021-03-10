@@ -49,38 +49,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
+            <com.mikepenz.iconics.view.IconicsTextView
                 android:id="@+id/made_with"
+                android:text="Made with {oct-heart-fill} by BanDev"
+                android:textColor="?android:attr/textColorSecondary"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:elevation="4dp"
-                android:paddingBottom="15dp"
-                android:text="Made with"
-                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/promise_box" />
-
-            <TextView
-                android:id="@+id/love"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:drawablePadding="5dp"
-                android:elevation="4dp"
-                android:paddingBottom="15dp"
-                android:text="by @BanDev"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_heart"
-                app:drawableTint="?android:attr/textColorSecondary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/made_with"
-                app:layout_constraintTop_toBottomOf="@+id/promise_box" />
+                app:layout_constraintTop_toBottomOf="@+id/promise_box"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"

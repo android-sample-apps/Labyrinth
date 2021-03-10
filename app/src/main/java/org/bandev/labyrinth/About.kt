@@ -26,6 +26,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.databinding.AboutActivityBinding
 
 class About : AppCompatActivity() {
@@ -43,10 +47,14 @@ class About : AppCompatActivity() {
         // Set theme, navigation bar and language
 
         // Setup toolbar
+        val backDrawable = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+            colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+            sizeDp = 16
+        }
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        binding.toolbar.navigationIcon = backDrawable
         binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }

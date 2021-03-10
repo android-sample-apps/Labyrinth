@@ -12,6 +12,10 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.CommitDiffAdapter
@@ -49,10 +53,14 @@ class IndividualCommit : AppCompatActivity() {
         projectId = (intent.extras?.getInt("projectId") ?: return).toInt()
 
         //Setup toolbar
+        val backDrawable = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+            colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+            sizeDp = 16
+        }
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        binding.toolbar.navigationIcon = backDrawable
         binding.title.text = commitShortId
         Animations().toolbarShadowScroll(binding.scroll, binding.toolbar)
 
@@ -155,18 +163,10 @@ class IndividualCommit : AppCompatActivity() {
                     val pipeline = response.getString("status")
                     if (pipeline != "null") {
                         val icon = when (pipeline) {
-                            "success" -> {
-                                R.drawable.ic_success
-                            }
-                            "failed" -> {
-                                R.drawable.ic_failed
-                            }
-                            "running" -> {
-                                R.drawable.ic_running
-                            }
-                            else -> {
-                                R.drawable.ic_canceled
-                            }
+                            "success" -> R.drawable.ic_success
+                            "failed" -> R.drawable.ic_failed
+                            "running" -> R.drawable.ic_running
+                            else -> R.drawable.ic_canceled
                         }
                         with(binding.content.pipeline) {
                             text = response.getString("status").capitalize(Locale.ROOT)

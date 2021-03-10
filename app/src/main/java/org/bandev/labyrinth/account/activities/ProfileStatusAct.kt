@@ -14,6 +14,10 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.androidnetworking.interfaces.StringRequestListener
 import com.google.android.material.snackbar.Snackbar
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import io.wax911.emojify.parser.EmojiParser
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
@@ -38,11 +42,14 @@ class ProfileStatusAct : AppCompatActivity() {
         setContentView(binding.root)
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+        val backDrawable = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+            colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+            sizeDp = 16
+        }
         setSupportActionBar(toolbar)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        toolbar.navigationIcon = backDrawable
 
         binding.pull.setColorSchemeColors(
             ContextCompat.getColor(
@@ -174,14 +181,17 @@ class ProfileStatusAct : AppCompatActivity() {
     fun error(type: Int) {
         binding.error.visibility = View.VISIBLE
         binding.refresher.visibility = View.INVISIBLE
+        val statusDrawable = IconicsDrawable(this, Octicons.Icon.oct_hubot).apply { sizeDp = 24 }
+        val errorDrawable =
+            IconicsDrawable(this, Octicons.Icon.oct_x_circle_fill).apply { sizeDp = 24 }
         when (type) {
             1 -> {
-                binding.icon.setImageResource(R.drawable.ic_status)
+                binding.icon.setImageDrawable(statusDrawable)
                 binding.title.text = "No status"
                 binding.description.text = "You have no status on your account"
             }
             else -> {
-                binding.icon.setImageResource(R.drawable.ic_error)
+                binding.icon.setImageDrawable(errorDrawable)
                 binding.title.text = "Something went wrong"
                 binding.description.text = "Try again or check your internet connection"
             }

@@ -60,16 +60,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <com.mikepenz.iconics.view.IconicsImageView
                     android:id="@+id/icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginTop="40dp"
-                    android:src="@drawable/ic_done"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="?android:attr/textColorPrimary" />
+                    app:tint="?android:attr/textColorPrimary"
+                    app:iiv_color="?android:attr/textColorPrimary"
+                    app:iiv_icon="oct-check-circle-fill" />
 
                 <TextView
                     android:id="@+id/title"

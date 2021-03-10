@@ -8,11 +8,16 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.maxkeppeler.sheets.options.DisplayMode
 import com.maxkeppeler.sheets.options.Option
 import com.maxkeppeler.sheets.options.OptionsSheet
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
@@ -150,15 +155,27 @@ class MainAct : AppCompatActivity() {
 
     private fun showBottom(data: String, position: Int) {
         val datajs = JSONObject(data)
+        val issuesDrawable = IconicsDrawable(this, Octicons.Icon.oct_issue_opened).apply {
+            sizeDp = 24
+        }
+        val fileDrawable = IconicsDrawable(this, Octicons.Icon.oct_file_directory_fill).apply {
+            sizeDp = 24
+        }
+        val commitDrawable = IconicsDrawable(this, Octicons.Icon.oct_git_commit).apply {
+            sizeDp = 24
+        }
+        val deleteDrawable = IconicsDrawable(this, Octicons.Icon.oct_trash).apply {
+            sizeDp = 24
+        }
         OptionsSheet().show(this) {
             title(datajs.getString("name"))
             displayMode(DisplayMode.LIST)
             with(
-                Option(R.drawable.ic_issues, "Issues"),
-                Option(R.drawable.ic_file, "View Files"),
-                Option(R.drawable.ic_commit, "Commits"),
+                Option(issuesDrawable, "Issues"),
+                Option(fileDrawable, "View Files"),
+                Option(commitDrawable, "Commits"),
                 Option(R.drawable.ic_internet, "Open"),
-                Option(R.drawable.ic_delete, "Remove Pin")
+                Option(deleteDrawable, "Remove Pin")
             )
             onPositive { index: Int, option: Option ->
                 // Handle selected option

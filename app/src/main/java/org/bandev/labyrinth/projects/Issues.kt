@@ -14,6 +14,9 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.google.android.material.tabs.TabLayoutMediator
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.IssueAdapter
@@ -172,14 +175,22 @@ class Issues : AppCompatActivity() {
         fun error(state: String, type: Int) {
             binding.error.visibility = View.VISIBLE
             binding.spinner.visibility = View.INVISIBLE
+            val doneDrawable = IconicsDrawable(
+                requireContext(),
+                Octicons.Icon.oct_check_circle_fill
+            ).apply { sizeDp = 24 }
+            val errorDrawable =
+                IconicsDrawable(requireContext(), Octicons.Icon.oct_x_circle_fill).apply {
+                    sizeDp = 24
+                }
             when (type) {
                 1 -> {
-                    binding.icon.setImageResource(R.drawable.ic_done)
+                    binding.icon.setImageDrawable(doneDrawable)
                     binding.title.text = "You really showed those bugs"
                     binding.description.text = "There are no $state issues on this repository!"
                 }
                 else -> {
-                    binding.icon.setImageResource(R.drawable.ic_error)
+                    binding.icon.setImageDrawable(errorDrawable)
                     binding.title.text = "Something went wrong"
                     binding.description.text = "Try again or check your internet connection"
                 }

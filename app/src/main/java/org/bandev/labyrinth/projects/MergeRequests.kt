@@ -1,6 +1,7 @@
 package org.bandev.labyrinth.projects
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,10 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.google.android.material.tabs.TabLayoutMediator
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.MergeRequestAdapter
@@ -153,14 +158,22 @@ class MergeRequests : AppCompatActivity() {
         fun error(state: String, type: Int) {
             binding.error.visibility = View.VISIBLE
             binding.spinner.visibility = View.INVISIBLE
+            val mergeDrawable = IconicsDrawable(
+                requireContext(),
+                Octicons.Icon.oct_git_pull_request
+            ).apply { sizeDp = 24 }
+            val errorDrawable =
+                IconicsDrawable(requireContext(), Octicons.Icon.oct_x_circle_fill).apply {
+                    sizeDp = 24
+                }
             when (type) {
                 1 -> {
-                    binding.icon.setImageResource(R.drawable.ic_mr_24)
+                    binding.icon.setImageDrawable(mergeDrawable)
                     binding.title.text = "It's lonely here"
                     binding.description.text = "There are no $state merge requests"
                 }
                 else -> {
-                    binding.icon.setImageResource(R.drawable.ic_error)
+                    binding.icon.setImageDrawable(errorDrawable)
                     binding.title.text = "Something went wrong"
                     binding.description.text = "Try again or check your internet connection"
                 }

@@ -38,7 +38,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <com.mikepenz.iconics.view.IconicsImageView
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
@@ -46,7 +46,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_key"
-        app:tint="?android:attr/textColorSecondary"/>
+        app:tint="?android:attr/textColorSecondary"
+        app:iiv_color="?android:attr/textColorSecondary"
+        app:iiv_icon="oct-key"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
