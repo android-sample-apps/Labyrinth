@@ -72,7 +72,7 @@
         <activity
             android:name=".account.activities.ProfileGroupsAct"/>
         <activity
-            android:name=".OthersProfileAct" />
+            android:name=".Groups" />
         <activity
             android:name=".GroupsAct" />
         <activity

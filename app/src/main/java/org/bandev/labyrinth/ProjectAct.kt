@@ -22,6 +22,7 @@ import com.maxkeppeler.sheets.options.OptionsSheet
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.octicons.Octicons
 import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.size
 import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.InfoListAdapter
@@ -210,9 +211,10 @@ class ProjectAct : AppCompatActivity() {
 
     private fun setData(returnProject: Project) {
         project = returnProject
+        if (project.id == 22240804) binding.content.labyrinth.visibility = View.VISIBLE
         binding.content.projectName.text = project.name
         binding.content.slug.text = project.namespace
-        binding.content.description.text = project.description
+        if(project.description != "") binding.content.description.text = project.description
         binding.content.stars.text = project.stars.toString()
         binding.content.forks.text = project.forks.toString()
         binding.content.avatar.load(project.avatar) {
@@ -231,28 +233,19 @@ class ProjectAct : AppCompatActivity() {
     private fun showLatestCommit(commit: Commit) {
         binding.content.latestCommit.name.text = commit.title
         binding.content.latestCommit.visibility.text = commit.shortID
-        val successDrawable = IconicsDrawable(this, Octicons.Icon.oct_check_circle).apply {
-            colorInt = ContextCompat.getColor(applicationContext, R.color.open)
-            sizeDp = 24
-        }
-        val failedDrawable = IconicsDrawable(this, Octicons.Icon.oct_issue_opened).apply {
-            colorInt = ContextCompat.getColor(applicationContext, R.color.failed)
-            sizeDp = 24
-        }
-        val runningDrawable = IconicsDrawable(this, Octicons.Icon.oct_sync).apply {
-            colorInt = ContextCompat.getColor(applicationContext, R.color.closed)
-            sizeDp = 24
-        }
-        val cancelledDrawable = IconicsDrawable(this, Octicons.Icon.oct_circle_slash).apply {
-            colorInt = Color.BLACK
-            sizeDp = 24
-        }
         val icon = when (commit.status) {
-            "success" -> successDrawable
-            "failed" -> failedDrawable
-            "running" -> runningDrawable
-            else -> cancelledDrawable
+            "success" -> IconicsDrawable(this, Octicons.Icon.oct_check_circle)
+            "failed" -> IconicsDrawable(this, Octicons.Icon.oct_issue_opened)
+            "running" -> IconicsDrawable(this, Octicons.Icon.oct_sync)
+            else -> IconicsDrawable(this, Octicons.Icon.oct_circle_slash)
         }
+        icon.colorInt = when (commit.status) {
+            "success" -> ContextCompat.getColor(applicationContext, R.color.open)
+            "failed" -> ContextCompat.getColor(applicationContext, R.color.failed)
+            "running" -> ContextCompat.getColor(applicationContext, R.color.closed)
+            else -> Color.BLACK
+        }
+        icon.sizeDp = 24
         binding.content.latestCommit.pipeline.setImageDrawable(icon)
         Connection(this).Users().getAvatar(commit.authorEmail)
         Connection(this).Project().getStats(project.id)

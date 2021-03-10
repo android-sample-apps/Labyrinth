@@ -25,7 +25,7 @@
             android:elevation="4dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="User"
+            android:text="Group"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="20sp"
             android:textStyle="bold"

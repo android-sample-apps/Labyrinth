@@ -1,9 +1,6 @@
 package org.bandev.labyrinth
 
-import org.bandev.labyrinth.core.obj.Commit
-import org.bandev.labyrinth.core.obj.Project
-import org.bandev.labyrinth.core.obj.ProjectStats
-import org.bandev.labyrinth.core.obj.User
+import org.bandev.labyrinth.core.obj.*
 
 sealed class Notify {
     data class ReturnProject(val project: Project) : Notify()
@@ -13,4 +10,5 @@ sealed class Notify {
     data class ReturnAvatar(val url: String) : Notify()
     data class ReturnProjectStats(val projectStats: ProjectStats) : Notify()
     data class ReturnUser(val user: User) : Notify()
+    data class ReturnGroup(val group: Group) : Notify()
 }

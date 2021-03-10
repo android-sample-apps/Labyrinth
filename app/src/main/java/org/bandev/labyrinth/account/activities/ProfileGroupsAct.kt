@@ -14,7 +14,7 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.octicons.Octicons
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
-import org.bandev.labyrinth.GroupsAct
+import org.bandev.labyrinth.Groups
 import org.bandev.labyrinth.ProjectAct
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
@@ -84,7 +84,7 @@ class ProfileGroupsAct : AppCompatActivity() {
 
         val activity = when (type) {
             1 -> ProjectAct::class.java
-            else -> GroupsAct::class.java
+            else -> Groups::class.java
         }
 
         AndroidNetworking

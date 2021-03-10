@@ -31,7 +31,7 @@ class GroupOrProjectListAdapter(private val context: Activity, private val text:
         }
 
         binding.name.text = json.getString("name")
-        binding.visibility.text = (if (json.getString("description") == "") {
+        binding.visibility.text = (if (json.getString("description") != "") {
             json.getString("description")
         } else "No description").toString()
         if (json.getString("avatar_url") != "null") {

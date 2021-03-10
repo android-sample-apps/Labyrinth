@@ -7,9 +7,7 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import org.bandev.labyrinth.Notify
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.core.obj.Commit
-import org.bandev.labyrinth.core.obj.Project
-import org.bandev.labyrinth.core.obj.ProjectStats
+import org.bandev.labyrinth.core.obj.*
 import org.bandev.labyrinth.core.obj.User
 import org.greenrobot.eventbus.EventBus
 import org.json.JSONObject
@@ -180,6 +178,26 @@ class Connection(val context: Context) {
                 .getAsJSONObject(object : JSONObjectRequestListener {
                     override fun onResponse(response: JSONObject) {
                         EventBus.getDefault().post(Notify.ReturnUser(User(response)))
+                    }
+
+                    override fun onError(error: ANError) {
+
+                    }
+                })
+        }
+
+    }
+
+    inner class Groups {
+
+        fun get(id: Int) {
+            AndroidNetworking.get("https://gitlab.com/api/v4/groups/$id")
+                .addHeaders("PRIVATE-TOKEN", token)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject) {
+                        EventBus.getDefault().post(Notify.ReturnGroup(Group(response, context)))
                     }
 
                     override fun onError(error: ANError) {

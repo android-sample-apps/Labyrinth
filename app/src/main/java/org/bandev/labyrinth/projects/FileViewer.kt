@@ -145,6 +145,7 @@ class FileViewer : AppCompatActivity() {
                     //Create adapter, and configure listview
                     val adapter = FileViewAdapter(this@FileViewer, fileList.toTypedArray())
                     binding.listView.adapter = adapter
+                    binding.listView.divider = null
                     //Helpful().justifyListViewHeightBasedOnChildren(binding.listView)
 
                     //Set on click listener for listview, route to function itemClick(parent, position)
