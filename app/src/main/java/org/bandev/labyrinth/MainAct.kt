@@ -7,8 +7,6 @@ import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.maxkeppeler.sheets.options.DisplayMode
@@ -16,8 +14,6 @@ import com.maxkeppeler.sheets.options.Option
 import com.maxkeppeler.sheets.options.OptionsSheet
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.octicons.Octicons
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
@@ -31,8 +27,9 @@ import org.json.JSONObject
 
 class MainAct : AppCompatActivity() {
 
-    private var profile: Profile = Profile()
     private lateinit var binding: MainActBinding
+    private var profile: Profile = Profile()
+    private var asked: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -196,5 +193,13 @@ class MainAct : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        if (!asked) {
+            Toast.makeText(this, "Tap again to leave", Toast.LENGTH_SHORT).show()
+            asked = true
+        } else super.onBackPressed()
+
     }
 }
