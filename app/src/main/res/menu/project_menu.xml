@@ -8,6 +8,5 @@
         android:id="@+id/more"
         android:orderInCategory="100"
         android:title="More options"
-        android:icon="@drawable/ic_more"
         app:showAsAction="ifRoom" />
 </menu>

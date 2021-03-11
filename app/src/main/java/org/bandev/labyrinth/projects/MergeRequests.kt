@@ -42,7 +42,11 @@ class MergeRequests : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_left)
+        binding.toolbar.navigationIcon =
+            IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+                colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+                sizeDp = 16
+            }
 
         binding.pager.adapter = FragmentAdapter(
             supportFragmentManager, lifecycle, (intent.extras

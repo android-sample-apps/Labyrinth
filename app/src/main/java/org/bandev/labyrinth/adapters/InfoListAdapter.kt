@@ -47,7 +47,6 @@ class InfoListAdapter(private val context: Activity, private val text: Array<Str
             else -> IconicsDrawable(context, Octicons.Icon.oct_key)
         }
 
-
         drawable.sizeDp = 16
         icon.setImageDrawable(drawable)
 

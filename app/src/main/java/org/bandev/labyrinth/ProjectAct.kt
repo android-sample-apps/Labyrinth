@@ -71,14 +71,13 @@ class ProjectAct : AppCompatActivity() {
         profile.login(this, 0)
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
-        val backDrawable = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
-            colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
-            sizeDp = 16
-        }
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = backDrawable
+        toolbar.navigationIcon = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+            colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+            sizeDp = 16
+        }
 
 
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
@@ -118,6 +117,11 @@ class ProjectAct : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.project_menu, menu)
+        menu?.findItem(R.id.more)?.icon =
+            IconicsDrawable(this, Octicons.Icon.oct_kebab_horizontal).apply {
+                colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+                sizeDp = 22
+            }
         return true
     }
 
@@ -152,8 +156,8 @@ class ProjectAct : AppCompatActivity() {
      */
 
     private fun showOptions() {
-        val starDrawable = IconicsDrawable(this, Octicons.Icon.oct_star_fill).apply { sizeDp = 24 }
-        val forkDrawable = IconicsDrawable(this, Octicons.Icon.oct_git_fork).apply { sizeDp = 24 }
+        val starDrawable = IconicsDrawable(this, Octicons.Icon.oct_star_fill)
+        val forkDrawable = IconicsDrawable(this, Octicons.Icon.oct_git_fork)
         OptionsSheet().show(this) {
             title("Project Options")
             with(
@@ -212,14 +216,16 @@ class ProjectAct : AppCompatActivity() {
     private fun setData(returnProject: Project) {
         project = returnProject
         if (project.id == 22240804) binding.content.labyrinth.visibility = View.VISIBLE
-        binding.content.projectName.text = project.name
-        binding.content.slug.text = project.namespace
-        if(project.description != "") binding.content.description.text = project.description
-        binding.content.stars.text = project.stars.toString()
-        binding.content.forks.text = project.forks.toString()
-        binding.content.avatar.load(project.avatar) {
-            crossfade(true)
-            transformations(RoundedCornersTransformation(30f))
+        if (project.description != "") binding.content.description.text = project.description
+        with(binding.content) {
+            projectName.text = project.name
+            slug.text = project.namespace
+            stars.text = project.stars.toString()
+            forks.text = project.forks.toString()
+            avatar.load(project.avatar) {
+                crossfade(true)
+                transformations(RoundedCornersTransformation(30f))
+            }
         }
         project.getLastCommit()
     }
@@ -243,7 +249,7 @@ class ProjectAct : AppCompatActivity() {
             "success" -> ContextCompat.getColor(applicationContext, R.color.open)
             "failed" -> ContextCompat.getColor(applicationContext, R.color.failed)
             "running" -> ContextCompat.getColor(applicationContext, R.color.closed)
-            else -> Color.BLACK
+            else -> ContextCompat.getColor(applicationContext, R.color.textColorPrimary)
         }
         icon.sizeDp = 24
         binding.content.latestCommit.pipeline.setImageDrawable(icon)

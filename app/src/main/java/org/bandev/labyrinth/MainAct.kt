@@ -43,17 +43,18 @@ class MainAct : AppCompatActivity() {
         //Set layout variables
         binding = MainActBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        binding.avatar.load(profile.getData("avatarUrl")) {
-            crossfade(true)
-            transformations(CircleCropTransformation())
-        }
-        binding.avatar.setOnClickListener {
-            val intent = Intent(this, ProfileAct::class.java)
-            this.startActivity(intent)
+        with(binding.avatar) {
+            load(profile.getData("avatarUrl")) {
+                crossfade(true)
+                transformations(CircleCropTransformation())
+            }
+            setOnClickListener {
+                val intent = Intent(context, ProfileAct::class.java)
+                startActivity(intent)
+            }
         }
 
         top()
@@ -82,7 +83,7 @@ class MainAct : AppCompatActivity() {
                 when (position) {
                     0 -> {
                         //Send user to see their groups
-                        val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
+                        val intent = Intent(this, ProfileGroupsAct::class.java)
                         intent.putExtra("type", 0)
                         intent.putExtra("id", profile.getData("id").toInt())
                         startActivity(intent)
@@ -128,8 +129,6 @@ class MainAct : AppCompatActivity() {
                 showBottom(selectedItem, position)
                 true
             }
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -155,18 +154,10 @@ class MainAct : AppCompatActivity() {
 
     private fun showBottom(data: String, position: Int) {
         val datajs = JSONObject(data)
-        val issuesDrawable = IconicsDrawable(this, Octicons.Icon.oct_issue_opened).apply {
-            sizeDp = 24
-        }
-        val fileDrawable = IconicsDrawable(this, Octicons.Icon.oct_file_directory_fill).apply {
-            sizeDp = 24
-        }
-        val commitDrawable = IconicsDrawable(this, Octicons.Icon.oct_git_commit).apply {
-            sizeDp = 24
-        }
-        val deleteDrawable = IconicsDrawable(this, Octicons.Icon.oct_trash).apply {
-            sizeDp = 24
-        }
+        val issuesDrawable = IconicsDrawable(this, Octicons.Icon.oct_issue_opened)
+        val fileDrawable = IconicsDrawable(this, Octicons.Icon.oct_file_directory_fill)
+        val commitDrawable = IconicsDrawable(this, Octicons.Icon.oct_git_commit)
+        val deleteDrawable = IconicsDrawable(this, Octicons.Icon.oct_trash)
         OptionsSheet().show(this) {
             title(datajs.getString("name"))
             displayMode(DisplayMode.LIST)

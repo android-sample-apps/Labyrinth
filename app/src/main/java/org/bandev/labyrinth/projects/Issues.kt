@@ -16,6 +16,7 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
@@ -37,7 +38,11 @@ class Issues : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_left)
+        binding.toolbar.navigationIcon =
+            IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+                colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+                sizeDp = 16
+            }
 
         binding.pager.adapter = FragmentAdapter(
             supportFragmentManager, lifecycle, (intent.extras
@@ -60,6 +65,10 @@ class Issues : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_issues, menu)
+        menu?.findItem(R.id.add)?.icon = IconicsDrawable(this, Octicons.Icon.oct_plus).apply {
+            colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+            sizeDp = 22
+        }
         return super.onCreateOptionsMenu(menu)
     }
 

@@ -9,6 +9,10 @@ import androidx.core.content.ContextCompat
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.databinding.ProjectsNewIssueBinding
@@ -28,7 +32,11 @@ class NewIssue : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_left)
+        binding.toolbar.navigationIcon =
+            IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+                colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+                sizeDp = 16
+            }
 
         profile.login(this, 0)
         binding.inTitle.performClick()
@@ -68,6 +76,11 @@ class NewIssue : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_new_issue, menu)
+        menu?.findItem(R.id.post)?.icon =
+            IconicsDrawable(this, Octicons.Icon.oct_paper_airplane).apply {
+                colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+                sizeDp = 22
+            }
         return super.onCreateOptionsMenu(menu)
     }
 

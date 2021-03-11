@@ -47,14 +47,14 @@ class About : AppCompatActivity() {
         // Set theme, navigation bar and language
 
         // Setup toolbar
-        val backDrawable = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
-            colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
-            sizeDp = 16
-        }
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.toolbar.navigationIcon = backDrawable
+        binding.toolbar.navigationIcon =
+            IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+                colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+                sizeDp = 16
+            }
         binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }

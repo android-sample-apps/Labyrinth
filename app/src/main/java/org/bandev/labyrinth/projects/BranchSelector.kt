@@ -5,13 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.google.android.material.snackbar.Snackbar
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.BranchSelectorAdapter
@@ -63,14 +66,17 @@ class BranchSelector : AppCompatActivity() {
         branch = (intent.extras?.getString("branch") ?: return)
 
         //Configure Toolbar
-        val toolbar: Toolbar = binding.toolbar
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_left)
+        binding.toolbar.navigationIcon =
+            IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+                colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+                sizeDp = 16
+            }
 
         //Toolbar shadow animation
-        Animations().toolbarShadowScroll(binding.scroll, toolbar)
+        Animations().toolbarShadowScroll(binding.scroll, binding.toolbar)
 
         //Turn on edge to edge
 
@@ -118,20 +124,22 @@ class BranchSelector : AppCompatActivity() {
                     }
 
                     //Create adapter, and configure listview
-                    val adapter = BranchSelectorAdapter(
+                    val branchSelectorAdapter = BranchSelectorAdapter(
                         this@BranchSelector,
                         branchList.toTypedArray(),
                         branch
                     )
-                    binding.listView.adapter = adapter
-                    binding.listView.divider = null
-                    //Helpful().justifyListViewHeightBasedOnChildren(binding.listView)
+                    with(binding.listView) {
+                        adapter = branchSelectorAdapter
+                        divider = null
+                        //Helpful().justifyListViewHeightBasedOnChildren(binding.listView)
 
-                    //Set on click listener for listview, route to function itemClick(parent, position)
-                    binding.listView.onItemClickListener =
-                        AdapterView.OnItemClickListener { parent, _, position, _ ->
-                            itemClick(parent, position)
-                        }
+                        //Set on click listener for listview, route to function itemClick(parent, position)
+                        onItemClickListener =
+                            AdapterView.OnItemClickListener { parent, _, position, _ ->
+                                itemClick(parent, position)
+                            }
+                    }
 
                     //Show all the elements to user and remove spinner
                     showAll()
@@ -142,8 +150,7 @@ class BranchSelector : AppCompatActivity() {
                     Snackbar.make(binding.root, R.string.project_fv_error, Snackbar.LENGTH_LONG)
                         .setAction(R.string.project_fv_error_retry) {
                             fillData()
-                        }
-                        .show()
+                        }.show()
 
                     //Show empty elements but remove spinner
                     showAll()
@@ -162,14 +169,18 @@ class BranchSelector : AppCompatActivity() {
 
     private fun hideAll() {
         //Hide all 'ugly' loading elements and just show spinner
-        binding.listView.isGone = true
-        binding.spinner.isGone = false
+        with(binding) {
+            listView.isGone = true
+            spinner.isGone = false
+        }
     }
 
     fun showAll() {
         //Show all elements now they have loaded, remove spinner
-        binding.listView.isGone = false
-        binding.spinner.isGone = true
+        with(binding) {
+            listView.isGone = false
+            spinner.isGone = true
+        }
     }
 
 }

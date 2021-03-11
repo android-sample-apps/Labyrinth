@@ -6,9 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".intro.First">
 
-
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/logMeOut"
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:layout_marginStart="33dp"
@@ -23,13 +22,13 @@
         android:textColor="@android:color/white"
         android:textSize="18sp"
         app:cornerRadius="11dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/tryAgain"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/tryAgain"
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:layout_marginStart="33dp"
@@ -70,7 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
         android:layout_marginEnd="33dp"
-        android:text="We were unable to verify it was you"
+        android:text="We were unable to verify you"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +86,7 @@
         android:text="Do you wish to try again?"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintBottom_toTopOf="@+id/logMeOut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

@@ -6,11 +6,13 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import org.bandev.labyrinth.databinding.ActivityBiometricFailBinding
 import org.bandev.labyrinth.intro.First
 import java.util.concurrent.Executor
 
 class BiometricFailAct : AppCompatActivity() {
 
+    private lateinit var binding: ActivityBiometricFailBinding
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
@@ -18,7 +20,9 @@ class BiometricFailAct : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_biometric_fail)
+        // Setup view binding
+        binding = ActivityBiometricFailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor,
@@ -37,10 +41,7 @@ class BiometricFailAct : AppCompatActivity() {
                 ) {
                     super.onAuthenticationSucceeded(result)
 
-                    val i = Intent(applicationContext, MainAct::class.java)
-                    val mBundle = Bundle()
-                    i.putExtras(mBundle)
-                    startActivity(i)
+                    startActivity(Intent(applicationContext, MainAct::class.java))
                     finish()
                 }
 
@@ -61,24 +62,13 @@ class BiometricFailAct : AppCompatActivity() {
         // Consider integrating with the keystore to unlock cryptographic operations,
         // if needed by your app.
 
-        val button: Button = findViewById(R.id.button)
-        val button2: Button = findViewById(R.id.button3)
-
-
-        button.setOnClickListener {
-
+        binding.tryAgain.setOnClickListener {
             biometricPrompt.authenticate(promptInfo)
-
         }
 
-        button2.setOnClickListener {
-
-            val intent = Intent(this, First::class.java)
-            this.startActivity(intent)
+        binding.logMeOut.setOnClickListener {
+            startActivity(Intent(this, First::class.java))
 
         }
-
-
     }
-
 }

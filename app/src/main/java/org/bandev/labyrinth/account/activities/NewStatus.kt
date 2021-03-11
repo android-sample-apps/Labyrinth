@@ -7,6 +7,10 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.octicons.Octicons
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import io.wax911.emojify.model.Emoji
 import io.wax911.emojify.parser.EmojiParser
 import org.bandev.labyrinth.R
@@ -27,9 +31,11 @@ class NewStatus : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_left)
-
-
+        binding.toolbar.navigationIcon =
+            IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
+                colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+                sizeDp = 16
+            }
 
         profile.login(this, 0)
         binding.inTitle.performClick()
@@ -67,6 +73,11 @@ class NewStatus : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_new_status, menu)
+        menu?.findItem(R.id.confirm)?.icon =
+            IconicsDrawable(this, Octicons.Icon.oct_check_circle).apply {
+                colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+                sizeDp = 22
+            }
         return super.onCreateOptionsMenu(menu)
     }
 

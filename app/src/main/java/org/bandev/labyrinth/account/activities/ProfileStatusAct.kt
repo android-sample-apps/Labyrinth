@@ -74,12 +74,16 @@ class ProfileStatusAct : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_status, menu)
+        menu?.findItem(R.id.edit)?.icon = IconicsDrawable(this, Octicons.Icon.oct_pencil).apply {
+            colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+            sizeDp = 22
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.add ->
+            R.id.edit ->
                 startActivityForResult(
                     Intent(this, NewStatus::class.java)
                         .putExtra("emoji", ":$emoji:")

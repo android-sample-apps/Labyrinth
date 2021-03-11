@@ -18,7 +18,7 @@ class NoInternetAct : AppCompatActivity() {
 
         setContentView(R.layout.activity_no_internet)
 
-        val button2: Button = findViewById(R.id.button3)
+        val button2: Button = findViewById(R.id.logMeOut)
 
         button2.setOnClickListener {
 
