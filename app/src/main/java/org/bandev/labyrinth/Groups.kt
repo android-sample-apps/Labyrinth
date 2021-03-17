@@ -84,17 +84,17 @@ class Groups : AppCompatActivity() {
         if (group.id == 8650010) binding.content.contributor.visibility = View.VISIBLE
 
         val infoList = mutableListOf<String>()
-        infoList.add("{ 'left' : 'Projects', 'right' : '>', 'icon' : 'repo' }") //Id: 2
+        infoList.add("{ 'left' : 'Projects', 'right' : '', 'icon' : 'repo' }") //Id: 2
 
         binding.content.options.adapter = InfoListAdapter(this, infoList.toTypedArray())
         binding.content.options.divider = null
 
         binding.content.options.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
-                val selectedItem = parent.getItemAtPosition(position) as String
                 val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
                 intent.putExtra("type", 1)
                 intent.putExtra("id", group.id)
+                intent.putExtra("isGroup", true)
                 startActivity(intent)
             }
     }

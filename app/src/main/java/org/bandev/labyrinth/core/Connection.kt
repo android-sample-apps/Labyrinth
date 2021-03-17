@@ -5,15 +5,18 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import okhttp3.*
 import org.bandev.labyrinth.Notify
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.core.obj.*
 import org.bandev.labyrinth.core.obj.User
 import org.greenrobot.eventbus.EventBus
 import org.json.JSONObject
+import java.io.IOException
 
 class Connection(val context: Context) {
     val profile: Profile = Profile()
+    val client = OkHttpClient()
     private var token = ""
 
     init {
@@ -24,36 +27,48 @@ class Connection(val context: Context) {
     inner class Project {
 
         fun get(id: Int) {
-            AndroidNetworking.get("https://gitlab.com/api/v4/projects/$id")
-                .addHeaders("PRIVATE-TOKEN", token)
-                .setPriority(Priority.HIGH)
+            val request = Request.Builder()
+                .url("https://gitlab.com/api/v4/projects/$id")
+                .header("PRIVATE-TOKEN", token)
                 .build()
-                .getAsJSONObject(object : JSONObjectRequestListener {
-                    override fun onResponse(response: JSONObject) {
-                        val project = Project(response, context)
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    response.use {
+                        if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                        val project =
+                            Project(JSONObject((response.body ?: return@use).string()), context)
                         EventBus.getDefault().post(Notify.ReturnProject(project))
                     }
-
-                    override fun onError(error: ANError) {
-                    }
-                })
+                }
+            })
         }
 
         fun getStats(id: Int) {
-            AndroidNetworking.get("https://gitlab.com/api/v4/projects/$id")
-                .addQueryParameter("statistics", "true")
-                .addHeaders("PRIVATE-TOKEN", token)
-                .setPriority(Priority.HIGH)
+            val request = Request.Builder()
+                .url("https://gitlab.com/api/v4/projects/$id?statistics=true")
+                .header("PRIVATE-TOKEN", token)
                 .build()
-                .getAsJSONObject(object : JSONObjectRequestListener {
-                    override fun onResponse(response: JSONObject) {
-                        val project = ProjectStats(response)
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    response.use {
+                        if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                        val responseStr = (response.body ?: return@use).string()
+                        val project = ProjectStats(JSONObject(responseStr))
                         EventBus.getDefault().post(Notify.ReturnProjectStats(project))
                     }
-
-                    override fun onError(error: ANError) {
-                    }
-                })
+                }
+            })
         }
 
         fun fork(project: org.bandev.labyrinth.core.obj.Project) {
@@ -191,19 +206,25 @@ class Connection(val context: Context) {
     inner class Groups {
 
         fun get(id: Int) {
-            AndroidNetworking.get("https://gitlab.com/api/v4/groups/$id")
-                .addHeaders("PRIVATE-TOKEN", token)
-                .setPriority(Priority.HIGH)
+            val request = Request.Builder()
+                .url("https://gitlab.com/api/v4/groups/$id?with_projects=false")
+                .header("PRIVATE-TOKEN", token)
                 .build()
-                .getAsJSONObject(object : JSONObjectRequestListener {
-                    override fun onResponse(response: JSONObject) {
-                        EventBus.getDefault().post(Notify.ReturnGroup(Group(response, context)))
-                    }
 
-                    override fun onError(error: ANError) {
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
 
+                override fun onResponse(call: Call, response: Response) {
+                    response.use {
+                        if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                        val responseStr = (response.body ?: return@use).string()
+                        val group = Group(JSONObject(responseStr), context)
+                        EventBus.getDefault().post(Notify.ReturnGroup(group))
                     }
-                })
+                }
+            })
         }
 
     }

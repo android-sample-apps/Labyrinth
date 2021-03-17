@@ -41,6 +41,7 @@ class ProfileGroupsAct : AppCompatActivity() {
         type = (intent.extras ?: return).getInt("type")
 
         val id = (intent.extras ?: return).getInt("id")
+        val isGroup = (intent.extras ?: return).getBoolean("isGroup")
 
         binding.content.title.text = when (type) {
             1 -> "Projects"
@@ -57,17 +58,17 @@ class ProfileGroupsAct : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbar.navigationIcon = backDrawable
 
-        filldata(id)
+        filldata(id, isGroup)
 
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
         refresher.setOnRefreshListener {
-            filldata(id)
+            filldata(id, isGroup)
             refresher.isRefreshing = false
         }
     }
 
-    private fun filldata(id: Int) {
+    private fun filldata(id: Int, isGroup: Boolean) {
         hideAll()
         val emailList: MutableList<String> = mutableListOf()
 
@@ -80,6 +81,8 @@ class ProfileGroupsAct : AppCompatActivity() {
             url = "https://gitlab.com/api/v4/projects"
         } else if (id == profile.getData("id").toInt() && type == 0) {
             url = "https://gitlab.com/api/v4/groups"
+        } else if (isGroup) {
+            url = "https://gitlab.com/api/v4/groups/$id/projects"
         }
 
         val activity = when (type) {

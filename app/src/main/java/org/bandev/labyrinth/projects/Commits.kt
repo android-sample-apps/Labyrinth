@@ -77,9 +77,7 @@ class Commits : AppCompatActivity() {
     private fun fillData() {
         hideAll()
         val list: MutableList<String> = ArrayList()
-        var responseArray: JSONArray? = null
-        //Get a list of issues from GitLab#
-        var done = false
+
         val context = this
         AndroidNetworking.initialize(applicationContext)
         AndroidNetworking
@@ -93,7 +91,7 @@ class Commits : AppCompatActivity() {
 
                     val adapter = CommitAdapterVague(context, list.toTypedArray())
                     (listView ?: return).adapter = adapter
-
+                    (listView ?: return).divider = null
 
                     (listView ?: return).onItemClickListener =
                         AdapterView.OnItemClickListener { parent, view, position, id ->
@@ -105,7 +103,6 @@ class Commits : AppCompatActivity() {
                             intent.putExtras(bundle)
                             startActivity(intent)
                         }
-                    done = true
 
                     showAll()
                 }

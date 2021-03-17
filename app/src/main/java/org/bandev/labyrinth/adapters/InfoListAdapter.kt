@@ -27,6 +27,8 @@ class InfoListAdapter(private val context: Activity, private val text: Array<Str
         val right = rowView.findViewById(R.id.textRight) as TextView
         val icon = rowView.findViewById(R.id.icon) as ImageView
 
+        val end = rowView.findViewById(R.id.end) as ImageView
+
         val jsonObj = JSONObject(text[p0])
         left.text = jsonObj.getString("left")
         right.text = jsonObj.getString("right")
@@ -49,6 +51,12 @@ class InfoListAdapter(private val context: Activity, private val text: Array<Str
 
         drawable.sizeDp = 16
         icon.setImageDrawable(drawable)
+
+        val drawable2 = IconicsDrawable(context, Octicons.Icon.oct_chevron_right)
+        drawable2.sizeDp = 16
+        end.setImageDrawable(
+            drawable2
+        )
 
         return rowView
 

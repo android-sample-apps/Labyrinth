@@ -11,15 +11,5 @@ class Group(json: JSONObject, context: Context) {
     val description = json.getString("description")
     val visibility = json.getString("visibility")
     val avatarUrl = json.getString("avatar_url")
-    val projects = mutableListOf<Project>()
 
-    init {
-        val prjcts = json.getJSONArray("projects")
-        for (i in 0 until prjcts.length()) projects.add(
-            Project(
-                JSONObject(prjcts[i].toString()),
-                context
-            )
-        )
-    }
 }

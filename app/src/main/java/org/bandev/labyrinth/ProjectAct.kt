@@ -281,7 +281,7 @@ class ProjectAct : AppCompatActivity() {
         val repoSize = projectStats.repositorySize
         val repoSizeStr = Helpful().humanReadableByteCountSI(repoSize.toLong()).toString()
         val issues = project.issues
-        val merges = ">"
+        val merges = ""
         val branch = project.defaultBranch
         val infoList: MutableList<String> = mutableListOf()
         infoList.add("{ 'left' : 'Issues', 'right' : '$issues', 'icon' : 'issue' }")

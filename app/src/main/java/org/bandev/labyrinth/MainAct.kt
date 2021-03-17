@@ -67,8 +67,8 @@ class MainAct : AppCompatActivity() {
         //Create MutableList infoList, and fill each element with json data
         val infoList = mutableListOf<String>()
         //infoList.add("{ 'left' : 'Issues', 'right' : '>', 'icon' : 'issue' }")  //Id: 0
-        infoList.add("{ 'left' : 'Groups', 'right' : '>', 'icon' : 'groups' }") //Id: 1
-        infoList.add("{ 'left' : 'Projects', 'right' : '>', 'icon' : 'repo' }") //Id: 2
+        infoList.add("{ 'left' : 'Groups', 'right' : '', 'icon' : 'groups' }") //Id: 1
+        infoList.add("{ 'left' : 'Projects', 'right' : '', 'icon' : 'repo' }") //Id: 2
 
         //Cast infoList to Array and send to InfoListAdapter to generate element for each item.
         top.infoListView.adapter = InfoListAdapter(this, infoList.toTypedArray())

@@ -27,14 +27,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="55dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="15dp"
         android:text="Text"
         android:textAlignment="textEnd"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/end"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,5 +49,17 @@
         app:tint="?android:attr/textColorSecondary"
         app:iiv_color="?android:attr/textColorSecondary"
         app:iiv_icon="oct-key"/>
+
+    <com.mikepenz.iconics.view.IconicsImageView
+        android:id="@+id/end"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginEnd="20dp"
+        app:iiv_color="?android:attr/textColorSecondary"
+        app:iiv_icon="oct-key"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?android:attr/textColorSecondary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

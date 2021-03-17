@@ -2,6 +2,8 @@ package org.bandev.labyrinth.projects
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.*
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,12 +20,18 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.octicons.Octicons
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
+import okhttp3.*
+import org.bandev.labyrinth.Notify
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.IssueAdapter
+import org.bandev.labyrinth.core.obj.Group
 import org.bandev.labyrinth.databinding.ProjectsIssuesBinding
 import org.bandev.labyrinth.databinding.ProjectsIssuesFragmentBinding
+import org.greenrobot.eventbus.EventBus
 import org.json.JSONArray
+import org.json.JSONObject
+import java.io.IOException
 
 class Issues : AppCompatActivity() {
 
@@ -34,6 +42,7 @@ class Issues : AppCompatActivity() {
 
         binding = ProjectsIssuesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -67,7 +76,7 @@ class Issues : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_issues, menu)
         menu?.findItem(R.id.add)?.icon = IconicsDrawable(this, Octicons.Icon.oct_plus).apply {
             colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
-            sizeDp = 22
+            sizeDp = 16
         }
         return super.onCreateOptionsMenu(menu)
     }
@@ -142,43 +151,55 @@ class Issues : AppCompatActivity() {
                 0 -> "opened"
                 else -> "closed"
             }
-            AndroidNetworking.initialize(context)
-            AndroidNetworking
-                .get("https://gitlab.com/api/v4/projects/$projectId/issues?access_token=$token&state=$state")
+
+            val request = Request.Builder()
+                .url("https://gitlab.com/api/v4/projects/$projectId/issues?state=$state")
+                .header("PRIVATE-TOKEN", token)
                 .build()
-                .getAsJSONArray(object : JSONArrayRequestListener {
-                    override fun onResponse(response: JSONArray?) {
 
-                        for (i in 0 until (response ?: return).length()) {
-                            list.add(response.getJSONObject(i).toString())
-                        }
-
-                        if (list.size == 0) {
-                            error(state, 1)
-                        } else binding.error.visibility = View.GONE
-
-                        binding.listview.adapter =
-                            IssueAdapter(requireActivity(), list.toTypedArray())
-                        binding.listview.divider = null
-
-                        binding.listview.onItemClickListener =
-                            AdapterView.OnItemClickListener { parent, _, position, _ ->
-                                val selectedItem = parent.getItemAtPosition(position) as String
-                                val intent = Intent(context, IndividualIssue::class.java)
-                                val bundle = Bundle()
-                                bundle.putString("issueData", selectedItem)
-                                intent.putExtras(bundle)
-                                startActivity(intent)
-                            }
-
-                        binding.spinner.visibility = View.INVISIBLE
-                        binding.scroll.visibility = View.VISIBLE
-                    }
-
-                    override fun onError(anError: ANError?) {
+            OkHttpClient().newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Handler(Looper.getMainLooper()).post{
                         error(state, 0)
                     }
-                })
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val data = JSONArray((response.body ?: return).string())
+                    for (i in 0 until data.length()) {
+                        list.add(data.getJSONObject(i).toString())
+                    }
+
+
+                    Handler(Looper.getMainLooper()).post{
+                        showData(list, state)
+                    }
+
+                }
+            })
+        }
+
+        fun showData(list: MutableList<String>, state: String) {
+            if (list.size == 0) {
+                error(state, 1)
+            } else binding.error.visibility = View.GONE
+
+            binding.listview.adapter =
+                IssueAdapter(requireActivity(), list.toTypedArray())
+            binding.listview.divider = null
+
+            binding.listview.onItemClickListener =
+                AdapterView.OnItemClickListener { parent, _, position, _ ->
+                    val selectedItem = parent.getItemAtPosition(position) as String
+                    val intent = Intent(context, IndividualIssue::class.java)
+                    val bundle = Bundle()
+                    bundle.putString("issueData", selectedItem)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+                }
+
+            binding.spinner.visibility = View.INVISIBLE
+            binding.scroll.visibility = View.VISIBLE
         }
 
         fun error(state: String, type: Int) {

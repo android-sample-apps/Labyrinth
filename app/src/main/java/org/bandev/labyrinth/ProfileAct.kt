@@ -86,10 +86,10 @@ class ProfileAct : AppCompatActivity() {
         }
 
         val optionsList: MutableList<String> = mutableListOf()
-        optionsList.add("{ 'left' : 'Status', 'right' : '>', 'icon' : 'status' }")
-        optionsList.add("{ 'left' : 'Keys', 'right' : '>', 'icon' : 'key' }")
-        optionsList.add("{ 'left' : 'Emails', 'right' : '>', 'icon' : 'email' }")
-        optionsList.add("{ 'left' : 'Access Tokens', 'right' : '>', 'icon' : 'secure' }")
+        optionsList.add("{ 'left' : 'Status', 'right' : '', 'icon' : 'status' }")
+        optionsList.add("{ 'left' : 'Keys', 'right' : '', 'icon' : 'key' }")
+        optionsList.add("{ 'left' : 'Emails', 'right' : '', 'icon' : 'email' }")
+        optionsList.add("{ 'left' : 'Access Tokens', 'right' : '', 'icon' : 'secure' }")
 
         val infoListAdapter = InfoListAdapter(this@ProfileAct, optionsList.toTypedArray())
         infoListView.adapter = infoListAdapter
@@ -119,8 +119,8 @@ class ProfileAct : AppCompatActivity() {
             }
 
         val extendedOptions: MutableList<String> = mutableListOf()
-        extendedOptions.add("{ 'left' : 'Groups', 'right' : '>', 'icon' : 'groups' }")
-        extendedOptions.add("{ 'left' : 'Projects', 'right' : '>', 'icon' : 'repo' }")
+        extendedOptions.add("{ 'left' : 'Groups', 'right' : '', 'icon' : 'groups' }")
+        extendedOptions.add("{ 'left' : 'Projects', 'right' : '', 'icon' : 'repo' }")
 
         val extendedList = findViewById<ListView>(R.id.contributors)
         extendedList.adapter = InfoListAdapter(this@ProfileAct, extendedOptions.toTypedArray())
@@ -147,8 +147,8 @@ class ProfileAct : AppCompatActivity() {
 
 
         val settingsOptions: MutableList<String> = mutableListOf()
-        settingsOptions.add("{ 'left' : 'Settings', 'right' : '>', 'icon' : 'settings' }")
-        settingsOptions.add("{ 'left' : 'About App', 'right' : '>', 'icon' : 'about' }")
+        settingsOptions.add("{ 'left' : 'Settings', 'right' : '', 'icon' : 'settings' }")
+        settingsOptions.add("{ 'left' : 'About App', 'right' : '', 'icon' : 'about' }")
 
         val settingsList = findViewById<ListView>(R.id.settingsList)
         settingsList.adapter = InfoListAdapter(this@ProfileAct, settingsOptions.toTypedArray())
