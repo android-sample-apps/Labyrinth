@@ -121,19 +121,20 @@ class IndividualFileViewer : AppCompatActivity() {
 
                     //Convert base64 response to readble format
                     val dataBase64 = fileInfo.getString("content")
-                    val code = String(Base64.decode(dataBase64, Base64.NO_WRAP))
+                    val code2 = String(Base64.decode(dataBase64, Base64.NO_WRAP))
 
-                    println(code)
+                    println(code2)
 
                     //Show code in codeView element & show element
-                    binding.codeView
-                        .setTheme(Theme.ANDROIDSTUDIO)
-                        .setCode(code)
-                        .setWrapLine(true)
-                        .setFontSize(14F)
-                        .setLanguage(Language.AUTO)
-                        .setZoomEnabled(true)
-                        .apply()
+
+                    binding.codeView.apply {
+                        fontSize = 14f
+                        code = code2
+                        numberLines = true
+                        show()
+                    }
+
+
 
                     showAll()
                 }

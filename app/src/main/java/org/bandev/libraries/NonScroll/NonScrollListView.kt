@@ -1,4 +1,4 @@
-package org.bandev.labyrinth.widgets
+package org.bandev.libraries.NonScroll
 
 import android.content.Context
 import android.util.AttributeSet

@@ -19,92 +19,69 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import org.bandev.labyrinth.MainAct
 import org.bandev.labyrinth.R
+import org.bandev.labyrinth.databinding.ActivityOpeningTwoBinding
 import org.json.JSONObject
 
 class Second : AppCompatActivity() {
 
-    var username: String = ""
+    private lateinit var binding: ActivityOpeningTwoBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_intro_second)
 
-        val button: Button = findViewById(R.id.button)
-        val button2: Button = findViewById(R.id.button2)
+        //Load the view - R.layout.activity_opening_two
+        binding = ActivityOpeningTwoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        //Get the response & token passed in from the first activity
+        val response = JSONObject(intent.extras?.getString("response").toString())
+        val token = intent.extras?.getString("token").toString()
+
+        //Build a userData bundle for android to store
         val userData = Bundle()
-        val title = findViewById<TextView>(R.id.title)
-        val token = (intent.extras ?: return).get("token").toString()
+        userData.putString("token", token)
+        userData.putString("server", "https://gitlab.com")
+        userData.putString("username", response.getString("username"))
+        userData.putString("email", response.getString("email"))
+        userData.putString("bio", response.getString("bio"))
+        userData.putString("location", response.getString("location"))
+        userData.putString("id", response.getInt("id").toString())
+        userData.putString("avatarUrl", response.getString("avatar_url"))
+        userData.putString("webUrl", response.getString("web_url"))
 
-        AndroidNetworking.initialize(this)
-        AndroidNetworking.get("https://gitlab.com/api/v4/user?access_token=$token")
-            .build()
-            .getAsJSONObject(object : JSONObjectRequestListener {
-                override fun onResponse(response: JSONObject?) {
-
-
-                    val avatar = findViewById<ImageView>(R.id.avatar)
-
-                    avatar.load((response ?: return).getString("avatar_url")) {
-                        crossfade(true)
-                        transformations(CircleCropTransformation())
-                    }
-
-                    val usernameTextView: TextView = findViewById(R.id.usernmame)
-                    val emailTextView: TextView = findViewById(R.id.email)
-
-                    usernameTextView.text = response.getString("username")
-                    emailTextView.text = response.getString("email")
-
-                    title.text = "Hi " + response.getString("username")
-
-                    userData.putString("token", token)
-                    userData.putString("server", "https://gitlab.com")
-                    userData.putString("username", response.getString("username"))
-                    userData.putString("email", response.getString("email"))
-                    userData.putString("bio", response.getString("bio"))
-                    userData.putString("location", response.getString("location"))
-                    userData.putInt("id", response.getInt("id"))
-                    userData.putString("avatarUrl", response.getString("avatar_url"))
-                    userData.putString("webUrl", response.getString("web_url"))
-                }
-
-                override fun onError(error: ANError?) {
-                    finish()
-                    Toast.makeText(applicationContext, "Wrong token", LENGTH_SHORT).show()
-                }
-            })
-
-        button.setOnClickListener {
-
-            val accountManager: AccountManager = AccountManager.get(this)
-            username = userData.getString("username").toString()
-
-            Account(username, "org.bandev.labyrinth.account").also { account ->
-                accountManager.addAccountExplicitly(account, token, userData)
+        //Load the data into the view
+        with(binding) {
+            //Load the circle labyrinth logo
+            logo.load(R.drawable.labyrinth_logo) {
+                transformations(CircleCropTransformation())
             }
 
-            val intent = Intent(this, MainAct::class.java)
-            this.startActivity(intent)
+            //Load the user's pfp
+            avatar.load(response.getString("avatar_url")) {
+                transformations(CircleCropTransformation())
+            }
+
+            //Set view text
+            ("Hello " + response.getString("username")).also { binding.title.text = it }
         }
 
-        button2.setOnClickListener {
-            finish()
-        }
+        //On continue save the account
+        binding.next.setOnClickListener { openApp(userData) }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
+    private fun openApp(userData: Bundle) {
+        val accountManager: AccountManager = AccountManager.get(this)
+        val username = userData.getString("username").toString()
+        val token = userData.getString("token").toString()
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        //Create new account
+        Account(username, "org.bandev.labyrinth.account").also { account ->
+            accountManager.addAccountExplicitly(account, token, userData)
         }
+
+        //Open main activity
+        val intent = Intent(this, MainAct::class.java)
+        this.startActivity(intent)
+        finish()
     }
 }

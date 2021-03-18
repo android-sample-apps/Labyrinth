@@ -4,10 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/drawable/ic_time.xml" value="0.15925925925925927" />
+        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/drawable/labyrinth_logo.xml" value="0.2037037037037037" />
+        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/drawable/labyrinth_snake_only.xml" value="0.2037037037037037" />
+        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/drawable/osi_keyhole.xml" value="0.2037037037037037" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/drawable/toolbar_line.xml" value="0.16111111111111112" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/about_activity.xml" value="0.22" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/about_activity_content.xml" value="0.33" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/activity_about.xml" value="0.22" />
+        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/activity_biometric_fail.xml" value="0.103125" />
+        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/activity_commits_list.xml" value="0.103125" />
+        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/activity_opening.xml" value="0.25" />
+        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/activity_opening_two.xml" value="0.25" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/commit_list_view.xml" value="0.49584026622296173" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/contributors_list.xml" value="0.22" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/emails_item.xml" value="0.25" />

@@ -22,7 +22,7 @@
         android:background="@drawable/toolbar_line"
         app:layout_constraintTop_toBottomOf="@+id/gpg">
 
-        <org.bandev.labyrinth.widgets.NonScrollListView
+        <org.bandev.libraries.NonScroll.NonScrollListView
             android:id="@+id/gpgList"
             android:layout_width="match_parent"
             android:dividerHeight="1px"
@@ -99,7 +99,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-        <org.bandev.labyrinth.widgets.NonScrollListView
+        <org.bandev.libraries.NonScroll.NonScrollListView
             android:id="@+id/infoList"
             android:layout_width="match_parent"
             android:dividerHeight="1px"

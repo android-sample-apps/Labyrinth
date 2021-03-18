@@ -21,7 +21,7 @@ import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.CommitAdapterVague
 import org.bandev.labyrinth.core.Animations
-import org.bandev.labyrinth.widgets.NonScrollListView
+import org.bandev.libraries.NonScroll.NonScrollListView
 import org.json.JSONArray
 
 class Commits : AppCompatActivity() {

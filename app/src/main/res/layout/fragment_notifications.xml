@@ -7,7 +7,7 @@
     android:background="@color/background"
     tools:context=".ui.notifications.NotificationsFragment">
 
-    <org.bandev.labyrinth.widgets.NonScrollListView
+    <org.bandev.libraries.NonScroll.NonScrollListView
         android:id="@+id/projects"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

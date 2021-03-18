@@ -2,62 +2,81 @@ package org.bandev.labyrinth.intro
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Button
-import android.widget.EditText
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import coil.load
+import coil.transform.CircleCropTransformation
+import okhttp3.*
+import okio.IOException
 import org.bandev.labyrinth.R
+import org.bandev.labyrinth.databinding.ActivityOpeningBinding
+
+/**
+ * First activity the user sees
+ */
 
 class First : AppCompatActivity() {
+
+    private lateinit var binding: ActivityOpeningBinding
+    private lateinit var handler: Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //Load the view - R.layout.activity_opening
+        binding = ActivityOpeningBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        setContentView(R.layout.activity_intro_first)
+        //Setup the handler
+        handler = Handler(Looper.getMainLooper())
 
-        val button: Button = findViewById(R.id.button)
-
-        button.setOnClickListener {
-            val name = findViewById<EditText>(R.id.name)
-
-            val pref = getSharedPreferences("Settings", 0)
-            val editor = pref.edit()
-            editor.putString("token", name.text.toString())
-            editor.apply()
-
-            val token = name.text.toString()
-
-            val intent = Intent(this, Second::class.java)
-            intent.putExtra("token", token)
-            this.startActivity(intent)
-
-
+        //Load the logo with coil to get a circle crop
+        binding.logo.load(R.drawable.labyrinth_logo) {
+            transformations(CircleCropTransformation())
         }
 
+        //Get the user's account
+        binding.next.setOnClickListener { getUser() }
+    }
+
+    private fun getUser() {
+        //Get the token given by the user
+        val token = binding.twoInputInner.text.toString()
+
+        //Build a request to GitLab
+        val request = Request.Builder()
+            .url("https://gitlab.com/api/v4/user")
+            .addHeader("PRIVATE-TOKEN", token)
+            .build()
+
+        //Queue and await callback
+        OkHttpClient().newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                //Some error
+                e.printStackTrace()
+                handler.post { error("Something went wrong, try again") }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    if (response.code == 401) {
+                        //If the access token was wrong
+                        handler.post { error("Invalid Access Token") }
+                    } else {
+                        //Everything is ok, send the user to the welcome screen
+                        val intent = Intent(this@First, Second::class.java)
+                        intent.putExtra("response", response.body!!.string())
+                        intent.putExtra("token", token)
+                        startActivity(intent)
+                    }
+                }
+            }
+        })
 
     }
 
-    fun moveOn() {
-        val pref = getSharedPreferences("User", 0)
-        val intent = Intent(this, Second::class.java)
-        this.startActivity(intent)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
+    internal fun error(message: String) {
+        binding.twoInputOuter.error = message
     }
 }

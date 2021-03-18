@@ -21,7 +21,7 @@ import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.core.Animations
-import org.bandev.labyrinth.widgets.NonScrollListView
+import org.bandev.libraries.NonScroll.NonScrollListView
 import org.json.JSONArray
 import org.json.JSONObject
 

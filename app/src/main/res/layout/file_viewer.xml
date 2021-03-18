@@ -63,7 +63,7 @@
             android:clipToPadding="true"
             android:overScrollMode="never">
 
-            <org.bandev.labyrinth.widgets.NonScrollListView
+            <org.bandev.libraries.NonScroll.NonScrollListView
                 android:id="@+id/listView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
