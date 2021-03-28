@@ -15,6 +15,7 @@ import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Connection
+import org.bandev.labyrinth.core.Notify
 import org.bandev.labyrinth.core.obj.User
 import org.bandev.labyrinth.databinding.OtherProfileActBinding
 import org.greenrobot.eventbus.EventBus

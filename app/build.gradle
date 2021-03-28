@@ -10,8 +10,8 @@ android {
         applicationId "org.bandev.labyrinth"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 500001
-        versionName "0.0.1"
+        versionCode 500002
+        versionName "v0.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

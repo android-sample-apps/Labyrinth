@@ -12,25 +12,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.octicons.Octicons
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import okhttp3.*
-import org.bandev.labyrinth.Notify
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.IssueAdapter
-import org.bandev.labyrinth.core.obj.Group
 import org.bandev.labyrinth.databinding.ProjectsIssuesBinding
 import org.bandev.labyrinth.databinding.ProjectsIssuesFragmentBinding
-import org.greenrobot.eventbus.EventBus
 import org.json.JSONArray
-import org.json.JSONObject
 import java.io.IOException
 
 class Issues : AppCompatActivity() {

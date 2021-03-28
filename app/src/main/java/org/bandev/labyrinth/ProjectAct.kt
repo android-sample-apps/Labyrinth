@@ -26,6 +26,7 @@ import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Connection
 import org.bandev.labyrinth.core.Central
+import org.bandev.labyrinth.core.Notify
 import org.bandev.labyrinth.core.obj.Commit
 import org.bandev.labyrinth.core.obj.Project
 import org.bandev.labyrinth.core.obj.ProjectStats

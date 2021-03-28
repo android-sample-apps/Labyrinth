@@ -6,7 +6,6 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import okhttp3.*
-import org.bandev.labyrinth.Notify
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.core.obj.*
 import org.bandev.labyrinth.core.obj.User

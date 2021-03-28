@@ -67,7 +67,7 @@ class First : AppCompatActivity() {
                         //Everything is ok, send the user to the welcome screen
                         val intent = Intent(this@First, Second::class.java)
                         intent.putExtra("response", response.body!!.string())
-                        intent.putExtra("token", token)
+                        intent.putExtra("token  ", token)
                         startActivity(intent)
                     }
                 }

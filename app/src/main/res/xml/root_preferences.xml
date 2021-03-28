@@ -1,50 +1,56 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="Appearance" >
+    <PreferenceCategory app:title="Appearance" app:iconSpaceReserved="false">
         <ListPreference
             android:animateLayoutChanges="true"
             android:entries="@array/theme_entries"
             android:entryValues="@array/theme_values"
             android:key="theme"
             android:title="App Theme"
-            app:useSimpleSummaryProvider="true"/>
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false"/>
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Security" >
+    <PreferenceCategory app:title="Security" app:iconSpaceReserved="false">
 
         <SwitchPreferenceCompat
             app:key="biometric"
             app:summary="Require biometric authentication to open app"
-            app:title="Biometric Login" />
+            app:title="Biometric Login"
+            app:iconSpaceReserved="false"/>
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Account &amp; Sync" >
+    <PreferenceCategory app:title="Account &amp; Sync" app:iconSpaceReserved="false">
 
         <SwitchPreferenceCompat
             app:key="async"
             app:summary="Automatically sync your account with GitLab"
-            app:title="Auto Sync" />
+            app:title="Auto Sync"
+            app:iconSpaceReserved="false"/>
 
         <Preference
             app:key="sync"
             app:summary="Sync your account with GitLab manually"
-            app:title="Sync Manually" />
+            app:title="Sync Manually"
+            app:iconSpaceReserved="false"/>
 
         <Preference
             app:key="delete"
             app:summary="Remove your GitLab account from this device"
-            app:title="Remove Account" />
+            app:title="Remove Account"
+            app:iconSpaceReserved="false"/>
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Information" >
+    <PreferenceCategory app:title="Information" app:iconSpaceReserved="false">
 
         <Preference
             app:key="about"
             app:summary="View app details"
-            app:title="About" />
+            app:title="About"
+            app:iconSpaceReserved="false"/>
 
     </PreferenceCategory>
 

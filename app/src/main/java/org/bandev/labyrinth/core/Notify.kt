@@ -1,6 +1,7 @@
-package org.bandev.labyrinth
+package org.bandev.labyrinth.core
 
 import org.bandev.labyrinth.core.obj.*
+import org.bandev.labyrinth.core.obj.User
 
 sealed class Notify {
     data class ReturnProject(val project: Project) : Notify()

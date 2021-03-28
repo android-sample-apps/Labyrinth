@@ -7,7 +7,6 @@ import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import coil.load
-import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.octicons.Octicons
@@ -16,14 +15,12 @@ import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Connection
+import org.bandev.labyrinth.core.Notify
 import org.bandev.labyrinth.core.obj.Group
-import org.bandev.labyrinth.core.obj.User
 import org.bandev.labyrinth.databinding.GroupActBinding
-import org.bandev.labyrinth.databinding.OtherProfileActBinding
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONObject
 
 class Groups : AppCompatActivity() {
     private lateinit var binding: GroupActBinding
