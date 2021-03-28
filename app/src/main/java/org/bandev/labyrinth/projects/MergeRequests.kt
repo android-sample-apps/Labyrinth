@@ -57,6 +57,7 @@ class MergeRequests : AppCompatActivity() {
         TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
             tab.text = when (position) {
                 0 -> "Open"
+                1 -> "Merged"
                 else -> "Closed"
             }
         }.attach()
@@ -70,12 +71,13 @@ class MergeRequests : AppCompatActivity() {
     class FragmentAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, val id: Int) :
         FragmentStateAdapter(fragmentManager, lifecycle) {
 
-        override fun getItemCount(): Int = 2
+        override fun getItemCount(): Int = 3
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> MergeRequestFragment.new(position, 0, id)
-                else -> MergeRequestFragment.new(position, 1, id)
+                1 -> MergeRequestFragment.new(position, 1, id)
+                else -> MergeRequestFragment.new(position, 2, id)
             }
         }
     }
@@ -120,6 +122,7 @@ class MergeRequests : AppCompatActivity() {
             val token = profile.getData("token")
             val state = when (type) {
                 0 -> "opened"
+                1 -> "merged"
                 else -> "closed"
             }
             AndroidNetworking.initialize(context)
