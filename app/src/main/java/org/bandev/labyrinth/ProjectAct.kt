@@ -3,7 +3,6 @@ package org.bandev.labyrinth
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -22,12 +21,11 @@ import com.maxkeppeler.sheets.options.OptionsSheet
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.octicons.Octicons
 import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.size
 import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Connection
-import org.bandev.labyrinth.core.Helpful
+import org.bandev.labyrinth.core.Central
 import org.bandev.labyrinth.core.obj.Commit
 import org.bandev.labyrinth.core.obj.Project
 import org.bandev.labyrinth.core.obj.ProjectStats
@@ -222,11 +220,15 @@ class ProjectAct : AppCompatActivity() {
             slug.text = project.namespace
             stars.text = project.stars.toString()
             forks.text = project.forks.toString()
-            avatar.load(project.avatar) {
-                crossfade(true)
-                transformations(RoundedCornersTransformation(30f))
-            }
         }
+        Central().loadAvatar(
+            project.avatar,
+            project.name,
+            binding.content.avatar,
+            RoundedCornersTransformation(30f),
+            200,
+            this
+        )
         project.getLastCommit()
     }
 
@@ -279,7 +281,7 @@ class ProjectAct : AppCompatActivity() {
     private fun showStats(projectStats: ProjectStats) {
         val commits = projectStats.commits
         val repoSize = projectStats.repositorySize
-        val repoSizeStr = Helpful().humanReadableByteCountSI(repoSize.toLong()).toString()
+        val repoSizeStr = Central().humanReadableByteCountSI(repoSize.toLong()).toString()
         val issues = project.issues
         val merges = ""
         val branch = project.defaultBranch

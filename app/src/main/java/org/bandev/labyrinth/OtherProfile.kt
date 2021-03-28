@@ -87,8 +87,8 @@ class OtherProfile : AppCompatActivity() {
         }
 
         val infoList = mutableListOf<String>()
-        infoList.add("{ 'left' : 'Groups', 'right' : '>', 'icon' : 'groups' }") //Id: 1
-        infoList.add("{ 'left' : 'Projects', 'right' : '>', 'icon' : 'repo' }") //Id: 2
+        infoList.add("{ 'left' : 'Groups', 'right' : '', 'icon' : 'groups' }") //Id: 1
+        infoList.add("{ 'left' : 'Projects', 'right' : '', 'icon' : 'repo' }") //Id: 2
 
         binding.content.options.adapter = InfoListAdapter(this, infoList.toTypedArray())
         binding.content.options.divider = null

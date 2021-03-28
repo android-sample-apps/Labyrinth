@@ -7,14 +7,8 @@ import android.preference.PreferenceManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import androidx.core.content.ContextCompat.getColor
-import coil.load
 import coil.transform.RoundedCornersTransformation
-import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.typeface.library.octicons.Octicons
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
-import org.bandev.labyrinth.R
+import org.bandev.labyrinth.core.Central
 import org.bandev.labyrinth.databinding.GroupListViewBinding
 import org.json.JSONObject
 
@@ -25,27 +19,19 @@ class GroupOrProjectListAdapter(private val context: Activity, private val text:
 
         val binding = GroupListViewBinding.inflate(context.layoutInflater, p2, false)
         val json = JSONObject(text[p0])
-        val issuesDrawable = IconicsDrawable(context, Octicons.Icon.oct_issue_opened).apply {
-            colorInt = getColor(context, R.color.textColorPrimary)
-            sizeDp = 24
-        }
 
         binding.name.text = json.getString("name")
         binding.visibility.text = (if (json.getString("description") != "") {
             json.getString("description")
         } else "No description").toString()
-        if (json.getString("avatar_url") != "null") {
-            binding.avatarList.load(json.getString("avatar_url")) {
-                transformations(RoundedCornersTransformation(20f))
-                crossfade(true)
-                placeholder(R.color.browser_actions_bg_grey)
-            }
-        } else {
-            binding.avatarList.load(issuesDrawable) {
-                transformations(RoundedCornersTransformation(20f))
-                crossfade(true)
-            }
-        }
+        Central().loadAvatar(
+            json.getString("avatar_url"),
+            json.getString("name"),
+            binding.avatarList,
+            RoundedCornersTransformation(20f),
+            100,
+            context
+        )
         return binding.root
     }
 

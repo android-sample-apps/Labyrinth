@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import coil.transform.CircleCropTransformation
+import coil.transform.RoundedCornersTransformation
 import com.maxkeppeler.sheets.options.DisplayMode
 import com.maxkeppeler.sheets.options.Option
 import com.maxkeppeler.sheets.options.OptionsSheet
@@ -18,6 +19,7 @@ import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.adapters.InfoListAdapter
+import org.bandev.labyrinth.core.Central
 import org.bandev.labyrinth.core.Pins
 import org.bandev.labyrinth.databinding.MainActBinding
 import org.bandev.labyrinth.projects.Commits
@@ -43,16 +45,19 @@ class MainAct : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        with(binding.avatar) {
-            load(profile.getData("avatarUrl")) {
-                crossfade(true)
-                transformations(CircleCropTransformation())
-            }
-            setOnClickListener {
-                val intent = Intent(context, ProfileAct::class.java)
-                startActivity(intent)
-            }
+        binding.avatar.setOnClickListener {
+            val intent = Intent(this, ProfileAct::class.java)
+            startActivity(intent)
         }
+
+        Central().loadAvatar(
+            profile.getData("avatarUrl"),
+            profile.getData("username"),
+            binding.avatar,
+            CircleCropTransformation(),
+            100,
+            this
+        )
 
         top()
         bottom()

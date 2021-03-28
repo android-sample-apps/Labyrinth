@@ -21,6 +21,7 @@ import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.account.activities.ProfileStatusAct
 import org.bandev.labyrinth.account.activities.ProfileTokenAct
 import org.bandev.labyrinth.adapters.InfoListAdapter
+import org.bandev.labyrinth.core.Central
 import org.json.JSONObject
 
 
@@ -59,12 +60,14 @@ class ProfileAct : AppCompatActivity() {
     private fun filldata() {
 
         val avatar = findViewById<ImageView>(R.id.avatar2)
-        avatar.load(profile.getData("avatarUrl")) {
-            crossfade(true)
-            transformations(
-                CircleCropTransformation()
-            )
-        }
+        Central().loadAvatar(
+            profile.getData("avatarUrl"),
+            profile.getData("username"),
+            avatar,
+            CircleCropTransformation(),
+            400,
+            this
+        )
 
         val usernameTextView: TextView = findViewById(R.id.name_)
         val emailTextView: TextView = findViewById(R.id.slug2)

@@ -98,6 +98,7 @@ class PinSomething : AppCompatActivity() {
 
                     val adapter = GroupOrProjectListAdapter(context, list.toTypedArray())
                     (listView ?: return).adapter = adapter
+                    listView!!.divider = null
 
 
                     (listView ?: return).onItemClickListener =
