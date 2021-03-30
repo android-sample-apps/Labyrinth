@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import coil.ImageLoader
+import coil.imageLoader
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
@@ -96,7 +98,7 @@ class PinSomething : AppCompatActivity() {
                         list.add(response.getJSONObject(i).toString())
                     }
 
-                    val adapter = GroupOrProjectListAdapter(context, list.toTypedArray())
+                    val adapter = GroupOrProjectListAdapter(context, list.toTypedArray(), imageLoader)
                     (listView ?: return).adapter = adapter
                     listView!!.divider = null
 

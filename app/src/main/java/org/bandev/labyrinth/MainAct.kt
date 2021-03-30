@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import coil.ImageLoader
+import coil.imageLoader
 import coil.load
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
@@ -55,6 +57,7 @@ class MainAct : AppCompatActivity() {
             profile.getData("username"),
             binding.avatar,
             CircleCropTransformation(),
+            imageLoader,
             100,
             this
         )
@@ -92,7 +95,7 @@ class MainAct : AppCompatActivity() {
                     }
                     1 -> {
                         //Send user to see their repos
-                        val intent = Intent(this, ProfileGroupsAct::class.java)
+                        val intent = Intent(this, ProjectsListActivity::class.java)
                         intent.putExtra("type", 1)
                         intent.putExtra("id", profile.getData("id").toInt())
                         startActivity(intent)
@@ -113,7 +116,7 @@ class MainAct : AppCompatActivity() {
         }
 
         val pins = Pins(this)
-        bottom.infoListView.adapter = GroupOrProjectListAdapter(this, pins.data.toTypedArray())
+        bottom.infoListView.adapter = GroupOrProjectListAdapter(this, pins.data.toTypedArray(), imageLoader)
         bottom.infoListView.divider = null
         bottom.infoListView.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->

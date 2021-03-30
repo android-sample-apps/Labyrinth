@@ -9,6 +9,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import coil.ImageLoader
+import coil.imageLoader
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.mikepenz.iconics.IconicsDrawable
@@ -65,6 +67,7 @@ class ProfileAct : AppCompatActivity() {
             profile.getData("username"),
             avatar,
             CircleCropTransformation(),
+            imageLoader,
             400,
             this
         )

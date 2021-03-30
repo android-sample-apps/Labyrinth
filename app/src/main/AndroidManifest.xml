@@ -75,6 +75,7 @@
             android:name=".Groups" />
         <activity
             android:name=".GroupsAct" />
+        <activity android:name=".ProjectsListActivity" />
         <activity
             android:name=".PinSomething" />
         <activity

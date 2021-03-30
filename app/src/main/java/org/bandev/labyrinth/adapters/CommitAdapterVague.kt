@@ -4,6 +4,7 @@ import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import coil.ImageLoader
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import org.bandev.labyrinth.core.Central
@@ -11,7 +12,7 @@ import org.bandev.labyrinth.databinding.IssuesListViewBinding
 import org.json.JSONObject
 
 
-class CommitAdapterVague(private val context: Activity, private val text: Array<String?>) :
+class CommitAdapterVague(private val context: Activity, private val text: Array<String?>, val imageLoader: ImageLoader) :
     BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View? {
 
@@ -26,6 +27,7 @@ class CommitAdapterVague(private val context: Activity, private val text: Array<
             jsonObj.getString("author_name"),
             binding.avatar,
             CircleCropTransformation(),
+            imageLoader,
             200,
             context
         )

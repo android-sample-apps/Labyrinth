@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import coil.imageLoader
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
@@ -103,7 +104,7 @@ class ProfileGroupsAct : AppCompatActivity() {
                         index++
                     }
                     val infoListAdapter =
-                        GroupOrProjectListAdapter(this@ProfileGroupsAct, emailList.toTypedArray())
+                        GroupOrProjectListAdapter(this@ProfileGroupsAct, emailList.toTypedArray(), imageLoader)
                     binding.content.infoList.adapter = infoListAdapter
                     binding.content.infoList.divider = null
                     binding.content.infoList.onItemClickListener =

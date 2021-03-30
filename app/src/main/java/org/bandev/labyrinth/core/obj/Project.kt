@@ -27,7 +27,8 @@ class Project(rawData: JSONObject, context: Context) {
         name = rawData.getString("name")
         avatar = rawData.getString("avatar_url")
         namespace = rawData.getString("path_with_namespace")
-        description = rawData.getString("description")
+        val localDesc = rawData.getString("description")
+        description = if (localDesc != "") localDesc else "No Description"
         url = rawData.getString("web_url")
         defaultBranch = rawData.getString("default_branch")
         stars = rawData.getInt("star_count")

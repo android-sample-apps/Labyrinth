@@ -5,14 +5,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ListView
+import coil.ImageLoader
 import coil.load
+import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import coil.transform.Transformation
 import org.bandev.libraries.profilepicture.PFPView
 import java.text.CharacterIterator
 import java.text.StringCharacterIterator
 
-class Central {
+class Central() {
+
+    val pfpView = PFPView()
+
     fun humanReadableByteCountSI(bytes: Long): String? {
         var bytes = bytes
         if (-1000 < bytes && bytes < 1000) {
@@ -30,23 +35,21 @@ class Central {
         url: String,
         name: String,
         imageView: ImageView,
-        transformations: Transformation,
+        transformation: Transformation,
+        imageLoader: ImageLoader,
         size: Int,
         context: Context
     ) {
-        val placeholder = PFPView().draw(size, name, context)
-        if (url != "null") {
-            imageView.load(url) {
-                transformations(transformations)
-                crossfade(true)
-                placeholder(placeholder)
-            }
-        } else {
-            imageView.load(placeholder) {
-                transformations(transformations)
-                crossfade(true)
-            }
-        }
+        val request = ImageRequest.Builder(context)
+            .crossfade(true)
+            .target(imageView)
+            .transformations(transformation)
+            .data(
+                if (url != "null") url
+                else pfpView.draw(size, name, context)
+            )
+            .build()
 
+        imageLoader.enqueue(request)
     }
 }

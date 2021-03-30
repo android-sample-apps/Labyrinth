@@ -56,6 +56,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.4'
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     // Android-Iconics - https://github.com/mikepenz/Android-Iconics
     def iconics_version = "5.2.8"

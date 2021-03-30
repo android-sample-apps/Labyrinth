@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import coil.imageLoader
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
@@ -89,7 +90,7 @@ class Commits : AppCompatActivity() {
                         list.add(response.getJSONObject(i).toString())
                     }
 
-                    val adapter = CommitAdapterVague(context, list.toTypedArray())
+                    val adapter = CommitAdapterVague(context, list.toTypedArray(), imageLoader)
                     (listView ?: return).adapter = adapter
                     (listView ?: return).divider = null
 

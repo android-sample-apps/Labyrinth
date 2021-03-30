@@ -61,4 +61,9 @@
     <string name="home_top_title">Your Work</string>
     <string name="home_bottom_title">Pins</string>
     <string name="home_bottom_add_desc">Pin a new item</string>
+
+    <string name="avatar">Avatar</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="projects">Projects</string>
 </resources>

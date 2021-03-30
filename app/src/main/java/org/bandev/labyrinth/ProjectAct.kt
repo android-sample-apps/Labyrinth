@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import coil.ImageLoader
 import coil.load
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
@@ -46,6 +47,7 @@ class ProjectAct : AppCompatActivity() {
     private var projectId = ""
     private var id: Int = 0
     private lateinit var project: Project
+    private lateinit var imageLoader: ImageLoader
 
     private lateinit var binding: ProjectActBinding
 
@@ -56,6 +58,12 @@ class ProjectAct : AppCompatActivity() {
 
         binding = ProjectActBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // New image loader
+        imageLoader = ImageLoader.Builder(this)
+            .availableMemoryPercentage(0.25)
+            .crossfade(true)
+            .build()
 
         latestCommit = findViewById(R.id.contentView3)
         progressBar = findViewById(R.id.progressBar)
@@ -227,6 +235,7 @@ class ProjectAct : AppCompatActivity() {
             project.name,
             binding.content.avatar,
             RoundedCornersTransformation(30f),
+            imageLoader,
             200,
             this
         )

@@ -10,6 +10,7 @@ import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.core.obj.*
 import org.bandev.labyrinth.core.obj.User
 import org.greenrobot.eventbus.EventBus
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 
@@ -43,6 +44,37 @@ class Connection(val context: Context) {
                         val project =
                             Project(JSONObject((response.body ?: return@use).string()), context)
                         EventBus.getDefault().post(Notify.ReturnProject(project))
+                    }
+                }
+            })
+        }
+
+        fun getAll() {
+            val request = Request.Builder()
+                .url("https://gitlab.com/api/v4/projects?membership=true")
+                .header("PRIVATE-TOKEN", token)
+                .build()
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    response.use {
+                        if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                        val projectsArray = JSONArray((response.body ?: return@use).string())
+
+                        // Iterate through the array to extract the projects
+                        val projectsList: MutableList<org.bandev.labyrinth.core.obj.Project> =
+                            mutableListOf()
+                        for (i in 0 until projectsArray.length()) {
+                            projectsList.add(
+                                Project(JSONObject(projectsArray[i].toString()), context)
+                            )
+                        }
+                        EventBus.getDefault().post(Notify.ReturnProjects(projectsList))
                     }
                 }
             })
