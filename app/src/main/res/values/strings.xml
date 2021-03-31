@@ -66,4 +66,5 @@
     <string name="name">Name</string>
     <string name="description">Description</string>
     <string name="projects">Projects</string>
+    <string name="groups">Groups</string>
 </resources>

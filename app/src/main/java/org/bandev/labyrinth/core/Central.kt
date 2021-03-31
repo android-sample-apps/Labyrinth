@@ -1,10 +1,18 @@
 package org.bandev.labyrinth.core
 
 import android.content.Context
+import android.graphics.Insets
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowInsets
 import android.widget.ImageView
 import android.widget.ListView
+import android.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.updatePadding
 import coil.ImageLoader
 import coil.load
 import coil.request.ImageRequest
@@ -51,5 +59,17 @@ class Central() {
             .build()
 
         imageLoader.enqueue(request)
+    }
+
+    fun fitSystemBars(view: View, window: Window, toolbar: androidx.appcompat.widget.Toolbar) {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val ins = insets.getInsets(WindowInsets.Type.statusBars())
+                toolbar.updatePadding(top = ins.top)
+            }
+            insets
+        }
     }
 }

@@ -12,10 +12,10 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.octicons.Octicons
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
-import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Connection
 import org.bandev.labyrinth.core.Notify
+import org.bandev.labyrinth.core.Type
 import org.bandev.labyrinth.core.obj.User
 import org.bandev.labyrinth.databinding.OtherProfileActBinding
 import org.greenrobot.eventbus.EventBus
@@ -100,14 +100,14 @@ class OtherProfile : AppCompatActivity() {
                 val obj = JSONObject(selectedItem)
                 when {
                     obj.getString("left") == "Groups" -> {
-                        val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
+                        val intent = Intent(applicationContext, GroupsListActivity::class.java)
                         intent.putExtra("type", 0)
                         intent.putExtra("id", user.id)
                         startActivity(intent)
                     }
                     obj.getString("left") == "Projects" -> {
-                        val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
-                        intent.putExtra("type", 1)
+                        val intent = Intent(applicationContext, ProjectsListActivity::class.java)
+                        intent.putExtra("type", Type.PROJECTS_FROM_OTHER)
                         intent.putExtra("id", user.id)
                         startActivity(intent)
                     }

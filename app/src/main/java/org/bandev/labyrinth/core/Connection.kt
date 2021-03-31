@@ -49,9 +49,9 @@ class Connection(val context: Context) {
             })
         }
 
-        fun getAll() {
+        fun getCustom(url: String) {
             val request = Request.Builder()
-                .url("https://gitlab.com/api/v4/projects?membership=true")
+                .url("https://gitlab.com/api/v4/$url")
                 .header("PRIVATE-TOKEN", token)
                 .build()
 
@@ -79,29 +79,6 @@ class Connection(val context: Context) {
                 }
             })
         }
-
-        fun getStats(id: Int) {
-            val request = Request.Builder()
-                .url("https://gitlab.com/api/v4/projects/$id?statistics=true")
-                .header("PRIVATE-TOKEN", token)
-                .build()
-
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    e.printStackTrace()
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    response.use {
-                        if (!response.isSuccessful) throw IOException("Unexpected code $response")
-                        val responseStr = (response.body ?: return@use).string()
-                        val project = ProjectStats(JSONObject(responseStr))
-                        EventBus.getDefault().post(Notify.ReturnProjectStats(project))
-                    }
-                }
-            })
-        }
-
         fun fork(project: org.bandev.labyrinth.core.obj.Project) {
             val id = project.id
             AndroidNetworking.post("https://gitlab.com/api/v4/projects/$id/fork")
@@ -251,8 +228,38 @@ class Connection(val context: Context) {
                     response.use {
                         if (!response.isSuccessful) throw IOException("Unexpected code $response")
                         val responseStr = (response.body ?: return@use).string()
-                        val group = Group(JSONObject(responseStr), context)
+                        val group = Group(JSONObject(responseStr))
                         EventBus.getDefault().post(Notify.ReturnGroup(group))
+                    }
+                }
+            })
+        }
+
+        fun getAll() {
+            val request = Request.Builder()
+                .url("https://gitlab.com/api/v4/groups?membership=true")
+                .header("PRIVATE-TOKEN", token)
+                .build()
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    response.use {
+                        if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                        val groupsArray = JSONArray((response.body ?: return@use).string())
+
+                        // Iterate through the array to extract the projects
+                        val groupsList: MutableList<Group> = mutableListOf()
+                        for (i in 0 until groupsArray.length()) {
+                            groupsList.add(
+                                Group(JSONObject(groupsArray[i].toString()))
+                            )
+                        }
+                        EventBus.getDefault().post(Notify.ReturnGroups(groupsList))
                     }
                 }
             })

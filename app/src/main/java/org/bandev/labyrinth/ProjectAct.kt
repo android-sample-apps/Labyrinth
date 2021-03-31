@@ -30,7 +30,6 @@ import org.bandev.labyrinth.core.Central
 import org.bandev.labyrinth.core.Notify
 import org.bandev.labyrinth.core.obj.Commit
 import org.bandev.labyrinth.core.obj.Project
-import org.bandev.labyrinth.core.obj.ProjectStats
 import org.bandev.labyrinth.databinding.ProjectActBinding
 import org.bandev.labyrinth.projects.*
 import org.greenrobot.eventbus.EventBus
@@ -153,7 +152,6 @@ class ProjectAct : AppCompatActivity() {
             is Notify.ReturnStar -> starred(event.stars, event.positive)
             is Notify.ReturnCommit -> showLatestCommit(event.commit)
             is Notify.ReturnAvatar -> showCommitAvatar(event.url)
-            is Notify.ReturnProjectStats -> showStats(event.projectStats)
         }
     }
 
@@ -266,7 +264,6 @@ class ProjectAct : AppCompatActivity() {
         icon.sizeDp = 24
         binding.content.latestCommit.pipeline.setImageDrawable(icon)
         Connection(this).Users().getAvatar(commit.authorEmail)
-        Connection(this).Project().getStats(project.id)
     }
 
     /**
@@ -280,6 +277,7 @@ class ProjectAct : AppCompatActivity() {
             crossfade(true)
             transformations(CircleCropTransformation())
         }
+        showStats()
     }
 
     /**
@@ -288,19 +286,15 @@ class ProjectAct : AppCompatActivity() {
      * @author Jack Devey
      */
 
-    private fun showStats(projectStats: ProjectStats) {
-        val commits = projectStats.commits
-        val repoSize = projectStats.repositorySize
-        val repoSizeStr = Central().humanReadableByteCountSI(repoSize.toLong()).toString()
+    private fun showStats() {
         val issues = project.issues
-        val merges = ""
         val branch = project.defaultBranch
         val infoList: MutableList<String> = mutableListOf()
         infoList.add("{ 'left' : 'Issues', 'right' : '$issues', 'icon' : 'issue' }")
-        infoList.add("{ 'left' : 'Merge Requests', 'right' : '$merges', 'icon' : 'merge' }")
+        infoList.add("{ 'left' : 'Merge Requests', 'right' : '', 'icon' : 'merge' }")
         infoList.add("{ 'left' : 'Branch', 'right' : '$branch', 'icon' : 'branch' }")
-        infoList.add("{ 'left' : 'View Files', 'right' : '$repoSizeStr', 'icon' : 'file' }")
-        infoList.add("{ 'left' : 'Commits', 'right' : '$commits', 'icon' : 'commit' }")
+        infoList.add("{ 'left' : 'View Files', 'right' : '', 'icon' : 'file' }")
+        infoList.add("{ 'left' : 'Commits', 'right' : '', 'icon' : 'commit' }")
         val infoListAdapter = InfoListAdapter(this@ProjectAct, infoList.toTypedArray())
         binding.content.infoList.adapter = infoListAdapter
         binding.content.infoList.divider = null

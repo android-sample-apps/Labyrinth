@@ -4,20 +4,10 @@ import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import coil.transform.CircleCropTransformation
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONObjectRequestListener
-import org.bandev.labyrinth.MainAct
+import org.bandev.labyrinth.MainActivity
 import org.bandev.labyrinth.R
 import org.bandev.labyrinth.databinding.ActivityOpeningTwoBinding
 import org.json.JSONObject
@@ -80,7 +70,7 @@ class Second : AppCompatActivity() {
         }
 
         //Open main activity
-        val intent = Intent(this, MainAct::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         this.startActivity(intent)
         finish()
     }

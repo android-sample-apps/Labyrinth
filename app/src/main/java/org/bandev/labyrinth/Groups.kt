@@ -12,10 +12,10 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.octicons.Octicons
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
-import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Connection
 import org.bandev.labyrinth.core.Notify
+import org.bandev.labyrinth.core.Type
 import org.bandev.labyrinth.core.obj.Group
 import org.bandev.labyrinth.databinding.GroupActBinding
 import org.greenrobot.eventbus.EventBus
@@ -73,7 +73,7 @@ class Groups : AppCompatActivity() {
         else
             binding.content.description.text = "No description"
 
-        binding.content.avatar.load(group.avatarUrl) {
+        binding.content.avatar.load(group.avatar) {
             crossfade(true)
             transformations(RoundedCornersTransformation(20f))
         }
@@ -88,10 +88,9 @@ class Groups : AppCompatActivity() {
 
         binding.content.options.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
-                val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
-                intent.putExtra("type", 1)
+                val intent = Intent(applicationContext, ProjectsListActivity::class.java)
+                intent.putExtra("type", Type.PROJECTS_FROM_GROUP)
                 intent.putExtra("id", group.id)
-                intent.putExtra("isGroup", true)
                 startActivity(intent)
             }
     }

@@ -64,7 +64,7 @@ class Splash : AppCompatActivity() {
 
                     checkWifi()
 
-                    val i = Intent(applicationContext, MainAct::class.java)
+                    val i = Intent(applicationContext, MainActivity::class.java)
                     val mBundle = Bundle()
                     i.putExtras(mBundle)
                     startActivity(i)
@@ -102,7 +102,7 @@ class Splash : AppCompatActivity() {
 
                 checkWifi()
 
-                val i = Intent(applicationContext, MainAct::class.java)
+                val i = Intent(applicationContext, MainActivity::class.java)
                 val mBundle = Bundle()
                 i.putExtras(mBundle)
                 startActivity(i)

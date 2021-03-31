@@ -7,29 +7,26 @@ import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import coil.ImageLoader
 import coil.imageLoader
-import coil.load
 import coil.transform.CircleCropTransformation
-import coil.transform.RoundedCornersTransformation
 import com.maxkeppeler.sheets.options.DisplayMode
 import com.maxkeppeler.sheets.options.Option
 import com.maxkeppeler.sheets.options.OptionsSheet
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.octicons.Octicons
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Central
 import org.bandev.labyrinth.core.Pins
+import org.bandev.labyrinth.core.Type
 import org.bandev.labyrinth.databinding.MainActBinding
 import org.bandev.labyrinth.projects.Commits
 import org.bandev.labyrinth.projects.FileViewer
 import org.bandev.labyrinth.projects.Issues
 import org.json.JSONObject
 
-class MainAct : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActBinding
     private var profile: Profile = Profile()
@@ -70,7 +67,7 @@ class MainAct : AppCompatActivity() {
     //All of the code that manages the 'top' part of the fragment
     private fun top() {
         //Setup top as the 'top' content only
-        val top = binding.inner.top
+        val top = binding.top
 
         //Create MutableList infoList, and fill each element with json data
         val infoList = mutableListOf<String>()
@@ -87,18 +84,18 @@ class MainAct : AppCompatActivity() {
                 //Find where to send the user based off the position of the click
                 when (position) {
                     0 -> {
-                        //Send user to see their groups
-                        val intent = Intent(this, ProfileGroupsAct::class.java)
-                        intent.putExtra("type", 0)
-                        intent.putExtra("id", profile.getData("id").toInt())
-                        startActivity(intent)
+                        startActivity(
+                            Intent(this, GroupsListActivity::class.java)
+                                .putExtra("type", Type.PROJECTS_FROM_USER)
+                                .putExtra("id", profile.getData("id").toInt())
+                        )
                     }
                     1 -> {
-                        //Send user to see their repos
-                        val intent = Intent(this, ProjectsListActivity::class.java)
-                        intent.putExtra("type", 1)
-                        intent.putExtra("id", profile.getData("id").toInt())
-                        startActivity(intent)
+                        startActivity(
+                            Intent(this, ProjectsListActivity::class.java)
+                                .putExtra("type", Type.PROJECTS_FROM_USER)
+                                .putExtra("id", profile.getData("id").toInt())
+                        )
                     }
                 }
             }
@@ -107,7 +104,7 @@ class MainAct : AppCompatActivity() {
     //All of the code that manages the 'bottom' part of the fragment
     private fun bottom() {
         //Setup bottom as the 'bottom' content only
-        val bottom = binding.inner.bottom
+        val bottom = binding.bottom
 
         //When add button is pressed, send user to activity showing what can be pinned
         bottom.add.setOnClickListener {

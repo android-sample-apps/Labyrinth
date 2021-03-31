@@ -9,9 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import coil.ImageLoader
 import coil.imageLoader
-import coil.load
 import coil.transform.CircleCropTransformation
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.octicons.Octicons
@@ -19,11 +17,11 @@ import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.account.activities.ProfileEmailsAct
-import org.bandev.labyrinth.account.activities.ProfileGroupsAct
 import org.bandev.labyrinth.account.activities.ProfileStatusAct
 import org.bandev.labyrinth.account.activities.ProfileTokenAct
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Central
+import org.bandev.labyrinth.core.Type
 import org.json.JSONObject
 
 
@@ -137,14 +135,14 @@ class ProfileAct : AppCompatActivity() {
                 val obj = JSONObject(selectedItem)
                 when (obj.getString("left")) {
                     "Groups" -> {
-                        val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
+                        val intent = Intent(applicationContext, GroupsListActivity::class.java)
                         intent.putExtra("type", 0)
                         intent.putExtra("id", profile.getData("id").toInt())
                         startActivity(intent)
                     }
                     "Projects" -> {
-                        val intent = Intent(applicationContext, ProfileGroupsAct::class.java)
-                        intent.putExtra("type", 1)
+                        val intent = Intent(applicationContext, ProjectsListActivity::class.java)
+                        intent.putExtra("type", Type.PROJECTS_FROM_USER)
                         intent.putExtra("id", profile.getData("id").toInt())
                         startActivity(intent)
                     }

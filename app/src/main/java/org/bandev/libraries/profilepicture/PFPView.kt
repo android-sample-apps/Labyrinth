@@ -35,7 +35,7 @@ class PFPView {
         val y = (size / 2 - (textPaint.descent() + textPaint.ascent()) / 2)
 
         // Draw the text to the canvas
-        canvas.drawText(name[0].toString(), x, y, textPaint)
+        canvas.drawText(name[0].toString().toUpperCase(), x, y, textPaint)
 
         // Return it as a bitmap drawable
         return BitmapDrawable(context.resources, bitmap)

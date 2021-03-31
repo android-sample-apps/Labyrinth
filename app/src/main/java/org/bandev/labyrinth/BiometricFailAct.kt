@@ -2,7 +2,6 @@ package org.bandev.labyrinth
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
@@ -41,7 +40,7 @@ class BiometricFailAct : AppCompatActivity() {
                 ) {
                     super.onAuthenticationSucceeded(result)
 
-                    startActivity(Intent(applicationContext, MainAct::class.java))
+                    startActivity(Intent(applicationContext, MainActivity::class.java))
                     finish()
                 }
 

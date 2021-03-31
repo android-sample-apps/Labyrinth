@@ -5,27 +5,27 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import coil.imageLoader
 import org.bandev.labyrinth.core.*
-import org.bandev.labyrinth.core.obj.Project
-import org.bandev.labyrinth.databinding.ProjectsListActivityBinding
-import org.bandev.labyrinth.recycleradapters.ProjectRecyclerAdapter
+import org.bandev.labyrinth.core.obj.Group
+import org.bandev.labyrinth.databinding.GroupsListActivityBinding
+import org.bandev.labyrinth.recycleradapters.GroupRecyclerAdapter
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 /**
- * [ProjectsListActivity] is the activity for showing the
- * user's projects with a recyclerview
+ * [GroupsListActivity] is the activity for showing the
+ * user's groups with a recyclerview
  * @author Jack Devey
  * @since v0.0.3
  * Notes:
- *  - First activity to be migrated to a RecyclerView
  *  - Uses EventBus return logic (first gen)
  */
-class ProjectsListActivity : AppCompatActivity(), ProjectRecyclerAdapter.ClickListener {
+class GroupsListActivity : AppCompatActivity(), GroupRecyclerAdapter.ClickListener {
 
-    private lateinit var binding: ProjectsListActivityBinding
+    private lateinit var binding: GroupsListActivityBinding
     private lateinit var connection: Connection
     private var globalVars = GlobalVars()
 
@@ -33,7 +33,7 @@ class ProjectsListActivity : AppCompatActivity(), ProjectRecyclerAdapter.ClickLi
         super.onCreate(savedInstanceState)
 
         // Create the view
-        binding = ProjectsListActivityBinding.inflate(layoutInflater)
+        binding = GroupsListActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Central().fitSystemBars(binding.root, window, binding.toolbar)
 
@@ -67,19 +67,19 @@ class ProjectsListActivity : AppCompatActivity(), ProjectRecyclerAdapter.ClickLi
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onNotifyReceive(event: Notify) {
-        if (event is Notify.ReturnProjects) {
-            showData(event.projectsList)
+        if (event is Notify.ReturnGroups) {
+            showData(event.groupsList)
         }
     }
 
     /**
      * Show the data on the page
-     * @param projectsList [MutableList]
+     * @param groupsList [MutableList]
      */
-    private fun showData(projectsList: MutableList<Project>) {
-        val recyclerAdapter = ProjectRecyclerAdapter(
-            projectsList, imageLoader,
-            this@ProjectsListActivity, this
+    private fun showData(groupsList: MutableList<Group>) {
+        val recyclerAdapter = GroupRecyclerAdapter(
+            groupsList, imageLoader,
+            this@GroupsListActivity, this
         )
         with(binding.recyclerView) {
             adapter = recyclerAdapter
@@ -91,20 +91,12 @@ class ProjectsListActivity : AppCompatActivity(), ProjectRecyclerAdapter.ClickLi
     }
 
     /**
-     * Make a request to GitLab for the user's projects
+     * Make a request to GitLab for the user's groups
      */
     private fun makeRequest() {
         binding.spinner.visibility = View.VISIBLE // Show the spinner
         binding.recyclerView.visibility = View.INVISIBLE // Hide the content
-        val type = intent.extras?.getInt("type") ?: return // The type
-        val id = intent.extras?.getInt("id") ?: return // The user Id
-        connection.Project().getCustom(
-            when (type) {
-                Type.PROJECTS_FROM_OTHER -> "users/$id/projects"
-                Type.PROJECTS_FROM_GROUP -> "groups/$id/projects"
-                else -> "projects?membership=true"
-            }
-        )
+        connection.Groups().getAll()
     }
 
     /**
@@ -132,12 +124,12 @@ class ProjectsListActivity : AppCompatActivity(), ProjectRecyclerAdapter.ClickLi
     }
 
     /**
-     * On project pressed in RecyclerView
-     * @param project [Project]
+     * On group pressed in RecyclerView
+     * @param group [Group]
      */
-    override fun onClick(project: Project) {
-        val intent = Intent(this, ProjectAct::class.java)
-        intent.putExtra("id", project.id)
+    override fun onClick(group: Group) {
+        val intent = Intent(this, Groups::class.java)
+        intent.putExtra("id", group.id)
         startActivity(intent)
     }
 }
