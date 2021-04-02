@@ -6,7 +6,7 @@
     android:background="@color/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/contentView3"
+        android:id="@+id/options_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -76,6 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:paddingBottom="20dp"
             android:text="Description"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp"
@@ -90,7 +91,6 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_location"
             android:drawablePadding="5dp"
-            android:paddingTop="20dp"
             android:paddingEnd="10dp"
             android:paddingBottom="20dp"
             android:text="Location"
@@ -107,12 +107,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="5dp"
-            android:paddingTop="20dp"
             android:paddingBottom="20dp"
             android:text="Labyrinth Contributor"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="16sp"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:drawableStartCompat="@drawable/ic_contributor"
             app:drawableTint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"

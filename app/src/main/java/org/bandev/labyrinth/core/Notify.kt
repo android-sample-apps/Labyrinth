@@ -13,4 +13,5 @@ sealed class Notify {
     data class ReturnGroup(val group: Group) : Notify()
     data class ReturnProjects(val projectsList: MutableList<Project>) : Notify()
     data class ReturnGroups(val groupsList: MutableList<Group>) : Notify()
+    data class ReturnMembers(val membersList: MutableList<Member>) : Notify()
 }

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import coil.imageLoader
 import org.bandev.labyrinth.core.*
 import org.bandev.labyrinth.core.obj.Group
@@ -128,7 +127,7 @@ class GroupsListActivity : AppCompatActivity(), GroupRecyclerAdapter.ClickListen
      * @param group [Group]
      */
     override fun onClick(group: Group) {
-        val intent = Intent(this, Groups::class.java)
+        val intent = Intent(this, GroupsActivity::class.java)
         intent.putExtra("id", group.id)
         startActivity(intent)
     }

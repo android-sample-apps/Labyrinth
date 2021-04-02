@@ -88,6 +88,6 @@ class About : AppCompatActivity() {
     }
 
     private fun showGroup() {
-        startActivity(Intent(this, Groups::class.java).putExtra("id", 8650010))
+        startActivity(Intent(this, GroupsActivity::class.java).putExtra("id", 8650010))
     }
 }

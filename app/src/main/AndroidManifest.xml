@@ -28,7 +28,7 @@
             android:syncable="true"/>
         <service
             android:name="org.bandev.labyrinth.account.SyncService"
-            android:exported="true"
+            android:exported="false"
             android:syncable="true"
             android:process=":sync">
             <intent-filter>
@@ -54,6 +54,7 @@
         <activity android:name=".MainActivity"/>
         <activity android:name=".ProjectsListActivity" />
         <activity android:name=".GroupsListActivity" />
+        <activity android:name=".GroupsActivity" />
 
         <activity
             android:name=".SettingsAct">
@@ -77,10 +78,8 @@
             android:name=".account.activities.ProfileTokenAct" />
         <activity
             android:name=".account.activities.ProfileGroupsAct"/>
-        <activity
-            android:name=".Groups" />
-        <activity
-            android:name=".GroupsAct" />
+
+
         <activity android:name=".ProjectsListActivity" />
         <activity android:name=".GroupsListActivity" />
         <activity

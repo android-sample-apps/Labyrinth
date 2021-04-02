@@ -235,6 +235,34 @@ class Connection(val context: Context) {
             })
         }
 
+        fun getMembers(id: Int) {
+            val request = Request.Builder()
+                .url("https://gitlab.com/api/v4/groups/$id/members")
+                .header("PRIVATE-TOKEN", token)
+                .build()
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    response.use {
+                        if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                        val membersArray = JSONArray((response.body ?: return@use).string())
+                        // Iterate through the array to extract the members
+                        val membersList: MutableList<Member> = mutableListOf()
+                        for (i in 0 until membersArray.length()) {
+                            membersList.add(
+                                Member(JSONObject(membersArray[i].toString()))
+                            )
+                        }
+                        EventBus.getDefault().post(Notify.ReturnMembers(membersList))
+                    }
+                }
+            })
+        }
+
         fun getAll() {
             val request = Request.Builder()
                 .url("https://gitlab.com/api/v4/groups?membership=true")

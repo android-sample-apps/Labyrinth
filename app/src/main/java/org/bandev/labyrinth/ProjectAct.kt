@@ -64,7 +64,7 @@ class ProjectAct : AppCompatActivity() {
             .crossfade(true)
             .build()
 
-        latestCommit = findViewById(R.id.contentView3)
+        latestCommit = findViewById(R.id.options_container)
         progressBar = findViewById(R.id.progressBar)
         infoBar = findViewById(R.id.contentView4)
 

@@ -65,6 +65,18 @@
     <string name="avatar">Avatar</string>
     <string name="name">Name</string>
     <string name="description">Description</string>
+    <string name="no_description">Description</string>
     <string name="projects">Projects</string>
     <string name="groups">Groups</string>
+
+    <string name="access_0">No access</string>
+    <string name="access_5">Minimal access</string>
+    <string name="access_10">Guest</string>
+    <string name="access_20">Reporter</string>
+    <string name="access_30">Developer</string>
+    <string name="access_40">Maintainer</string>
+    <string name="access_50">Owner</string>
+    <string name="members">Members</string>
+    <string name="group">Group</string>
+    <string name="your_work">Your Work</string>
 </resources>

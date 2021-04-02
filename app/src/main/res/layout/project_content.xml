@@ -21,7 +21,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/contentView3"
+        android:id="@+id/options_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -41,7 +41,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/contentView3" />
+            app:layout_constraintTop_toTopOf="@+id/options_container" />
 
         <include
             android:id="@+id/latest_commit"
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/toolbar_line"
-        app:layout_constraintTop_toBottomOf="@+id/contentView3">
+        app:layout_constraintTop_toBottomOf="@+id/options_container">
 
         <org.bandev.libraries.NonScroll.NonScrollListView
             android:id="@+id/infoList"
