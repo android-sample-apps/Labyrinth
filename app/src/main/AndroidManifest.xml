@@ -77,12 +77,6 @@
         <activity
             android:name=".account.activities.ProfileTokenAct" />
         <activity
-            android:name=".account.activities.ProfileGroupsAct"/>
-
-
-        <activity android:name=".ProjectsListActivity" />
-        <activity android:name=".GroupsListActivity" />
-        <activity
             android:name=".PinSomething" />
         <activity
             android:name=".ProjectAct" />

@@ -7,7 +7,7 @@ class MergeRequest(val json: JSONObject) {
     val iid = json.getInt("iid")
     val projectId = json.getInt("project_id")
     val title: String = json.getString("title")
-    val descripton: String = json.getString("description")
+    val description: String = json.getString("description")
     val state: String = json.getString("state")
     val createdAt: String = json.getString("created_at")
     val mergedAt: String = json.getString("merged_at")

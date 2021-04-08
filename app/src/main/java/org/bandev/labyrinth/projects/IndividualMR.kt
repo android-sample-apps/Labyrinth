@@ -68,7 +68,7 @@ class IndividualMR : AppCompatActivity() {
 
         //Set description in markdown renderor
         val markwon: Markwon = Markwon.create(this)
-        markwon.setMarkdown(binding.content.description, mr.descripton)
+        markwon.setMarkdown(binding.content.description, mr.description)
 
         //Work out and set likes
         val diff = mr.upVotes - mr.downVotes

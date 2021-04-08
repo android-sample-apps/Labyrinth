@@ -16,7 +16,8 @@
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/activity_opening.xml" value="0.25" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/activity_opening_two.xml" value="0.25" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/category.xml" value="0.103125" />
-        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/commit_list_view.xml" value="0.49584026622296173" />
+        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/commit_list_view.xml" value="0.33" />
+        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/commit_list_view_vague.xml" value="0.103125" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/contributors_list.xml" value="0.22" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/emails_item.xml" value="0.25" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/file_content.xml" value="0.1" />
@@ -33,7 +34,7 @@
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/individual_file_viewer.xml" value="0.1" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/individual_mr.xml" value="0.1105072463768116" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/info_recycler_adapter.xml" value="0.22" />
-        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/info_view.xml" value="0.25" />
+        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/info_view.xml" value="0.5" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/issue_content.xml" value="0.103125" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/issues_item.xml" value="0.37538461538461537" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/issues_list_act.xml" value="0.103125" />
@@ -41,8 +42,10 @@
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/keys_item.xml" value="0.10511651469098278" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/layout_list_item.xml" value="0.1" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/main_act.xml" value="0.12952898550724637" />
-        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/member_recycler_adapter.xml" value="0.10511651469098278" />
-        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/merges_item.xml" value="0.15217391304347827" />
+        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/member_recycler_adapter.xml" value="0.5" />
+        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/merge_request_fragment.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/merge_request_recycler_adapter.xml" value="0.5" />
+        <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/merges_item.xml" value="0.25" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/mr_content.xml" value="0.25" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/other_profile_act.xml" value="0.2" />
         <entry key="..\:/Users/jackw/Documents/GitLab/Labyrinth/app/src/main/res/layout/other_profile_content.xml" value="0.3127962085308057" />

@@ -8,14 +8,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
+import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import org.bandev.labyrinth.core.Central
-import org.bandev.labyrinth.core.obj.Group
-import org.bandev.labyrinth.databinding.GroupRecyclerAdapterBinding
+import org.bandev.labyrinth.core.obj.MergeRequest
+import org.bandev.labyrinth.databinding.MergeRequestRecyclerAdapterBinding
 
 /**
- * Show a list of [Group] classes to the user.
- * @param groupList [MutableList] - The list of Groups to display
+ * Show a list of [MergeRequest] classes to the user.
+ * @param mergeList [MutableList] - The list of Merge Requests to display
  * @param imageLoader [ImageLoader] - The imageLoader from the activity
  * @param clickListener [ClickListener]
  * @param context [Context] - The context of the activity
@@ -23,12 +24,12 @@ import org.bandev.labyrinth.databinding.GroupRecyclerAdapterBinding
  * @since v0.0.3
  */
 
-class GroupRecyclerAdapter(
-    private val groupList: MutableList<Group>,
+class MergeRequestRecyclerAdapter(
+    private val mergeList: MutableList<MergeRequest>,
     private val imageLoader: ImageLoader,
     private val clickListener: ClickListener,
     private val context: Context
-) : RecyclerView.Adapter<GroupRecyclerAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MergeRequestRecyclerAdapter.ViewHolder>() {
 
     private val central: Central = Central() // Used to load avatars more efficiently
 
@@ -38,9 +39,9 @@ class GroupRecyclerAdapter(
      * */
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
-        val binding: GroupRecyclerAdapterBinding = GroupRecyclerAdapterBinding.bind(itemView)
-        val name: TextView = binding.name
-        val description: TextView = binding.description
+        val binding: MergeRequestRecyclerAdapterBinding = MergeRequestRecyclerAdapterBinding.bind(itemView)
+        val title: TextView = binding.title
+        val subheading: TextView = binding.subheading
         val avatar: ImageView = binding.avatar
 
         init {
@@ -52,7 +53,7 @@ class GroupRecyclerAdapter(
          * @param v [View]
          */
         override fun onClick(v: View?) {
-            clickListener.onClick(groupList[adapterPosition])
+            clickListener.onClick(mergeList[adapterPosition])
         }
     }
 
@@ -62,7 +63,7 @@ class GroupRecyclerAdapter(
      * @return [ViewHolder]
      * */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = GroupRecyclerAdapterBinding.inflate(
+        val binding = MergeRequestRecyclerAdapterBinding.inflate(
             LayoutInflater.from(parent.context),
             parent, false
         )
@@ -74,18 +75,18 @@ class GroupRecyclerAdapter(
      * @param position [Int]
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val group = groupList[position]
+        val mergeRequest = mergeList[position]
         // Set the text
         with(holder) {
-            name.text = group.name // Group name
-            description.text = group.description // Group Description
+            title.text = mergeRequest.title // Merge Request name
+            subheading.text = mergeRequest.author.username // Who made it
         }
         // Load the avatar using the avatar loader from central
         central.loadAvatar(
-            group.avatar, // Avatar url
-            group.name, // Name for the placeholder
+            mergeRequest.author.avatarUrl, // Avatar url
+            mergeRequest.author.name, // Name for the placeholder
             holder.avatar, // ImageView to load into
-            RoundedCornersTransformation(20f), // Crop the corners
+            CircleCropTransformation(), // Crop into a circle
             imageLoader, // Use the global imageLoader
             100, // Only 100px, not too big ;)
             context // Context passed by activity
@@ -93,10 +94,10 @@ class GroupRecyclerAdapter(
     }
 
     /** Count the items, literally just the size of the list */
-    override fun getItemCount(): Int = groupList.size
+    override fun getItemCount(): Int = mergeList.size
 
     /** On item click listener **/
     interface ClickListener {
-        fun onClick(group: Group)
+        fun onClick(mergeRequest: MergeRequest)
     }
 }

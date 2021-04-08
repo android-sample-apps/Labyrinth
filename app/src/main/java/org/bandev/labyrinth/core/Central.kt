@@ -22,7 +22,7 @@ import org.bandev.libraries.profilepicture.PFPView
 import java.text.CharacterIterator
 import java.text.StringCharacterIterator
 
-class Central() {
+class Central {
 
     val pfpView = PFPView()
 

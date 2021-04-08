@@ -1,7 +1,6 @@
 package org.bandev.labyrinth.projects
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import coil.imageLoader
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
@@ -25,8 +26,12 @@ import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.MergeRequestAdapter
 import org.bandev.labyrinth.core.obj.MergeRequest
+import org.bandev.labyrinth.databinding.MergeRequestFragmentBinding
+import org.bandev.labyrinth.databinding.MergeRequestRecyclerAdapterBinding
 import org.bandev.labyrinth.databinding.ProjectsIssuesFragmentBinding
 import org.bandev.labyrinth.databinding.ProjectsMergeRequestsBinding
+import org.bandev.labyrinth.recycleradapters.MemberRecyclerAdapter
+import org.bandev.labyrinth.recycleradapters.MergeRequestRecyclerAdapter
 import org.json.JSONArray
 
 class MergeRequests : AppCompatActivity() {
@@ -82,9 +87,10 @@ class MergeRequests : AppCompatActivity() {
         }
     }
 
-    class MergeRequestFragment(val type: Int, val projectId: Int) : Fragment() {
+    class MergeRequestFragment(val type: Int, val projectId: Int) : Fragment(),
+        MergeRequestRecyclerAdapter.ClickListener {
 
-        private var _binding: ProjectsIssuesFragmentBinding? = null
+        private var _binding: MergeRequestFragmentBinding? = null
         private var profile: Profile = Profile()
         internal val binding get() = _binding!!
 
@@ -94,7 +100,7 @@ class MergeRequests : AppCompatActivity() {
             savedInstanceState: Bundle?
         ): View {
             setHasOptionsMenu(true)
-            _binding = ProjectsIssuesFragmentBinding.inflate(inflater, container, false)
+            _binding = MergeRequestFragmentBinding.inflate(inflater, container, false)
             return binding.root
         }
 
@@ -140,17 +146,15 @@ class MergeRequests : AppCompatActivity() {
                             error(state, 1)
                         } else binding.error.visibility = View.GONE
 
-                        binding.listview.adapter = MergeRequestAdapter(requireActivity(), list)
-                        binding.listview.divider = null
+                        val recyclerAdapter = MergeRequestRecyclerAdapter(
+                            list, (activity ?: return).imageLoader,
+                            this@MergeRequestFragment, requireContext())
 
-                        binding.listview.onItemClickListener =
-                            AdapterView.OnItemClickListener { parent, _, position, _ ->
-                                val selectedItem =
-                                    parent.getItemAtPosition(position) as MergeRequest
-                                val intent = Intent(context, IndividualMR::class.java)
-                                intent.putExtra("mr", selectedItem.json.toString())
-                                startActivity(intent)
-                            }
+                        with(binding.recyclerView) {
+                            adapter = recyclerAdapter
+                            layoutManager = LinearLayoutManager(context)
+                            setHasFixedSize(true)
+                        }
 
                         binding.spinner.visibility = View.INVISIBLE
                         binding.scroll.visibility = View.VISIBLE
@@ -187,6 +191,12 @@ class MergeRequests : AppCompatActivity() {
             }
         }
 
+        override fun onClick(mergeRequest: MergeRequest) {
+            val intent = Intent(context, IndividualMR::class.java)
+            intent.putExtra("mr", mergeRequest.json.toString())
+            startActivity(intent)
+        }
+
         companion object {
             fun new(position: Int, type: Int, id: Int): MergeRequestFragment {
                 val instance = MergeRequestFragment(type, id)
@@ -198,4 +208,6 @@ class MergeRequests : AppCompatActivity() {
         }
 
     }
+
+
 }
