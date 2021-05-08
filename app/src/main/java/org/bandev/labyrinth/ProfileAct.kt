@@ -22,20 +22,26 @@ import org.bandev.labyrinth.account.activities.ProfileTokenAct
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Central
 import org.bandev.labyrinth.core.Type
+import org.bandev.labyrinth.databinding.ProfileActBinding
 import org.json.JSONObject
 
 
 class ProfileAct : AppCompatActivity() {
+
+
+    private lateinit var binding: ProfileActBinding
 
     private var profile: Profile = Profile()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding = ProfileActBinding.inflate(layoutInflater)
+
         //Login user
         profile.login(this, 0)
 
-        setContentView(R.layout.profile_act)
+        setContentView(binding.root)
 
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         val backDrawable = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
@@ -70,14 +76,13 @@ class ProfileAct : AppCompatActivity() {
             this
         )
 
-        val usernameTextView: TextView = findViewById(R.id.name_)
-        val emailTextView: TextView = findViewById(R.id.slug2)
+        binding.content.username.text = profile.getData("username")
+        binding.content.email.text = profile.getData("email")
+
         val infoListView: ListView = findViewById(R.id.infoList)
         // val descriptionTextView: TextView = findViewById(R.id.description2)
         //  val locationTextView: TextView = findViewById(R.id.forks2)
 
-        usernameTextView.text = profile.getData("username")
-        emailTextView.text = profile.getData("email")
         if (profile.getData("bio") == "") {
             // descriptionTextView.isGone = true
         } else {

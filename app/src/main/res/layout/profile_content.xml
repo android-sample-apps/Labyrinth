@@ -59,7 +59,7 @@
             app:srcCompat="@mipmap/ic_launcher_round" />
 
         <TextView
-            android:id="@+id/name_"
+            android:id="@+id/username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -70,12 +70,14 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="28sp"
             android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/avatar2"
             app:layout_constraintTop_toTopOf="@+id/avatar2" />
 
         <TextView
-            android:id="@+id/slug2"
+            android:id="@+id/email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
@@ -84,9 +86,11 @@
             android:text="Email"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="20sp"
+            android:ellipsize="end"
+            android:maxLines="1"
             app:layout_constraintBottom_toBottomOf="@+id/avatar2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/name_" />
+            app:layout_constraintStart_toStartOf="@+id/username" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

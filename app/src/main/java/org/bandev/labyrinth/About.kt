@@ -46,6 +46,9 @@ class About : AppCompatActivity() {
 
         // Set theme, navigation bar and language
 
+        // Set version code
+        binding.version.text = BuildConfig.VERSION_NAME
+
         // Setup toolbar
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -61,8 +64,10 @@ class About : AppCompatActivity() {
 
         val contributors = resources.getStringArray(R.array.contributors)
         val contributorsAdapter = ArrayAdapter(this, R.layout.contributors_list, contributors)
-        binding.contributors.adapter = contributorsAdapter
-        binding.contributors.divider = null
+        with(binding.contributors) {
+            adapter = contributorsAdapter
+            divider = null
+        }
         binding.contributors.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 val ids = resources.getStringArray(R.array.contributors_id)
@@ -75,16 +80,17 @@ class About : AppCompatActivity() {
 
         val promises = resources.getStringArray(R.array.promises)
         val promisesAdapter = ArrayAdapter(this, R.layout.promises_list, promises)
-        binding.promise.adapter = promisesAdapter
-        binding.promise.divider = null
-        binding.promise.isClickable = false
 
-        binding.madeWith.setOnClickListener { showGroup() }
-        binding.madeWith.setOnClickListener { showGroup() }
-    }
+        with(binding.promise) {
+            adapter = promisesAdapter
+            divider = null
+            isClickable = false
+        }
 
-    override fun onBackPressed() {
-        finish()
+        with(binding.madeWith) {
+            setOnClickListener { showGroup() }
+            setOnClickListener { showGroup() }
+        }
     }
 
     private fun showGroup() {

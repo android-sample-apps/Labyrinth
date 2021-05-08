@@ -98,13 +98,12 @@
                     app:layout_constraintTop_toTopOf="@+id/avatar2" />
 
                 <TextView
-                    android:id="@+id/slug2"
+                    android:id="@+id/version"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="7dp"
                     android:elevation="4dp"
-                    android:text="@string/version"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="@+id/avatar2"
@@ -121,7 +120,7 @@
                     android:text="Labyrinth is a fully open source, ad &amp; tracker free GitLab client for android devices."
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="@+id/slug2"
+                    app:layout_constraintEnd_toEndOf="@+id/version"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/avatar2"
                     app:layout_constraintTop_toBottomOf="@+id/avatar2" />
