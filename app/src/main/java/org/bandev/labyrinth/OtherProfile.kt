@@ -88,30 +88,17 @@ class OtherProfile : AppCompatActivity() {
         }
 
         val infoList = mutableListOf<String>()
-        infoList.add("{ 'left' : 'Groups', 'right' : '', 'icon' : 'groups' }") //Id: 1
         infoList.add("{ 'left' : 'Projects', 'right' : '', 'icon' : 'repo' }") //Id: 2
 
         binding.content.options.adapter = InfoListAdapter(this, infoList.toTypedArray())
         binding.content.options.divider = null
 
         binding.content.options.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                val selectedItem = parent.getItemAtPosition(position) as String
-                val obj = JSONObject(selectedItem)
-                when {
-                    obj.getString("left") == "Groups" -> {
-                        val intent = Intent(applicationContext, GroupsListActivity::class.java)
-                        intent.putExtra("type", 0)
-                        intent.putExtra("id", user.id)
-                        startActivity(intent)
-                    }
-                    obj.getString("left") == "Projects" -> {
-                        val intent = Intent(applicationContext, ProjectsListActivity::class.java)
-                        intent.putExtra("type", Type.PROJECTS_FROM_OTHER)
-                        intent.putExtra("id", user.id)
-                        startActivity(intent)
-                    }
-                }
+            AdapterView.OnItemClickListener { _, _, _, _ ->
+                val intent = Intent(applicationContext, ProjectsListActivity::class.java)
+                intent.putExtra("type", Type.PROJECTS_FROM_OTHER)
+                intent.putExtra("id", user.id)
+                startActivity(intent)
             }
     }
 
