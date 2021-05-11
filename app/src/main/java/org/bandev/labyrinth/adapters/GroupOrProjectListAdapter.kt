@@ -13,7 +13,11 @@ import org.bandev.labyrinth.core.Central
 import org.bandev.labyrinth.databinding.GroupListViewBinding
 import org.json.JSONObject
 
-class GroupOrProjectListAdapter(private val context: Activity, private val text: Array<String?>, val imageLoader: ImageLoader) :
+class GroupOrProjectListAdapter(
+    private val context: Activity,
+    private val text: Array<String?>,
+    val imageLoader: ImageLoader
+) :
     BaseAdapter() {
 
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {

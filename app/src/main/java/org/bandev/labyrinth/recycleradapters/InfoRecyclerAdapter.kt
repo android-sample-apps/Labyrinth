@@ -46,7 +46,7 @@ class InfoRecyclerAdapter(
          * @param v [View]
          */
         override fun onClick(v: View?) {
-            clickListener.onClick(infoList[adapterPosition])
+            clickListener.onClick(infoList[bindingAdapterPosition])
         }
     }
 

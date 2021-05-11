@@ -33,23 +33,23 @@ class ProfileTokenAct : AppCompatActivity() {
         binding = ProfileTokenActBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         val backDrawable = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
             colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
             sizeDp = 16
         }
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.content.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = backDrawable
+        binding.content.toolbar.navigationIcon = backDrawable
 
         filldata()
 
-        val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
-        refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
-        refresher.setOnRefreshListener {
-            filldata()
-            refresher.isRefreshing = false
+        with(binding.pullToRefresh) {
+            setColorSchemeColors(ContextCompat.getColor(this@ProfileTokenAct, R.color.colorPrimary))
+            setOnRefreshListener {
+                filldata()
+                binding.pullToRefresh.isRefreshing = false
+            }
         }
     }
 
@@ -69,8 +69,10 @@ class ProfileTokenAct : AppCompatActivity() {
                             tokens.add(token)
                         }
                     }
-                    binding.content.tokens.adapter = TokenListAdapter(this@ProfileTokenAct, tokens)
-                    binding.content.tokens.divider = null
+                    with(binding.content.tokens) {
+                        adapter = TokenListAdapter(this@ProfileTokenAct, tokens)
+                        divider = null
+                    }
                     showAll()
                 }
 
@@ -86,12 +88,16 @@ class ProfileTokenAct : AppCompatActivity() {
     }
 
     fun showAll() {
-        binding.content.refresher.isGone = true
-        binding.content.tokens.isGone = false
+        with(binding.content) {
+            refresher.isGone = true
+            tokens.isGone = false
+        }
     }
 
     fun hideAll() {
-        binding.content.refresher.isGone = false
-        binding.content.tokens.isGone = true
+        with(binding.content) {
+            refresher.isGone = false
+            tokens.isGone = true
+        }
     }
 }

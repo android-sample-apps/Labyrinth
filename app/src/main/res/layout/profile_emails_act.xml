@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content">
 
                     <org.bandev.libraries.NonScroll.NonScrollListView
-                        android:id="@+id/infoList"
+                        android:id="@+id/sshListView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/toolbar_line"

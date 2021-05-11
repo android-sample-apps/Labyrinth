@@ -3,9 +3,9 @@ package org.bandev.labyrinth.core.obj
 import org.json.JSONObject
 
 class MergeRequest(val json: JSONObject) {
-    val id = json.getInt("id")
-    val iid = json.getInt("iid")
-    val projectId = json.getInt("project_id")
+    val id: Int = json.getInt("id")
+    val iid: Int = json.getInt("iid")
+    val projectId: Int = json.getInt("project_id")
     val title: String = json.getString("title")
     val description: String = json.getString("description")
     val state: String = json.getString("state")
@@ -15,12 +15,12 @@ class MergeRequest(val json: JSONObject) {
     val closedAt: String = json.getString("closed_at")
     val targetBranch: String = json.getString("target_branch")
     val sourceBranch: String = json.getString("source_branch")
-    val upVotes = json.getInt("upvotes")
-    val downVotes = json.getInt("downvotes")
-    val author = Author(json.getJSONObject("author"))
+    val upVotes: Int = json.getInt("upvotes")
+    val downVotes: Int = json.getInt("downvotes")
+    val author: Author = Author(json.getJSONObject("author"))
 
     class Merger(json: JSONObject) {
-        val id = json.getInt("id")
+        val id: Int = json.getInt("id")
         val name: String = json.getString("name")
         val username: String = json.getString("username")
         val avatarUrl: String = json.getString("avatar_url")
@@ -28,7 +28,7 @@ class MergeRequest(val json: JSONObject) {
     }
 
     class Author(json: JSONObject) {
-        val id = json.getInt("id")
+        val id: Int = json.getInt("id")
         val name: String = json.getString("name")
         val username: String = json.getString("username")
         val avatarUrl: String = json.getString("avatar_url")

@@ -38,7 +38,7 @@ import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONObject
 
 
-class ProjectAct : AppCompatActivity() {
+class ProjectActivity : AppCompatActivity() {
 
     private var latestCommit: View? = null
     private var progressBar: ProgressBar? = null
@@ -175,7 +175,7 @@ class ProjectAct : AppCompatActivity() {
                 when (index) {
                     0 -> project.star()
                     1 -> project.fork()
-                    2 -> project.openInBrowser(this@ProjectAct)
+                    2 -> project.openInBrowser(this@ProjectActivity)
                 }
             }
         }
@@ -295,10 +295,10 @@ class ProjectAct : AppCompatActivity() {
         infoList.add("{ 'left' : 'Branch', 'right' : '$branch', 'icon' : 'branch' }")
         infoList.add("{ 'left' : 'View Files', 'right' : '', 'icon' : 'file' }")
         infoList.add("{ 'left' : 'Commits', 'right' : '', 'icon' : 'commit' }")
-        val infoListAdapter = InfoListAdapter(this@ProjectAct, infoList.toTypedArray())
-        binding.content.infoList.adapter = infoListAdapter
-        binding.content.infoList.divider = null
-        binding.content.infoList.onItemClickListener =
+        val infoListAdapter = InfoListAdapter(this@ProjectActivity, infoList.toTypedArray())
+        binding.content.sshListView.adapter = infoListAdapter
+        binding.content.sshListView.divider = null
+        binding.content.sshListView.onItemClickListener =
             AdapterView.OnItemClickListener { parent, _, position, id ->
                 val selectedItem = parent.getItemAtPosition(position) as String
                 val obj = JSONObject(selectedItem)

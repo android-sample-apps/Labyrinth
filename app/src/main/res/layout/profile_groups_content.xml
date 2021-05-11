@@ -62,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <org.bandev.libraries.NonScroll.NonScrollListView
-            android:id="@+id/infoList"
+            android:id="@+id/sshListView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:dividerHeight="1px"

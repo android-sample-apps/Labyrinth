@@ -52,7 +52,7 @@ class ProjectRecyclerAdapter(
          * @param v [View]
          */
         override fun onClick(v: View?) {
-            clickListener.onClick(projectList[adapterPosition])
+            clickListener.onClick(projectList[bindingAdapterPosition])
         }
     }
 

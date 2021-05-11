@@ -8,12 +8,13 @@ import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import androidx.core.content.ContextCompat.getColor
 import org.bandev.labyrinth.R
+import java.util.*
 
 class PFPView {
     fun draw(size: Int, name: String, context: Context): BitmapDrawable {
         // Get the first letter from the name of the entity,
         // e.g. "labyrinth" -> 'L'
-        val letter = name[0].toUpperCase()
+        val letter = name[0].uppercaseChar()
 
         // Create a bitmap with the height given as a parameter
         val bitmap: Bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
@@ -35,7 +36,7 @@ class PFPView {
         val y = (size / 2 - (textPaint.descent() + textPaint.ascent()) / 2)
 
         // Draw the text to the canvas
-        canvas.drawText(name[0].toString().toUpperCase(), x, y, textPaint)
+        canvas.drawText(name[0].toString().uppercase(Locale.getDefault()), x, y, textPaint)
 
         // Return it as a bitmap drawable
         return BitmapDrawable(context.resources, bitmap)

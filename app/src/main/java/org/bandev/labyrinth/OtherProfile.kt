@@ -46,15 +46,12 @@ class OtherProfile : AppCompatActivity() {
 
         connection.get(id)
 
-        binding.pullToRefresh.setColorSchemeColors(
-            ContextCompat.getColor(
-                this,
-                R.color.colorPrimary
-            )
-        )
-        binding.pullToRefresh.setOnRefreshListener {
-            connection.get(id)
-            binding.pullToRefresh.isRefreshing = false
+        with(binding.pullToRefresh) {
+            setColorSchemeColors(ContextCompat.getColor(this@OtherProfile, R.color.colorPrimary))
+            setOnRefreshListener {
+                connection.get(id)
+                binding.pullToRefresh.isRefreshing = false
+            }
         }
     }
 
@@ -88,18 +85,19 @@ class OtherProfile : AppCompatActivity() {
         }
 
         val infoList = mutableListOf<String>()
-        infoList.add("{ 'left' : 'Projects', 'right' : '', 'icon' : 'repo' }") //Id: 2
+        infoList.add("{ 'left' : 'Projects', 'right' : '', 'icon' : 'repo' }") // Id: 2
 
-        binding.content.options.adapter = InfoListAdapter(this, infoList.toTypedArray())
-        binding.content.options.divider = null
-
-        binding.content.options.onItemClickListener =
-            AdapterView.OnItemClickListener { _, _, _, _ ->
-                val intent = Intent(applicationContext, ProjectsListActivity::class.java)
-                intent.putExtra("type", Type.PROJECTS_FROM_OTHER)
-                intent.putExtra("id", user.id)
-                startActivity(intent)
-            }
+        with(binding.content.options) {
+            adapter = InfoListAdapter(this@OtherProfile, infoList.toTypedArray())
+            divider = null
+            onItemClickListener =
+                AdapterView.OnItemClickListener { _, _, _, _ ->
+                    val intent = Intent(applicationContext, ProjectsListActivity::class.java)
+                    intent.putExtra("type", Type.PROJECTS_FROM_OTHER)
+                    intent.putExtra("id", user.id)
+                    startActivity(intent)
+                }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

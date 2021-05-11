@@ -32,7 +32,7 @@ import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.databinding.AboutActivityBinding
 
-class About : AppCompatActivity() {
+class AboutActivity : AppCompatActivity() {
 
     // Declare view binding variables
     private lateinit var binding: AboutActivityBinding
@@ -43,8 +43,6 @@ class About : AppCompatActivity() {
         // Setup view binding
         binding = AboutActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Set theme, navigation bar and language
 
         // Set version code
         binding.version.text = BuildConfig.VERSION_NAME
@@ -58,9 +56,7 @@ class About : AppCompatActivity() {
                 colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
                 sizeDp = 16
             }
-        binding.toolbar.setNavigationOnClickListener {
-            onBackPressed()
-        }
+        binding.toolbar.setNavigationOnClickListener { onBackPressed() }
 
         val contributors = resources.getStringArray(R.array.contributors)
         val contributorsAdapter = ArrayAdapter(this, R.layout.contributors_list, contributors)

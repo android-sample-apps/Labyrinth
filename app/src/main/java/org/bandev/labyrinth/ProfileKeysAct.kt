@@ -1,11 +1,9 @@
 package org.bandev.labyrinth
 
 import android.os.Bundle
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONArrayRequestListener
@@ -28,37 +26,34 @@ class ProfileKeysAct : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //Login user
+        // Login user
         profile.login(this, 0)
         binding = ProfileKeysActBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         val backDrawable = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
             colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
             sizeDp = 16
         }
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.content.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = backDrawable
+        binding.content.toolbar.navigationIcon = backDrawable
 
         filldata()
 
-        val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
-        refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
-        refresher.setOnRefreshListener {
-            filldata()
-            refresher.isRefreshing = false
+        with(binding.pullToRefresh) {
+            setColorSchemeColors(ContextCompat.getColor(this@ProfileKeysAct, R.color.colorPrimary))
+            setOnRefreshListener {
+                filldata()
+                binding.pullToRefresh.isRefreshing = false
+            }
         }
     }
 
     private fun filldata() {
         hideAll()
-        val sshListView: ListView = findViewById(R.id.infoList)
         val sshList: MutableList<String> = mutableListOf()
-
-        val gpgListView: ListView = findViewById(R.id.gpgList)
         val gpgList: MutableList<String> = mutableListOf()
 
         AndroidNetworking
@@ -75,8 +70,8 @@ class ProfileKeysAct : AppCompatActivity() {
 
                     val infoListAdapter =
                         SshKeysItemAdapter(this@ProfileKeysAct, sshList.toTypedArray())
-                    sshListView.adapter = infoListAdapter
-                    sshListView.divider = null
+                    binding.content.sshListView.adapter = infoListAdapter
+                    binding.content.sshListView.divider = null
 
                     AndroidNetworking
                         .get("https://gitlab.com/api/v4/user/gpg_keys")
@@ -84,16 +79,16 @@ class ProfileKeysAct : AppCompatActivity() {
                         .build()
                         .getAsJSONArray(object : JSONArrayRequestListener {
                             override fun onResponse(response: JSONArray) {
-                                var index = 0
-                                while (index != response.length()) {
-                                    gpgList.add(response[index].toString())
-                                    index++
+                                var indexInt = 0
+                                while (indexInt != response.length()) {
+                                    gpgList.add(response[indexInt].toString())
+                                    indexInt++
                                 }
 
                                 val gpgAdapter =
                                     GpgKeysItemAdapter(this@ProfileKeysAct, gpgList.toTypedArray())
-                                gpgListView.adapter = gpgAdapter
-                                gpgListView.divider = null
+                                binding.content.gpgListView.adapter = gpgAdapter
+                                binding.content.gpgListView.divider = null
 
                                 showAll()
                             }
@@ -116,18 +111,22 @@ class ProfileKeysAct : AppCompatActivity() {
     }
 
     fun showAll() {
-        binding.content.refresher.isGone = true
-        binding.content.options.isGone = false
-        binding.content.options2.isGone = false
-        binding.content.gpg.isGone = false
-        binding.content.constraintLayout.isGone = false
+        with(binding.content) {
+            refresher.isGone = true
+            options.isGone = false
+            options2.isGone = false
+            gpg.isGone = false
+            constraintLayout.isGone = false
+        }
     }
 
     fun hideAll() {
-        binding.content.refresher.isGone = false
-        binding.content.options.isGone = true
-        binding.content.options2.isGone = true
-        binding.content.gpg.isGone = true
-        binding.content.constraintLayout.isGone = true
+        with(binding.content) {
+            refresher.isGone = false
+            options.isGone = true
+            options2.isGone = true
+            gpg.isGone = true
+            constraintLayout.isGone = true
+        }
     }
 }

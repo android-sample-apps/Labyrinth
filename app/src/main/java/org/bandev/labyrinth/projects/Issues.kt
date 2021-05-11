@@ -152,7 +152,7 @@ class Issues : AppCompatActivity() {
 
             OkHttpClient().newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    Handler(Looper.getMainLooper()).post{
+                    Handler(Looper.getMainLooper()).post {
                         error(state, 0)
                     }
                 }
@@ -164,7 +164,7 @@ class Issues : AppCompatActivity() {
                     }
 
 
-                    Handler(Looper.getMainLooper()).post{
+                    Handler(Looper.getMainLooper()).post {
                         showData(list, state)
                     }
 

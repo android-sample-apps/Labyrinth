@@ -148,7 +148,8 @@ class MergeRequests : AppCompatActivity() {
 
                         val recyclerAdapter = MergeRequestRecyclerAdapter(
                             list, (activity ?: return).imageLoader,
-                            this@MergeRequestFragment, requireContext())
+                            this@MergeRequestFragment, requireContext()
+                        )
 
                         with(binding.recyclerView) {
                             adapter = recyclerAdapter

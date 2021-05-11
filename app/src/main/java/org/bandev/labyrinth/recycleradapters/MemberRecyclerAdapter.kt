@@ -52,7 +52,7 @@ class MemberRecyclerAdapter(
          * @param v [View]
          */
         override fun onClick(v: View?) {
-            clickListener.onClick(memberList[adapterPosition])
+            clickListener.onClick(memberList[bindingAdapterPosition])
         }
     }
 

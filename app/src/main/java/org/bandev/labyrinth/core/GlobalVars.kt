@@ -12,7 +12,7 @@ import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.R
 
 class GlobalVars {
-    fun getBackDrawable(context: Context) : Drawable {
+    fun getBackDrawable(context: Context): Drawable {
         return IconicsDrawable(context, Octicons.Icon.oct_chevron_left).apply {
             colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
             sizeDp = 16

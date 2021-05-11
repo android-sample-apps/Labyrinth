@@ -52,7 +52,7 @@ class GroupRecyclerAdapter(
          * @param v [View]
          */
         override fun onClick(v: View?) {
-            clickListener.onClick(groupList[adapterPosition])
+            clickListener.onClick(groupList[bindingAdapterPosition])
         }
     }
 

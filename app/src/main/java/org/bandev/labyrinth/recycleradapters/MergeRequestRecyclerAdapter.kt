@@ -39,7 +39,8 @@ class MergeRequestRecyclerAdapter(
      * */
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
-        val binding: MergeRequestRecyclerAdapterBinding = MergeRequestRecyclerAdapterBinding.bind(itemView)
+        val binding: MergeRequestRecyclerAdapterBinding =
+            MergeRequestRecyclerAdapterBinding.bind(itemView)
         val title: TextView = binding.title
         val subheading: TextView = binding.subheading
         val avatar: ImageView = binding.avatar
@@ -53,7 +54,7 @@ class MergeRequestRecyclerAdapter(
          * @param v [View]
          */
         override fun onClick(v: View?) {
-            clickListener.onClick(mergeList[adapterPosition])
+            clickListener.onClick(mergeList[bindingAdapterPosition])
         }
     }
 

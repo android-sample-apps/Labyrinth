@@ -10,7 +10,6 @@ import androidx.core.view.isGone
 import org.bandev.labyrinth.R
 import org.json.JSONObject
 
-
 class BranchSelectorAdapter(
     private val context: Activity,
     private val text: Array<String?>,
@@ -31,9 +30,7 @@ class BranchSelectorAdapter(
         val jsonObj = JSONObject(text[p0] ?: return null)
         name.text = jsonObj.getString("name")
 
-        if (currentBranch == name.text) {
-            icon.isGone = false
-        }
+        if (currentBranch == name.text) icon.isGone = false
 
         return rowView
     }

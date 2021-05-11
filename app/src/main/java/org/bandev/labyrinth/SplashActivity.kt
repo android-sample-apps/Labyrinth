@@ -17,7 +17,7 @@ import org.bandev.labyrinth.intro.First
 import java.util.concurrent.Executor
 
 
-class Splash : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
 
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
@@ -34,9 +34,7 @@ class Splash : AppCompatActivity() {
         accountManager = AccountManager.get(this)
         val accounts: Array<out Account> =
             accountManager.getAccountsByType("org.bandev.labyrinth.account")
-        if (accounts.isNotEmpty()) {
-            hasAccount = true
-        }
+        if (accounts.isNotEmpty()) hasAccount = true
 
         Appearance().setAppTheme(Appearance().getAppTheme(this))
 
@@ -49,10 +47,10 @@ class Splash : AppCompatActivity() {
                 ) {
                     super.onAuthenticationError(errorCode, errString)
 
-                    val i = Intent(applicationContext, BiometricFailAct::class.java)
+                    val intent = Intent(applicationContext, BiometricFailActivity::class.java)
                     val mBundle = Bundle()
-                    i.putExtras(mBundle)
-                    startActivity(i)
+                    intent.putExtras(mBundle)
+                    startActivity(intent)
                     finish()
                 }
 
@@ -61,20 +59,19 @@ class Splash : AppCompatActivity() {
                 ) {
                     super.onAuthenticationSucceeded(result)
 
-
                     checkWifi()
 
-                    val i = Intent(applicationContext, MainActivity::class.java)
+                    val intent = Intent(applicationContext, MainActivity::class.java)
                     val mBundle = Bundle()
-                    i.putExtras(mBundle)
-                    startActivity(i)
+                    intent.putExtras(mBundle)
+                    startActivity(intent)
                     finish()
                 }
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
 
-                    val i = Intent(applicationContext, BiometricFailAct::class.java)
+                    val i = Intent(applicationContext, BiometricFailActivity::class.java)
                     val mBundle = Bundle()
                     i.putExtras(mBundle)
                     startActivity(i)
@@ -124,7 +121,7 @@ class Splash : AppCompatActivity() {
 
     fun checkWifi() {
         if (!isOnline()) {
-            val i = Intent(this, NoInternetAct::class.java)
+            val i = Intent(this, NoInternetActivity::class.java)
             this.startActivity(i)
         }
     }

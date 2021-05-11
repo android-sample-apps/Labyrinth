@@ -3,15 +3,11 @@ package org.bandev.labyrinth
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import coil.ImageLoader
 import coil.imageLoader
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
@@ -23,52 +19,45 @@ import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.account.Profile
 import org.bandev.labyrinth.adapters.GroupOrProjectListAdapter
 import org.bandev.labyrinth.core.Animations
-import org.bandev.libraries.NonScroll.NonScrollListView
+import org.bandev.labyrinth.databinding.ActivityPinNewBinding
 import org.json.JSONArray
-import org.json.JSONObject
 
 class PinSomething : AppCompatActivity() {
 
-    var issueArryIn: JSONArray? = null
-    private var repoObjIn: JSONObject? = null
+    private lateinit var binding: ActivityPinNewBinding
     var token: String = ""
     var projectId: String = ""
-    var listView: NonScrollListView? = null
-    private var listView2: ListView? = null
-    private var progressBar: ProgressBar? = null
 
     private var profile: Profile = Profile()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.pin_new_act)
+        binding = ActivityPinNewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         profile.login(this, 0)
         token = profile.getData("token")
-        listView = findViewById(R.id.listView)
-        progressBar = findViewById(R.id.progressBar2)
 
-        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         val backDrawable = IconicsDrawable(this, Octicons.Icon.oct_chevron_left).apply {
             colorInt = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
             sizeDp = 16
         }
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.navigationIcon = backDrawable
+        binding.toolbar.navigationIcon = backDrawable
 
         //Toolbar shadow animation
-        val scroll = findViewById<ScrollView>(R.id.scroll)
-        Animations().toolbarShadowScroll(scroll, toolbar)
+        Animations().toolbarShadowScroll(binding.scroll, binding.toolbar)
 
         fillData()
 
-        val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
-        refresher.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary))
-        refresher.setOnRefreshListener {
-            fillData()
-            refresher.isRefreshing = false
+        with(binding.pullToRefresh) {
+            setColorSchemeColors(ContextCompat.getColor(this@PinSomething, R.color.colorPrimary))
+            setOnRefreshListener {
+                fillData()
+                binding.pullToRefresh.isRefreshing = false
+            }
         }
     }
 
@@ -84,9 +73,7 @@ class PinSomething : AppCompatActivity() {
     private fun fillData() {
         hideAll()
         val list: MutableList<String> = ArrayList()
-        var responseArray: JSONArray? = null
         //Get a list of issues from GitLab#
-        var done = false
         val context = this
         AndroidNetworking.initialize(applicationContext)
         AndroidNetworking
@@ -98,16 +85,16 @@ class PinSomething : AppCompatActivity() {
                         list.add(response.getJSONObject(i).toString())
                     }
 
-                    val adapter = GroupOrProjectListAdapter(context, list.toTypedArray(), imageLoader)
-                    (listView ?: return).adapter = adapter
-                    listView!!.divider = null
-
-
-                    (listView ?: return).onItemClickListener =
-                        AdapterView.OnItemClickListener { parent, view, position, id ->
-                            itemClick(parent, position)
-                        }
-                    done = true
+                    val recyclerAdapter =
+                        GroupOrProjectListAdapter(context, list.toTypedArray(), imageLoader)
+                    with(binding.listView) {
+                        adapter = recyclerAdapter
+                        divider = null
+                        onItemClickListener =
+                            AdapterView.OnItemClickListener { parent, view, position, id ->
+                                itemClick(parent, position)
+                            }
+                    }
 
                     showAll()
                 }
@@ -123,31 +110,18 @@ class PinSomething : AppCompatActivity() {
         return true
     }
 
-    internal fun justifyListViewHeightBasedOnChildren(listView: ListView) {
-        val adapter = listView.adapter ?: return
-        val vg: ViewGroup = listView
-        var totalHeight = 0
-        for (i in 0 until adapter.count) {
-            val listItem: View = adapter.getView(i, null, vg)
-            listItem.measure(0, 0)
-            totalHeight += listItem.measuredHeight
-        }
-        val par = listView.layoutParams
-        par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
-        listView.layoutParams = par
-        listView.requestLayout()
-    }
-
     private fun hideAll() {
-        listView?.isGone = true
-        listView2?.isGone = true
-        progressBar?.isGone = false
+        with(binding) {
+            listView.isGone = true
+            progressBar.isGone = false
+        }
     }
 
     fun showAll() {
-        listView?.isGone = false
-        listView2?.isGone = false
-        progressBar?.isGone = true
+        with(binding) {
+            listView.isGone = false
+            progressBar.isGone = true
+        }
     }
 
 }

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import java.util.concurrent.Executor
 
-class NoInternetAct : AppCompatActivity() {
+class NoInternetActivity : AppCompatActivity() {
 
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
@@ -22,7 +22,7 @@ class NoInternetAct : AppCompatActivity() {
 
         button2.setOnClickListener {
 
-            val intent = Intent(this, Splash::class.java)
+            val intent = Intent(this, SplashActivity::class.java)
             this.startActivity(intent)
 
         }

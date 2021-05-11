@@ -12,7 +12,7 @@ class Member(raw: JSONObject) {
     val state: String = raw.getString("state")
     val avatarUrl: String = raw.getString("avatar_url")
     val webUrl: String = raw.getString("web_url")
-    val accessLevel: Int = raw.getInt("access_level")
+    private val accessLevel: Int = raw.getInt("access_level")
     val createdAt: String = raw.getString("created_at")
     val expiresAt: String = raw.getString("expires_at")
 

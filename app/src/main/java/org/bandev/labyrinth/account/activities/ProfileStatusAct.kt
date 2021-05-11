@@ -30,8 +30,8 @@ class ProfileStatusAct : AppCompatActivity() {
 
     private var profile: Profile = Profile()
     private lateinit var binding: ProfileStatusActBinding
-    var emoji = ""
-    var message = ""
+    var emoji: String = ""
+    var message: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -4,11 +4,14 @@ package org.bandev.labyrinth
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import coil.imageLoader
 import coil.transform.CircleCropTransformation
+import com.google.android.material.snackbar.Snackbar
 import com.maxkeppeler.sheets.options.DisplayMode
 import com.maxkeppeler.sheets.options.Option
 import com.maxkeppeler.sheets.options.OptionsSheet
@@ -25,27 +28,29 @@ import org.bandev.labyrinth.projects.Commits
 import org.bandev.labyrinth.projects.FileViewer
 import org.bandev.labyrinth.projects.Issues
 import org.json.JSONObject
+import android.view.View
+import com.google.android.material.snackbar.BaseTransientBottomBar
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActBinding
     private var profile: Profile = Profile()
-    private var asked: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //Login user
+        // Login user
         profile.login(this, 0)
 
-        //Set layout variables
+        // Set layout variables
         binding = MainActBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         binding.avatar.setOnClickListener {
-            val intent = Intent(this, ProfileAct::class.java)
+            val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
 
@@ -64,21 +69,21 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    //All of the code that manages the 'top' part of the fragment
+    // All of the code that manages the 'top' part of the fragment
     private fun top() {
-        //Setup top as the 'top' content only
+        // Setup top as the 'top' content only
         val top = binding.top
 
-        //Create MutableList infoList, and fill each element with json data
+        // Create MutableList infoList, and fill each element with json data
         val infoList = mutableListOf<String>()
-        //infoList.add("{ 'left' : 'Issues', 'right' : '>', 'icon' : 'issue' }")  //Id: 0
+        // infoList.add("{ 'left' : 'Issues', 'right' : '>', 'icon' : 'issue' }")  //Id: 0
         infoList.add("{ 'left' : 'Groups', 'right' : '', 'icon' : 'groups' }") //Id: 1
         infoList.add("{ 'left' : 'Projects', 'right' : '', 'icon' : 'repo' }") //Id: 2
 
-        //Cast infoList to Array and send to InfoListAdapter to generate element for each item.
+        // Cast infoList to Array and send to InfoListAdapter to generate element for each item.
         top.infoListView.adapter = InfoListAdapter(this, infoList.toTypedArray())
         top.infoListView.divider = null
-        //Handle clicks on infoList
+        // Handle clicks on infoList
         top.infoListView.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 //Find where to send the user based off the position of the click
@@ -101,36 +106,36 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    //All of the code that manages the 'bottom' part of the fragment
+    // All of the code that manages the 'bottom' part of the fragment
     private fun bottom() {
-        //Setup bottom as the 'bottom' content only
-        val bottom = binding.bottom
-
         //When add button is pressed, send user to activity showing what can be pinned
-        bottom.add.setOnClickListener {
+        binding.bottom.add.setOnClickListener {
             val intent = Intent(this, PinSomething::class.java)
             startActivityForResult(intent, 0)
         }
 
         val pins = Pins(this)
-        bottom.infoListView.adapter = GroupOrProjectListAdapter(this, pins.data.toTypedArray(), imageLoader)
-        bottom.infoListView.divider = null
-        bottom.infoListView.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                val selectedItem = parent.getItemAtPosition(position) as String
-                val intent = Intent(this, ProjectAct::class.java)
-                val bundle = Bundle()
-                bundle.putInt("id", JSONObject(selectedItem).getInt("id"))
-                intent.putExtras(bundle)
-                startActivity(intent)
-            }
+        with(binding.bottom.infoListView) {
+            adapter =
+                GroupOrProjectListAdapter(this@MainActivity, pins.data.toTypedArray(), imageLoader)
+            divider = null
+            onItemClickListener =
+                AdapterView.OnItemClickListener { parent, view, position, id ->
+                    val selectedItem = parent.getItemAtPosition(position) as String
+                    val intent = Intent(this@MainActivity, ProjectActivity::class.java)
+                    val bundle = Bundle()
+                    bundle.putInt("id", JSONObject(selectedItem).getInt("id"))
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+                }
 
-        bottom.infoListView.onItemLongClickListener =
-            AdapterView.OnItemLongClickListener { parent, view, position, id ->
-                val selectedItem = parent.getItemAtPosition(position) as String
-                showBottom(selectedItem, position)
-                true
-            }
+            onItemLongClickListener =
+                AdapterView.OnItemLongClickListener { parent, view, position, id ->
+                    val selectedItem = parent.getItemAtPosition(position) as String
+                    showBottom(selectedItem, position)
+                    true
+                }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -186,7 +191,7 @@ class MainActivity : AppCompatActivity() {
                     0 -> Issues::class.java
                     1 -> FileViewer::class.java
                     2 -> Commits::class.java
-                    else -> ProjectAct::class.java
+                    else -> ProjectActivity::class.java
                 }
 
                 if (isIntent) {
@@ -200,11 +205,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private var doubleBackToExitPressedOnce = false
     override fun onBackPressed() {
-        if (!asked) {
-            Toast.makeText(this, "Tap again to leave", Toast.LENGTH_SHORT).show()
-            asked = true
-        } else super.onBackPressed()
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed()
+            return
+        }
 
+        this.doubleBackToExitPressedOnce = true
+        Snackbar
+            .make(binding.root, "Tap again to exit", 2000)
+            .setAction("EXIT") { super.onBackPressed() }
+            .show()
+
+        Handler(Looper.getMainLooper()).postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
     }
 }

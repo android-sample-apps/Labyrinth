@@ -16,7 +16,7 @@ import java.io.IOException
 
 class Connection(val context: Context) {
     val profile: Profile = Profile()
-    val client = OkHttpClient()
+    val client: OkHttpClient = OkHttpClient()
     private var token = ""
 
     init {
@@ -79,6 +79,7 @@ class Connection(val context: Context) {
                 }
             })
         }
+
         fun fork(project: org.bandev.labyrinth.core.obj.Project) {
             val id = project.id
             AndroidNetworking.post("https://gitlab.com/api/v4/projects/$id/fork")

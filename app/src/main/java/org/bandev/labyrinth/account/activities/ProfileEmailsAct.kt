@@ -27,7 +27,7 @@ class ProfileEmailsAct : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //Login user
+        // Login user
         profile.login(this, 0)
         binding = ProfileEmailsActBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -72,8 +72,8 @@ class ProfileEmailsAct : AppCompatActivity() {
 
                     val infoListAdapter =
                         EmailListAdapter(this@ProfileEmailsAct, emailList.toTypedArray())
-                    binding.infoList.adapter = infoListAdapter
-                    binding.infoList.divider = null
+                    binding.sshListView.adapter = infoListAdapter
+                    binding.sshListView.divider = null
                     showAll()
                 }
 
@@ -110,11 +110,11 @@ class ProfileEmailsAct : AppCompatActivity() {
 
     fun showAll() {
         binding.refresher.isGone = true
-        binding.infoList.isGone = false
+        binding.sshListView.isGone = false
     }
 
     fun hideAll() {
         binding.refresher.isGone = false
-        binding.infoList.isGone = true
+        binding.sshListView.isGone = true
     }
 }

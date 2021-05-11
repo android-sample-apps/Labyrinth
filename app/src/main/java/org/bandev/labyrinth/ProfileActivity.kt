@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.ListView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -26,8 +25,7 @@ import org.bandev.labyrinth.databinding.ProfileActBinding
 import org.json.JSONObject
 
 
-class ProfileAct : AppCompatActivity() {
-
+class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ProfileActBinding
 
@@ -79,7 +77,7 @@ class ProfileAct : AppCompatActivity() {
         binding.content.username.text = profile.getData("username")
         binding.content.email.text = profile.getData("email")
 
-        val infoListView: ListView = findViewById(R.id.infoList)
+        val infoListView: ListView = findViewById(R.id.sshListView)
         // val descriptionTextView: TextView = findViewById(R.id.description2)
         //  val locationTextView: TextView = findViewById(R.id.forks2)
 
@@ -100,7 +98,7 @@ class ProfileAct : AppCompatActivity() {
         optionsList.add("{ 'left' : 'Emails', 'right' : '', 'icon' : 'email' }")
         optionsList.add("{ 'left' : 'Access Tokens', 'right' : '', 'icon' : 'secure' }")
 
-        val infoListAdapter = InfoListAdapter(this@ProfileAct, optionsList.toTypedArray())
+        val infoListAdapter = InfoListAdapter(this@ProfileActivity, optionsList.toTypedArray())
         infoListView.adapter = infoListAdapter
         infoListView.divider = null
         infoListView.onItemClickListener =
@@ -132,7 +130,7 @@ class ProfileAct : AppCompatActivity() {
         extendedOptions.add("{ 'left' : 'Projects', 'right' : '', 'icon' : 'repo' }")
 
         val extendedList = findViewById<ListView>(R.id.contributors)
-        extendedList.adapter = InfoListAdapter(this@ProfileAct, extendedOptions.toTypedArray())
+        extendedList.adapter = InfoListAdapter(this@ProfileActivity, extendedOptions.toTypedArray())
         extendedList.divider = null
         extendedList.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
@@ -160,7 +158,7 @@ class ProfileAct : AppCompatActivity() {
         settingsOptions.add("{ 'left' : 'About App', 'right' : '', 'icon' : 'about' }")
 
         val settingsList = findViewById<ListView>(R.id.settingsList)
-        settingsList.adapter = InfoListAdapter(this@ProfileAct, settingsOptions.toTypedArray())
+        settingsList.adapter = InfoListAdapter(this@ProfileActivity, settingsOptions.toTypedArray())
         settingsList.divider = null
         settingsList.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
@@ -172,7 +170,7 @@ class ProfileAct : AppCompatActivity() {
                         startActivity(intent)
                     }
                     "About App" -> {
-                        val intent = Intent(applicationContext, About::class.java)
+                        val intent = Intent(applicationContext, AboutActivity::class.java)
                         startActivity(intent)
                     }
                 }

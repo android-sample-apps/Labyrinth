@@ -9,7 +9,7 @@ import org.bandev.labyrinth.databinding.ActivityBiometricFailBinding
 import org.bandev.labyrinth.intro.First
 import java.util.concurrent.Executor
 
-class BiometricFailAct : AppCompatActivity() {
+class BiometricFailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBiometricFailBinding
     private lateinit var executor: Executor
@@ -67,7 +67,6 @@ class BiometricFailAct : AppCompatActivity() {
 
         binding.logMeOut.setOnClickListener {
             startActivity(Intent(this, First::class.java))
-
         }
     }
 }

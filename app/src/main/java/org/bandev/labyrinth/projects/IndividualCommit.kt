@@ -169,7 +169,8 @@ class IndividualCommit : AppCompatActivity() {
                             else -> R.drawable.ic_canceled
                         }
                         with(binding.content.pipeline) {
-                            text = response.getString("status").capitalize(Locale.ROOT)
+                            text = response.getString("status")
+                                .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
                             setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0)
                         }
                     } else {

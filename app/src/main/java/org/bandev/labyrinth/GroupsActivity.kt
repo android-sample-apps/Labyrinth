@@ -40,7 +40,7 @@ class GroupsActivity : AppCompatActivity(), MemberRecyclerAdapter.ClickListener 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.navigationIcon = globalVars.getBackDrawable(this)
 
-        sendReq()
+        sendRequest()
 
         binding.pullToRefresh.setColorSchemeColors(
             ContextCompat.getColor(
@@ -49,11 +49,11 @@ class GroupsActivity : AppCompatActivity(), MemberRecyclerAdapter.ClickListener 
             )
         )
         binding.pullToRefresh.setOnRefreshListener {
-            sendReq()
+            sendRequest()
         }
     }
 
-    private fun sendReq() {
+    private fun sendRequest() {
         connection.get(id)
         connection.getMembers(id)
         binding.pullToRefresh.isRefreshing = false

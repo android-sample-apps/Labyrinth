@@ -62,7 +62,7 @@ class SettingsAct : AppCompatActivity() {
 
             val about = findPreference("about") as Preference?
             about?.setOnPreferenceClickListener { preference ->
-                val intent = Intent(context, About::class.java)
+                val intent = Intent(context, AboutActivity::class.java)
                 startActivity(intent)
                 true
             }

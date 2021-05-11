@@ -24,7 +24,7 @@ import java.text.StringCharacterIterator
 
 class Central {
 
-    val pfpView = PFPView()
+    private val pfpView: PFPView = PFPView()
 
     fun humanReadableByteCountSI(bytes: Long): String? {
         var bytes = bytes

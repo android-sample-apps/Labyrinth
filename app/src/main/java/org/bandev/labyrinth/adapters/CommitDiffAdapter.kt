@@ -34,9 +34,6 @@ class CommitDiffAdapter(private val context: Activity, private val text: Array<S
             )
         }
 
-
-
-
         body.text = jsonObj.getString("diff")
         creator.text = jsonObj.getString("new_path")
 

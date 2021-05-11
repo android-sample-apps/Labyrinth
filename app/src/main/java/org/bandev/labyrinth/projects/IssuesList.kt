@@ -74,9 +74,7 @@ class IssuesList : AppCompatActivity() {
         hideAll()
         val list: MutableList<String> = ArrayList()
         var responseArray: JSONArray? = null
-        //Get a list of issues from GitLab#
-        var done = false
-        val context = this
+        // Get a list of issues from GitLab
 
         AndroidNetworking.initialize(applicationContext)
         AndroidNetworking
@@ -89,7 +87,7 @@ class IssuesList : AppCompatActivity() {
                         list.add(response.getJSONObject(i).toString())
                     }
 
-                    val adapter2 = IssueAdapter(context, list.toTypedArray())
+                    val adapter2 = IssueAdapter(this@IssuesList, list.toTypedArray())
                     (listView2 ?: return).adapter = adapter2
                     (listView2 ?: return).divider = null
 
@@ -106,7 +104,7 @@ class IssuesList : AppCompatActivity() {
                 }
 
                 override fun onError(anError: ANError?) {
-                    Toast.makeText(context, "Error 1", LENGTH_SHORT).show()
+                    Toast.makeText(this@IssuesList, "Error 1", LENGTH_SHORT).show()
                 }
             })
 
