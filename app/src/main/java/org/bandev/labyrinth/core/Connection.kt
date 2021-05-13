@@ -1,6 +1,8 @@
 package org.bandev.labyrinth.core
 
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -25,6 +27,20 @@ class Connection(val context: Context) {
     }
 
     inner class Project {
+
+        fun getGQL(fullPath: String) {
+            val req = GraphQLQueryCreator(token).getProject(fullPath)
+            client.newCall(req).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                    EventBus.getDefault().post(Notify.ReturnText((response.body ?: return).string()))
+                }
+            })
+        }
 
         fun get(id: Int) {
             val request = Request.Builder()

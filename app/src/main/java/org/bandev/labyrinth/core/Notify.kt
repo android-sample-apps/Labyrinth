@@ -4,6 +4,7 @@ import org.bandev.labyrinth.core.obj.*
 import org.bandev.labyrinth.core.obj.User
 
 sealed class Notify {
+    data class ReturnText(val text: String) : Notify()
     data class ReturnProject(val project: Project) : Notify()
     data class ReturnFork(val forks: Int, val newProject: Project) : Notify()
     data class ReturnStar(val stars: Int, val positive: Boolean) : Notify()

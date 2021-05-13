@@ -91,7 +91,9 @@
         <activity
             android:name=".projects.IndividualIssue" />
         <activity
-            android:name=".projects.BranchSelector" >
+            android:name=".projects.BranchSelector" />
+        <activity
+            android:name=".NewProjectActivity" >
         </activity>
 
         <meta-data

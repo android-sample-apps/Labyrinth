@@ -33,8 +33,7 @@ class Project(rawData: JSONObject, context: Context) {
         defaultBranch = rawData.getString("default_branch")
         stars = rawData.getInt("star_count")
         forks = rawData.getInt("forks_count")
-        issues = rawData.getInt("open_issues_count")
-
+        if (rawData.has("open_issues_count")) issues = rawData.getInt("open_issues_count")
         projectConnection = Connection(context).Project()
     }
 

@@ -64,6 +64,8 @@ class ProjectActivity : AppCompatActivity() {
             .crossfade(true)
             .build()
 
+        startActivity(Intent(this, NewProjectActivity::class.java))
+
         latestCommit = findViewById(R.id.options_container)
         progressBar = findViewById(R.id.progressBar)
         infoBar = findViewById(R.id.contentView4)
@@ -207,7 +209,6 @@ class ProjectActivity : AppCompatActivity() {
         val text = project.namespace + " has been forked to " + newProject.namespace
         Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG)
             .setAction("View") {
-                // TODO: 20/02/2021
             }.show()
     }
 
