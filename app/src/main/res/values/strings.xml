@@ -78,4 +78,16 @@
     <string name="members">Members</string>
     <string name="group">Group</string>
     <string name="your_work">Your Work</string>
+    <string name="project">Project</string>
+    <string name="path">Path</string>
+    <string name="_0">0</string>
+    <string name="latest_commit">Latest Commit</string>
+    <string name="title">Title</string>
+    <string name="short_id">Short id</string>
+    <string name="pipeline">Pipeline</string>
+    <string name="stars_awarded">Stars Awarded</string>
+    <string name="forked_projects">Forks created</string>
+    <string name="latest_tag">Latest tag</string>
+    <string name="repository_size">Repository size</string>
+    <string name="commit_ammount">Commits made</string>
 </resources>

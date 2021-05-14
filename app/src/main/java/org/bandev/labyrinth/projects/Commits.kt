@@ -95,7 +95,7 @@ class Commits : AppCompatActivity() {
                     (listView ?: return).divider = null
 
                     (listView ?: return).onItemClickListener =
-                        AdapterView.OnItemClickListener { parent, view, position, id ->
+                        AdapterView.OnItemClickListener { parent, _, position, _ ->
                             val selectedItem = parent.getItemAtPosition(position) as String
                             val intent = Intent(applicationContext, IndividualCommit::class.java)
                             val bundle = Bundle()
@@ -117,21 +117,6 @@ class Commits : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
-    }
-
-    internal fun justifyListViewHeightBasedOnChildren(listView: ListView) {
-        val adapter = listView.adapter ?: return
-        val vg: ViewGroup = listView
-        var totalHeight = 0
-        for (i in 0 until adapter.count) {
-            val listItem: View = adapter.getView(i, null, vg)
-            listItem.measure(0, 0)
-            totalHeight += listItem.measuredHeight
-        }
-        val par = listView.layoutParams
-        par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
-        listView.layoutParams = par
-        listView.requestLayout()
     }
 
     private fun hideAll() {

@@ -137,7 +137,7 @@ class ProjectsListActivity : AppCompatActivity(), ProjectRecyclerAdapter.ClickLi
      */
     override fun onClick(project: Project) {
         val intent = Intent(this, ProjectActivity::class.java)
-        intent.putExtra("id", project.id)
+        intent.putExtra("fullPath", project.namespace)
         startActivity(intent)
     }
 }

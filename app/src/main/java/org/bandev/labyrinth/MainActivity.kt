@@ -28,8 +28,6 @@ import org.bandev.labyrinth.projects.Commits
 import org.bandev.labyrinth.projects.FileViewer
 import org.bandev.labyrinth.projects.Issues
 import org.json.JSONObject
-import android.view.View
-import com.google.android.material.snackbar.BaseTransientBottomBar
 
 
 class MainActivity : AppCompatActivity() {
@@ -123,9 +121,10 @@ class MainActivity : AppCompatActivity() {
                 AdapterView.OnItemClickListener { parent, view, position, id ->
                     val selectedItem = parent.getItemAtPosition(position) as String
                     val intent = Intent(this@MainActivity, ProjectActivity::class.java)
-                    val bundle = Bundle()
-                    bundle.putInt("id", JSONObject(selectedItem).getInt("id"))
-                    intent.putExtras(bundle)
+                    intent.putExtra(
+                        "fullPath",
+                        JSONObject(selectedItem).getString("path_with_namespace")
+                    )
                     startActivity(intent)
                 }
 
@@ -191,7 +190,7 @@ class MainActivity : AppCompatActivity() {
                     0 -> Issues::class.java
                     1 -> FileViewer::class.java
                     2 -> Commits::class.java
-                    else -> ProjectActivity::class.java
+                    else -> OldProjectActivity::class.java
                 }
 
                 if (isIntent) {

@@ -30,8 +30,15 @@ class GraphQLQueryCreator(var token: String) {
     id
     name
     avatarUrl
+    fullPath
+    description
     forksCount
     starCount
+    releases {
+      nodes {
+        tagName
+      }
+    }
     repository {
       tree {
         lastCommit {

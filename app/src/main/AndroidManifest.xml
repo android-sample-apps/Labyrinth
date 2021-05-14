@@ -79,7 +79,7 @@
         <activity
             android:name=".PinSomething" />
         <activity
-            android:name=".ProjectActivity" />
+            android:name=".OldProjectActivity" />
         <activity
             android:name=".projects.Commits" />
         <activity
@@ -93,7 +93,7 @@
         <activity
             android:name=".projects.BranchSelector" />
         <activity
-            android:name=".NewProjectActivity" >
+            android:name=".ProjectActivity" >
         </activity>
 
         <meta-data
