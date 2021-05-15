@@ -91,7 +91,7 @@
                             app:layout_constraintStart_toStartOf="@+id/project_avatar"
                             app:layout_constraintTop_toBottomOf="@+id/project_avatar" />
 
-                        <com.google.android.material.chip.ChipGroup
+                        <org.bandev.labyrinth.ProjectStatsChipGroup
                             android:id="@+id/project_chips"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -178,6 +178,13 @@
                             app:layout_constraintTop_toBottomOf="@+id/commit_user_title" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <org.bandev.libraries.NonScroll.ListView
+                        android:id="@+id/project_subnav"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/toolbar_line"/>
 
                 </LinearLayout>
 

@@ -1,21 +1,30 @@
 package org.bandev.labyrinth
 
+import android.content.Intent
+import android.content.res.TypedArray
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.ImageLoader
+import coil.imageLoader
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import okhttp3.*
 import org.bandev.labyrinth.account.Profile
+import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.*
+import org.bandev.labyrinth.core.obj.Info
 import org.bandev.labyrinth.core.obj.ProjectQL
 import org.bandev.labyrinth.databinding.ProjectActivityBinding
+import org.bandev.labyrinth.projects.*
+import org.bandev.labyrinth.recycleradapters.ProjectRecyclerAdapter
 import org.json.JSONObject
 import java.io.IOException
 
@@ -78,8 +87,8 @@ class ProjectActivity : AppCompatActivity() {
             else getString(R.string.no_description)
 
         if (project.hasCommits) {
-            binding.projectChips.addChip(
-                R.drawable.ic_commit,
+            binding.projectChips.add(
+                "commits",
                 project.commits.toString()
             ) {
                 showInfoSheet("commits", it)
@@ -87,8 +96,8 @@ class ProjectActivity : AppCompatActivity() {
         }
 
         if (project.repoSize != 0.0) {
-            binding.projectChips.addChip(
-                R.drawable.ic_code,
+            binding.projectChips.add(
+                "size",
                 project.repoSize.nicefyBytes()
             ) {
                 showInfoSheet("size", it)
@@ -96,23 +105,23 @@ class ProjectActivity : AppCompatActivity() {
         }
 
         if (project.releases[0] != "null") {
-            binding.projectChips.addChip(
-                R.drawable.ic_tag,
+            binding.projectChips.add(
+                "tags",
                 project.releases[0]
             ) {
                 showInfoSheet("tags", it)
             }
         }
 
-        binding.projectChips.addChip(
-            R.drawable.ic_forks,
+        binding.projectChips.add(
+            "forks",
             project.forksCount.toString()
         ) {
             showInfoSheet("forks", it)
         }
 
-        binding.projectChips.addChip(
-            R.drawable.ic_star_full,
+        binding.projectChips.add(
+            "stars",
             project.starCount.toString()
         ) {
             showInfoSheet("stars", it)
@@ -174,21 +183,6 @@ class ProjectActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
-    }
-
-    private fun ChipGroup.addChip(icon: Int, _text: String, OnClick: (chip: Chip) -> Unit) {
-        val chip = Chip(context)
-        with(chip) {
-            text = _text
-            chipIcon = ContextCompat.getDrawable(context, icon)
-            chipIconSize = dpToPx(17f, resources)
-            chipEndPadding = dpToPx(10f, resources)
-            chipStartPadding = dpToPx(10f, resources)
-            textSize = 16f
-            setChipIconTintResource(R.color.colorPrimary)
-            setOnClickListener { OnClick(this) }
-        }
-        this.addView(chip)
     }
 
     private fun showInfoSheet(type: String, chip: Chip) {

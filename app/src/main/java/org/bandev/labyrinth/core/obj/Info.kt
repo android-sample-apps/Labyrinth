@@ -12,3 +12,4 @@ data class Info(
     val rightText: String,
     val end: Drawable
 )
+

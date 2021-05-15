@@ -35,7 +35,7 @@ class GroupRecyclerAdapter(
     /** The ViewHolder for each item in the list
      * @param itemView [View]
      * @return [RecyclerView.ViewHolder]
-     * */
+     */
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
         val binding: GroupRecyclerAdapterBinding = GroupRecyclerAdapterBinding.bind(itemView)
