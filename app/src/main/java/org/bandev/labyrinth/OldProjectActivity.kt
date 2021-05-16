@@ -24,6 +24,7 @@ import com.mikepenz.iconics.typeface.library.octicons.Octicons
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import org.bandev.labyrinth.account.Profile
+import org.bandev.labyrinth.activities.ProjectActivity
 import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.Connection
 import org.bandev.labyrinth.core.Central

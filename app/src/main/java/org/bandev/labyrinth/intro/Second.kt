@@ -7,8 +7,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import coil.transform.CircleCropTransformation
-import org.bandev.labyrinth.MainActivity
 import org.bandev.labyrinth.R
+import org.bandev.labyrinth.activities.HomeActivity
 import org.bandev.labyrinth.databinding.ActivityOpeningTwoBinding
 import org.json.JSONObject
 
@@ -70,7 +70,7 @@ class Second : AppCompatActivity() {
         }
 
         //Open main activity
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, HomeActivity::class.java)
         this.startActivity(intent)
         finish()
     }

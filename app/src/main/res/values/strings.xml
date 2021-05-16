@@ -65,8 +65,6 @@
     <string name="name">Name</string>
     <string name="description">Description</string>
     <string name="no_description">Description</string>
-    <string name="projects">Projects</string>
-    <string name="groups">Groups</string>
 
     <string name="access_0">No access</string>
     <string name="access_5">Minimal access</string>
@@ -90,4 +88,10 @@
     <string name="latest_tag">Latest tag</string>
     <string name="repository_size">Repository size</string>
     <string name="commit_ammount">Commits made</string>
+    <string name="official_repo">Official repository of this app</string>
+    <string name="home">Home</string>
+    <string name="projects">Projects</string>
+    <string name="groups">Groups</string>
+    <string name="issues">Issues</string>
+    <string name="explore_title">Explore projects related to %1$s</string>
 </resources>

@@ -79,5 +79,26 @@
         <item name="chipIconTint">@color/colorPrimary</item>
     </style>
 
+    <style name="icon">
+
+    </style>
+
+    <style name="toolbarTitle.clickable" parent="@style/toolbarTitle">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="clickableBox">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+    <style name="clickable">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
 
 </resources>

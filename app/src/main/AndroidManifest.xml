@@ -93,7 +93,9 @@
         <activity
             android:name=".projects.BranchSelector" />
         <activity
-            android:name=".ProjectActivity" >
+            android:name=".activities.ProjectActivity" />
+        <activity
+            android:name=".CommitActivity" >
         </activity>
 
         <meta-data
@@ -142,6 +144,7 @@
             android:name=".NoInternetActivity"
             android:windowSoftInputMode="adjustResize">
         </activity>
+        <activity android:name=".activities.HomeActivity" />
 
     </application>
 

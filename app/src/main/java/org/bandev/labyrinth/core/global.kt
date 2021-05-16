@@ -74,14 +74,20 @@ fun dpToPx(dp: Float, res: Resources): Float {
     )
 }
 
-fun Double.nicefyBytes(iterations: Int = 0): String {
-    val prefixes = listOf("P", "G", "M", "K", "")
-    return if (this < 1000) {
-        this.round(2).toString() + " " + prefixes[iterations] + "B"
-    } else (this / 1000).nicefyBytes(iterations + 1)
+/**
+ * Nicefy Bytes into human readable SI binary units
+ * @author Jack Devey
+ */
+
+fun Float.nicefyBytes(iterations: Int = 0): String {
+    val kBToB = 1024
+    val prefixes = listOf("", "K", "M", "G", "P")
+    return if (this < kBToB) {
+        this.round(1).toString() + " " + prefixes[iterations] + "B"
+    } else (this / kBToB).nicefyBytes(iterations + 1)
 }
 
-fun Double.round(decimals: Int): Double {
+fun Float.round(decimals: Int): Double {
     var multiplier = 1.0
     repeat(decimals) { multiplier *= 10 }
     return round(this * multiplier) / multiplier

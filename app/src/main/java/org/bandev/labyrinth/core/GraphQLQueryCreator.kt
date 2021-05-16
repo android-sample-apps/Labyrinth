@@ -24,6 +24,24 @@ class GraphQLQueryCreator(var token: String) {
         return buildRequest(data)
     }
 
+    fun exploreProjects(searchTerm: String, limit: Int): Request {
+        val data = """{
+  projects(search: "$searchTerm", sort: "stars_desc", first: $limit) {
+    nodes {
+      fullPath
+      name
+      starCount
+      avatarUrl
+      description
+    }
+  }
+}
+
+"""
+
+        return buildRequest(data)
+    }
+
     fun getProject(fullpath: String): Request {
         val data = """{
   project(fullPath: "$fullpath") {

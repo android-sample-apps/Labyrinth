@@ -1,30 +1,22 @@
-package org.bandev.labyrinth
+package org.bandev.labyrinth.activities
 
-import android.content.Intent
-import android.content.res.TypedArray
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import coil.ImageLoader
-import coil.imageLoader
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import okhttp3.*
+import org.bandev.labyrinth.ChipInfoSheet
+import org.bandev.labyrinth.R
 import org.bandev.labyrinth.account.Profile
-import org.bandev.labyrinth.adapters.InfoListAdapter
 import org.bandev.labyrinth.core.*
-import org.bandev.labyrinth.core.obj.Info
 import org.bandev.labyrinth.core.obj.ProjectQL
 import org.bandev.labyrinth.databinding.ProjectActivityBinding
 import org.bandev.labyrinth.projects.*
-import org.bandev.labyrinth.recycleradapters.ProjectRecyclerAdapter
 import org.json.JSONObject
 import java.io.IOException
 
@@ -98,7 +90,7 @@ class ProjectActivity : AppCompatActivity() {
         if (project.repoSize != 0.0) {
             binding.projectChips.add(
                 "size",
-                project.repoSize.nicefyBytes()
+                project.repoSize.toFloat().nicefyBytes()
             ) {
                 showInfoSheet("size", it)
             }
@@ -125,6 +117,15 @@ class ProjectActivity : AppCompatActivity() {
             project.starCount.toString()
         ) {
             showInfoSheet("stars", it)
+        }
+
+        if (project.id == "gid://gitlab/Project/22240804") {
+            binding.projectChips.add(
+                "labyrinth",
+                "Labyrinth Repository"
+            ) {
+                showInfoSheet("labyrinth", it)
+            }
         }
 
         // Load the projects avatar
@@ -194,6 +195,7 @@ class ProjectActivity : AppCompatActivity() {
             "forks" -> R.drawable.ic_forks
             "tags" -> R.drawable.ic_tag
             "size" -> R.drawable.ic_code
+            "labyrinth" -> R.drawable.ic_contributor
             else -> R.drawable.ic_commit
         }
 
@@ -205,6 +207,7 @@ class ProjectActivity : AppCompatActivity() {
                 "forks" -> R.string.forked_projects
                 "tags" -> R.string.latest_tag
                 "size" -> R.string.repository_size
+                "labyrinth" -> R.string.official_repo
                 else -> R.string.commit_ammount
             }
         )

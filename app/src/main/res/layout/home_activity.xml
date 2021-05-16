@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:paddingStart="25dp"
+        android:paddingEnd="0dp"
+        android:background="@drawable/toolbar_line">
+
+        <ImageView
+            android:id="@+id/profile_avatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="5dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/avatar"
+            android:cropToPadding="false"
+            android:focusable="true"
+            app:srcCompat="@mipmap/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/toolbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/home" />
+
+        <TextView
+            android:id="@+id/profile_status"
+            style="@style/toolbarTitle.clickable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:padding="7dp"
+            android:text="👀"
+            tools:ignore="TouchTargetSizeCheck" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/toolbar_line"
+                    android:baselineAligned="false">
+
+                    <TextView
+                        android:id="@+id/option_projects"
+                        style="@style/clickable"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:drawablePadding="10dp"
+                        android:gravity="center"
+                        android:text="@string/projects"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textSize="18sp"
+                        app:drawableTint="@color/textColorPrimary"
+                        app:drawableTopCompat="@drawable/ic_repo" />
+
+                    <TextView
+                        android:id="@+id/option_groups"
+                        style="@style/clickable"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:drawablePadding="10dp"
+                        android:gravity="center"
+                        android:text="@string/groups"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textSize="18sp"
+                        app:drawableTint="@color/textColorPrimary"
+                        app:drawableTopCompat="@drawable/ic_groups" />
+
+                    <TextView
+                        android:id="@+id/option_issues"
+                        style="@style/clickable"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:drawablePadding="10dp"
+                        android:gravity="center"
+                        android:text="@string/issues"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textSize="18sp"
+                        app:drawableTint="@color/textColorPrimary"
+                        app:drawableTopCompat="@drawable/ic_issue" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/toolbar_line"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/explore_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:text="Explore projects related to Balls"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        style="@style/toolbarTitle"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/explore_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout>

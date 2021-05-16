@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import org.bandev.labyrinth.activities.HomeActivity
 import org.bandev.labyrinth.databinding.ActivityBiometricFailBinding
 import org.bandev.labyrinth.intro.First
 import java.util.concurrent.Executor
@@ -40,7 +41,7 @@ class BiometricFailActivity : AppCompatActivity() {
                 ) {
                     super.onAuthenticationSucceeded(result)
 
-                    startActivity(Intent(applicationContext, MainActivity::class.java))
+                    startActivity(Intent(applicationContext, HomeActivity::class.java))
                     finish()
                 }
 

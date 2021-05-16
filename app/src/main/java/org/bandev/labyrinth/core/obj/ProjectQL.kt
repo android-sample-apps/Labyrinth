@@ -17,14 +17,19 @@ class ProjectQL(json: JSONObject) {
     val forksCount: Int = data.getInt("forksCount")
     val starCount: Int = data.getInt("starCount")
 
-    val commits: Int = data.getJSONObject("statistics").getInt("commitCount")
-    val repoSize: Double = data.getJSONObject("statistics").getDouble("repositorySize")
+    var commits: Int = 0
+    var repoSize: Double = 0.0
 
     val releases: MutableList<String> = mutableListOf()
 
     lateinit var lastCommit: LastCommitQL
 
     init {
+        if(!data.isNull("statistics")) {
+            commits = data.getJSONObject("statistics").getInt("commitCount")
+            repoSize = data.getJSONObject("statistics").getDouble("repositorySize")
+        }
+
         if (data.getJSONObject("repository")
                 .isNull("tree")) {
             hasCommits = false

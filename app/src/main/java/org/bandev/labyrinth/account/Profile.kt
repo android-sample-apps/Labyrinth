@@ -28,10 +28,11 @@ class Profile {
      * @param accountNum index of the account requested, [Int]
      */
 
-    fun login(context: Context, accountNum: Int) {
+    fun login(context: Context, accountNum: Int): Profile {
         accountManager = AccountManager.get(context)
         val accounts = accountManager.getAccountsByType("org.bandev.labyrinth.account")
         account = accounts[accountNum]
+        return this
     }
 
     /**

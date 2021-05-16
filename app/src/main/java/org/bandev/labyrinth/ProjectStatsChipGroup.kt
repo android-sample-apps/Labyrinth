@@ -61,6 +61,7 @@ class ProjectStatsChipGroup : ChipGroup {
                 "tags" -> R.drawable.ic_tag
                 "size" -> R.drawable.ic_code
                 "commits" -> R.drawable.ic_commit
+                "labyrinth" -> R.drawable.ic_contributor
                 else -> R.drawable.ic_alert
             }
         )!!

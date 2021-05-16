@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.imageLoader
+import org.bandev.labyrinth.activities.ProjectActivity
 import org.bandev.labyrinth.core.*
 import org.bandev.labyrinth.core.obj.Project
 import org.bandev.labyrinth.databinding.ProjectsListActivityBinding

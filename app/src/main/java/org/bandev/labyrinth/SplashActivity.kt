@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
+import org.bandev.labyrinth.activities.HomeActivity
 import org.bandev.labyrinth.core.Appearance
 import org.bandev.labyrinth.intro.First
 import java.util.concurrent.Executor
@@ -61,7 +62,7 @@ class SplashActivity : AppCompatActivity() {
 
                     checkWifi()
 
-                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    val intent = Intent(applicationContext, HomeActivity::class.java)
                     val mBundle = Bundle()
                     intent.putExtras(mBundle)
                     startActivity(intent)
@@ -99,7 +100,7 @@ class SplashActivity : AppCompatActivity() {
 
                 checkWifi()
 
-                val i = Intent(applicationContext, MainActivity::class.java)
+                val i = Intent(applicationContext, HomeActivity::class.java)
                 val mBundle = Bundle()
                 i.putExtras(mBundle)
                 startActivity(i)
